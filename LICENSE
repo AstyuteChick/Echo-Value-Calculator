@@ -1,0 +1,46 @@
+Echo Value Calculator License (EVC License v1.0)
+
+Copyright (c) 2026 Atharva Chingre
+
+All rights reserved.
+
+---
+
+1. Permission
+
+Permission is granted to individuals to use this software for personal, non-commercial purposes only.
+
+You are allowed to:
+
+* Use the software locally for personal use
+* Modify the software for personal, non-commercial purposes
+* View and fork this repository for personal, non-commercial use only
+
+---
+
+2. Restrictions
+
+You may NOT:
+
+* Host, deploy, or make the software publicly accessible (e.g., via a website or SaaS)
+* Distribute, sublicense, or share the software, except through authorized GitHub forks of this repository
+* Sell, license, or use the software for any commercial purpose
+* Use the software or its derivatives to provide a substantially similar service
+
+---
+
+3. Scope
+
+This license applies to all source code, backend logic, frontend code, and associated materials in this repository.
+
+---
+
+4. Termination
+
+Any violation of these terms will result in automatic termination of this license.
+
+---
+
+5. Disclaimer
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
