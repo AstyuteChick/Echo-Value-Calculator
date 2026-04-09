@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="text_stuff">
+<h1 id="assumptions"><strong><u>Assumptions</u></strong></h1>
+<p>These should be <u>fully obvious</u> to everyone and almost
+everyone’s built characters should automatically fit into these
+assumptions, but these are stated explicitly here.</p>
+<p>The quality of Echoes is <strong>determined by its substats</strong>.
+The scores obtained from the EVC <strong>may</strong>
+<strong>not</strong> reflect the actual strength/quality of your build
+<strong>if</strong> there are issues of this type (with short
+examples):</p>
+<ol type="1">
+<li><p><strong>Wrong weapons</strong>: For e.g. using Cartethyia’s
+signature weapon on Camellya.</p></li>
+<li><p><strong>Wrong mainstats</strong>: For e.g. running a 41111 setup
+(or any setup that’s not within around 5% DPS range of the optimal one).
+Or for e.g. equipping Def% 1 costs on Carlotta.</p></li>
+<li><p><strong>Under-levelling</strong>: For e.g. having any of the
+following not max levelled: weapon, character, fortes, and
+echoes.</p></li>
+<li><p><strong>Over 100% <u>effective</u> Crit Rate</strong>: If you
+have this, just subtract this additional amount when using the
+calculator wherever appropriate.</p></li>
+<li><p><strong>Non-sense Crit Ratio</strong>: For e.g. having 26% Crit
+Rate and 365% Crit Damage.</p></li>
+<li><p><strong>Wrong use of character/non-sense rotation:</strong>
+Anything that affects the <u>damage profile</u> (how much of the total
+damage is basic, heavy, skill or liberation) of a character
+significantly from the norm. For e.g. playing Zani without using her
+Liberation, or Camellya with only her liberation, in a (bizarre)
+rotation. For characters with different playstyles (like Encore as
+hypercarry vs Encore in quickswap with Changli), choose the correct
+version if available.</p></li>
+</ol>
+<p>Of course, having any of these issues will render the analysis of the
+builds ineffective, but 99.9% of the players should easily fit in these
+assumptions because they are either obvious or are automatically taken
+care of by simply following any guides on YouTube or from websites like
+Prydwen.</p>
+<p><strong>NOTE: EVC handles Energy Regen% (ER%) completely!</strong> No
+extra assumptions are required for this, as long as you follow the
+instructions when using the EVC.</p>
+</div>
+<div class="art_nav">
+  <a href="{{url_for('goals')}}"><button>Previous</button></a>
+  <a href="{{url_for('contents')}}"><button>Contents</button></a>
+  <a href="{{url_for('cd')}}"><button>Next</button></a>
+</div>
+{% endblock %}

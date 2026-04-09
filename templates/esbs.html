@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid var(--txt);
+      border-bottom: 1px solid var(--txt);
+    }
+    th {
+      border-top: 1px solid var(--txt);
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+</style>
+<script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript">
+</script>
+{% endblock %}
+{% block body %}
+<div class="text_stuff">
+{% raw %}
+<h1 id="echo-scores-and-build-scores"><strong><u>Echo Scores and Build
+Scores</u></strong></h1>
+<p>As we now have the achieved value and potential value of an Echo, we
+can now calculate the Echo Score, <span class="math inline">\(ES =
+\frac{AV}{PV}*100\)</span> . Here is the Echo again that we considered
+for Phrolova:</p>
+<ul>
+<li><p>9.3% Crit Rate</p></li>
+<li><p>15% Crit Damage</p></li>
+<li><p>8.6% Atk</p></li>
+<li><p>10.1% Skill</p></li>
+<li><p>9.4% HP</p></li>
+</ul>
+<p>We calculated its achieved value to be 2.73, and its potential value
+to be 2.975. Therefore, this Echo’s Score is <span
+class="math inline">\(\frac{2.73}{2.975} = \mathbf{0.918\ or\
+91.8}\)</span>! (This Echo is quite insane! Even though the score is
+multiplied by 100 and is technically a percent, the % sign is omitted to
+not cause confusion when scores exceed 100). We can verify this on the
+EVC website: <strong>91.774 – Extreme tier</strong>!</p>
+<p>Build score is simply the average of all 5 Echo scores in a set, but
+as we will see, it’s only really so straightforward for Phrolova alone.
+Practically speaking, ER has a huge impact on the quality of an Echo for
+characters that care about having ER, <strong>even if</strong>
+<strong>the ER amount they require is very low</strong> (even one ER
+roll requirement (around 10%) can significantly impact the score of an
+Echo, and can have a substantial effect of the overall build score (as
+it should!). This will be justified and elaborated later).</p>
+<h2
+id="consequences-and-interpretations-of-echo-score"><strong>Consequences
+and interpretations of Echo Score</strong></h2>
+<h3
+id="potential-value-of-an-echo-is-unique-to-the-particular-echo"><strong>Potential
+Value of an Echo is unique to the particular Echo</strong></h3>
+<p><em>[There is a subtle yet deliberate choosing of words when
+discussing the potential value of an Echo. Although the potential value
+of an Echo does not (yet) seem to rely on the specifics of a particular
+Echo itself, the wording used is always indicating that the calculated
+potential value of an Echo belongs to this particular Echo alone, and
+may be different for another Echo for the same character. This is true
+for most characters, and cases like Phrolova are the exceptions, which
+is why she was chosen to simplify the discussion of prior
+topics]</em>.</p>
+<h4 id="echo-score-reflects-the-quality-of-an-echo"><strong>Echo Score
+reflects the quality of an Echo</strong></h4>
+<p><em>[Consider the following Echo:</em></p>
+<ul>
+<li><p><em>Crit Rate: 7.5%</em></p></li>
+<li><p><em>Crit Damage: 16.2%</em></p></li>
+<li><p><em>Atk: 7.9%</em></p></li>
+</ul>
+<p><em>The remaining two are dead stats. Let’s calculate this Echo’s
+Score for Ciaccona and Carlotta. We start with the achieved
+value:</em></p>
+<p><span class="math display">\[AV = \frac{7.5}{8.4}*1 +
+\frac{16.2}{16.8}*1 + \frac{7.9}{9}*0.5 = 2.296\]</span></p>
+<p><em>This achieved value applies to both Ciaccona and Carlotta. Now
+let’s look at the potential value for this Echo for both Ciaccona and
+Carlotta (we assume both of them have sufficient ER to ignore the
+complexities of ER for now). The relative value tables for both of them
+are as follows:</em></p>
+<p><em>Carlotta:</em></p>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 13%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 15%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th><em><strong>Substat Name:</strong></em></th>
+<th><em><strong>Crit Rate</strong></em></th>
+<th><em><strong>Crit Damage</strong></em></th>
+<th><em><strong>Atk%</strong></em></th>
+<th><em><strong>Flat Atk</strong></em></th>
+<th><em><strong>HP%</strong></em></th>
+<th><em><strong>Flat HP</strong></em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em><strong>Substat Relative Value:</strong></em></td>
+<td><em>1</em></td>
+<td><em>1</em></td>
+<td><em>0.5</em></td>
+<td><em>0.25</em></td>
+<td><em>0</em></td>
+<td><em>0</em></td>
+</tr>
+<tr>
+<td><em><strong>Def%</strong></em></td>
+<td><em><strong>Flat Def</strong></em></td>
+<td><em><strong>Basic%</strong></em></td>
+<td><em><strong>Heavy%</strong></em></td>
+<td><em><strong>Skill%</strong></em></td>
+<td><em><strong>Lib%</strong></em></td>
+<td><em><strong>ER%</strong></em></td>
+</tr>
+<tr>
+<td><em>0</em></td>
+<td><em>0</em></td>
+<td><em>0</em></td>
+<td><em>0</em></td>
+<td><em>0.425 (=0.5*0.85)</em></td>
+<td><em>0</em></td>
+<td><em>0-0.6</em></td>
+</tr>
+</tbody>
+</table>
+<p><em>Ciaccona:</em></p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 12%" />
+<col style="width: 14%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr>
+<th><em><strong>Substat Name:</strong></em></th>
+<th><em><strong>Crit Rate</strong></em></th>
+<th><em><strong>Crit Damage</strong></em></th>
+<th><em><strong>Atk%</strong></em></th>
+<th><em><strong>Flat Atk</strong></em></th>
+<th><em><strong>HP%</strong></em></th>
+<th><em><strong>Flat HP</strong></em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em><strong>Substat Relative Value:</strong></em></td>
+<td><em>1</em></td>
+<td><em>1</em></td>
+<td><em>0.5</em></td>
+<td><em>0.25</em></td>
+<td><em>0</em></td>
+<td><em>0</em></td>
+</tr>
+<tr>
+<td><em><strong>Def%</strong></em></td>
+<td><em><strong>Flat Def</strong></em></td>
+<td><em><strong>Basic%</strong></em></td>
+<td><em><strong>Heavy%</strong></em></td>
+<td><em><strong>Skill%</strong></em></td>
+<td><em><strong>Lib%</strong></em></td>
+<td><em><strong>ER%</strong></em></td>
+</tr>
+<tr>
+<td><em>0</em></td>
+<td><em>0</em></td>
+<td><em>0.1 (=0.5*0.2)</em></td>
+<td><em>0.075 (=0.5*0.15)</em></td>
+<td><em>0.025 (=0.5*0.05)</em></td>
+<td><em>0.125 (=0.5*0.25)</em></td>
+<td><em>0-1</em></td>
+</tr>
+</tbody>
+</table>
+<p><em>Considering both character’s best stats, their potential value
+for this Echo is:</em></p>
+<p><span class="math display">\[{PV}_{Ciaccona} = 1 + 1 + 0.5 + 0.25 +
+0.125 = 2.875\]</span></p>
+<p><span class="math display">\[PV_{Carlotta} = 1 + 1 + 0.5 + 0.425 +
+0.25 = 3.175\]</span></p>
+<p><em>Subsequently, this same Echo gets a score of</em> <span
+class="math inline">\(ES_{Ciaccona} = 79.9\)</span> <em>and</em> <span
+class="math inline">\(ES_{Carlotta} = 72.3\)</span> <em>despite having
+the same achieved value for both the characters.</em></p>
+<p><em>It’s important to reflect on why this is the case.</em></p>
+<p><em>This shows that Echoes cannot be judged on their own and their
+environment (characters and their stats) determines their
+worth.</em></p>
+<p><em>The reason why this Echo gets a higher score on Ciaccona is
+because the <u>potential best value</u> Ciaccona can have on an Echo is
+<u>lower</u> than the value Carlotta can get from an Echo, because
+Carlotta’s damage is concentrated in one damage type – namely Skill%.
+Ciaconna’s damage is spread out between multiple types. Remember that,
+compared to Atk% substat roll, specific attribute substat rolls can only
+buff a <u>part</u> of a character’s damage profile which, of course, is
+equal to the ratio of this type of damage the character does to the
+general attribute damage%. So, by nature, the relative values of</em>
+<span class="math inline">\(Basic\% + Heavy\% + Skill\% + Liberation\%
+&lt; Atk\%\)</span> <em>(technically speaking the inequality holds for
+General Attribute Damage% rather than Atk%, and in this context, that’s
+the same as saying the inequality holds for Element% (because Element%
+and General Attribute Damage% are additive), and since on a fully built
+and geared character, Element% is roughly equal to Atk%, it gives us the
+logical explanation of why the given inequality is observed in
+character’s relative values). Or in other words,</em> <span
+class="math inline">\(Basic\% + Heavy\% + Skill\% + Liberation\% &lt;
+\mathbf{0.5}\)</span><em>. Since an Echo can only have 5 lines, the more
+concentrated your damage type is the more value you can potentially
+squeeze on an Echo, which lowers your Echo Score, but it also means that
+your Echo substats matter more for the actual amount of damage your
+character is doing comparatively.</em></p>
+<p><em>This shows yet another advantage of using this method. If the
+score focused on damage increases specifically rather than an Echo’s
+quality and value to the characters, the craziest and strongest Echoes
+you may roll on characters like Ciaccona would still get a lower score
+than obviously less rare and less crazy and less exciting Echoes on
+Carlotta (and this effect is even more pronounced when factoring in ER).
+The scores obtained like this become meaningless and would require,
+again, to set <u>different goals for different characters</u>,
+indirectly requiring the addition of the potential value system
+anyways!]</em></p>
+<h4 id="same-echo-scores-on-different-characters"><strong>Same Echo
+Scores on different characters</strong></h4>
+<p><em>[The meaning of this situation should be apparent by now. If
+Ciaccona and Carlotta have two <strong>different</strong> Echoes but the
+Echo Score they get are exactly the same, respectively, then in terms of
+actual damage, Carlotta’s Echo is increasing Carlotta’s damage more than
+Ciaccona’s Echo is increasing Ciaccona’s damage.</em></p>
+<p><em>If two people score 75% on a test, but one took a 100-point test
+while the other took a 200-point test, it’s obvious that in terms of
+actual points, the second person scored 150 points which is much higher
+than the 75 points scored by the first person. Of course, this still
+means that both are equally good at the subject (just like how the
+Echo’s <strong>quality</strong> is the same for each character
+respectively, they’re equally <strong>impressive</strong>) but one just
+has more actual points earned (like Carlotta’s Echo leading to
+<strong>higher DPS gain</strong> comparatively). And of course, the
+difference isn’t this pronounced and is highly exaggerated in this
+example, and it’s more like the difference between taking a 100-point
+test and a 120-point test]</em>.</p>
+{% endraw %}
+</div>
+<div class="art_nav">
+  <a href="{{url_for('pv')}}"><button>Previous</button></a>
+  <a href="{{url_for('contents')}}"><button>Contents</button></a>
+  <a href="{{url_for('er')}}"><button>Next</button></a>
+</div>
+{% endblock %}

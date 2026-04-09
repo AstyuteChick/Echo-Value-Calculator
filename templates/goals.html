@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="text_stuff">
+<h1 id="goal"><strong><u>Goal</u></strong></h1>
+<ul>
+<li><p><strong>The Echo Value Calculator (EVC) assigns a <u>precise
+value</u> on a <u>consistent scale</u> to an Echo and/or an Echo set
+(build) that <u>reflects its quality and strength</u> – called the
+Echo/Build Score.</strong></p></li>
+<li><p><strong>It considers <u>all</u> the factors that
+<u>practically</u> affect this score – so the score is <u>robust,
+reliable, and trustworthy</u>.</strong></p></li>
+<li><p><strong>The EVC is <u>quick and easy</u> to use, and <u>aids</u>
+on-the-fly decision making for users by being as frictionless as
+possible, <u>without</u> sacrificing previous goals.</strong></p></li>
+</ul>
+</div>
+<div class="art_nav">
+  <a href="{{url_for('contents')}}"><button>Contents</button></a>
+  <a href="{{url_for('assumptions')}}"><button>Next</button></a>
+</div>
+{% endblock %}

@@ -1,0 +1,505 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid var(--txt);
+      border-bottom: 1px solid var(--txt);
+    }
+    th {
+      border-top: 1px solid var(--txt);
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+</style>
+<script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript">
+</script>
+{% endblock %}
+{% block body %}
+<div class="text_stuff">
+{% raw %}
+<h1 id="achieved-value"><strong><u>Achieved Value</u></strong></h1>
+<p>Consider an Echo for Phrolova with the following substats (Phrolova
+allows us to ignore the complexities of ER% <u>for now</u>):</p>
+<ul>
+<li><p>9.3% Crit Rate</p></li>
+<li><p>15% Crit Damage</p></li>
+<li><p>8.6% Atk</p></li>
+<li><p>10.1% Skill</p></li>
+<li><p>9.4% HP</p></li>
+</ul>
+<p>Other than ER%, the worth of a substat (for a character) is directly
+tied to how it contributes in increasing the damage the character deals.
+Importantly, not all the characters place <u>equal worth on the same
+substats</u>, <strong>and</strong> not all the substats are <u>as
+beneficial</u> to a character <u>as each other</u>.</p>
+<p>To compare quantities, there <strong>must</strong> be a common scale.
+For example, when people calculate CV (Crit Value), they multiply the
+Crit Rate by 2 and add that to the Crit Damage. The reason behind this
+is, given a good Crit Ratio, 1% Crit Rate is just as good (or valuable)
+as 2% Crit Damage, which is why CV is calculated the way it is. In
+words, this is what’s happening in the calculation: “on a scale where
+the value provided by 1% Crit Damage is 1, the value provided by 1% Crit
+Rate is 2. The sum of these two values is called the Crit Value.” (Note
+that <u>as long as the scales are consistent</u>, <u>we can choose any
+basis</u>. For e.g. we could have just as easily chosen Crit Rate to
+have 1 value per 1% CR. But once the scale is fixed, everything else
+must follow it. On this scale, Crit Damage has 0.5 value per 1% CD. CV
+calculated this way will just be exactly half of the CV calculated with
+the prior way, but is still <u>just as accurate</u> and doesn’t lose any
+function as a metric <u>as long as</u> the metric is kept
+consistent).</p>
+<p>Furthermore, if for example you’re comparing the <u>weather</u>
+between two places, 32°C is <strong>not</strong> the same temperature as
+32°F (reflecting the importance of consistent scale),
+<strong>and</strong> the temperature alone is <strong>not</strong> the
+only factor that answers “how good is the weather” (just like how CV
+does <strong>not</strong> determine the quality of Echoes on its own).
+It is known that CV is a <u>very unreliable</u> way of measuring an
+Echo’s or Build’s strength simply because it doesn’t consider any other
+factors outside of Crit.</p>
+<p>A consistent scale that considers all substats tells us how valuable
+the substats are <strong>relative to each other</strong>.</p>
+<p><em>[One way of doing this would be to ask “how much damage increase
+does <strong>1 additional point</strong> of a given substat result in,
+as compared to other substats”. This approach <strong>is not
+used</strong> in the EVC because while it works, there are several
+problems. For example, during intermediate calculations, it tells us the
+<strong>value of a stat but not a substat</strong>. Considering Atk
+scaling characters, the damage increase by 1 point of Flat Atk relative
+to 1 point of any other substat is going to be negligible. But note that
+we could get up to 60 Atk on a substat roll (as compared to the number
+“9.4” for Atk% or “8.1” for Crit Rate%). For HP scaling characters, the
+value of 1 point of flat HP will be almost 0 (but you may get 500 in a
+substat roll), but it will later be shown that Flat Atk or Flat HP
+substat rolls can, in many situations, be even stronger than some
+specific attribute% substat rolls (like basic%, heavy%, skill% and
+liberation%). To be clear, this way <strong>could still work</strong>,
+but the values need to be stored to a very high degree of
+accuracy].</em></p>
+<p>Another way to consider substats’ values relative to each other is to
+ask, “how much damage increase does an <strong><u>average roll</u> of a
+given substat</strong> result in, as compared to an average roll of
+another substats.” This gives us a much better idea of the strength of
+each <u>substat roll</u>. <em>[This also helps a lot in the
+interpretation of “value” as opposed to “damage increase,” which is
+especially important when considering ER% or unique/weird characters
+like Brant later (more on this later). Additionally, it also helps with
+<u>observing, discovering, and recognizing patterns with specific
+attribute% substat rolls</u>, which not only helps with calculations,
+but also makes storing and processing of character data incredibly
+convenient (for e.g. a single line of code is needed to
+<strong>fully</strong> add a new character into the calculator
+<u>without</u> losing any bit of detail! It consists of 16 values, 15 of
+which are numbers and many of those are 0! Additionally, the numbers
+have <u>intuitive meaning</u> (as will be seen shortly) which is a huge
+advantage when making sure that the character data is accurate and the
+processing method and resulting scores are correct and
+sensible)!]</em></p>
+<p>The following is a list of all the <strong>average</strong> rolls of
+the 13 possible substats on an Echo:</p>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 12%" />
+<col style="width: 14%" />
+<col style="width: 13%" />
+<col style="width: 11%" />
+<col style="width: 17%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>Substat Name:</strong></th>
+<th><strong>Crit Rate</strong></th>
+<th><strong>Crit Damage</strong></th>
+<th><strong>Atk%</strong></th>
+<th><strong>Flat Atk</strong></th>
+<th><strong>HP%</strong></th>
+<th><strong>Flat HP</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Average substat roll:</strong></td>
+<td>8.4%</td>
+<td>16.8%</td>
+<td>9%</td>
+<td>45</td>
+<td>9%</td>
+<td>450</td>
+</tr>
+<tr>
+<td><strong>Def%</strong></td>
+<td><strong>Flat Def</strong></td>
+<td><strong>Basic%</strong></td>
+<td><strong>Heavy%</strong></td>
+<td><strong>Skill%</strong></td>
+<td><strong>Liberation%</strong></td>
+<td><strong>ER%</strong></td>
+</tr>
+<tr>
+<td>11.4%</td>
+<td>55</td>
+<td>9%</td>
+<td>9%</td>
+<td>9%</td>
+<td>9%</td>
+<td>9.6%</td>
+</tr>
+</tbody>
+</table>
+<p>We now ask, “how good is an average roll of a particular substat
+relative to other stats (for a specific character)?” To find this, we
+set a “base point” stat level for a character, calculate their damage
+output in a typical rotation, then compare this to the new damage output
+of the character when you give them just one of these specific average
+substat rolls. The difference in the outputs is the damage increase
+caused by that stat. You then take the stat that results in the highest
+damage increase (typically crit, or you can take the average of crit
+rate and crit damage) and then divide every stat’s damage increase by
+this amount, including the highest one itself. The resulting value for
+each substat is the <strong>relative value</strong> of that substat on a
+scale where the substat that leads to the highest damage increase has
+the value of 1.</p>
+<p>This can be done fully by yourself or using tools like
+“wutheringtools.com.” I’ve done this for a few characters myself. I’ve
+also verified the results with the data/tools from TCs like Maygi (she
+has her own DPS calculator that goes into incredible depth). However,
+this <u>process</u> is actually <strong>not relevant</strong> to the
+EVC, it’s the <strong>general observations and the results</strong> that
+are very powerful <em>[just like how you can conclude Gold is rarer or
+less accessible in nature than Silver by comparing their price, without
+actually studying economics or understanding how demand-supply
+works]</em>.</p>
+<p>The results show some (very interesting and)
+<strong>striking</strong> <strong>similarities that are shared
+consistently across all the characters</strong>:</p>
+<p>On a scale (that we established above) where an average substat roll
+of Crit Rate or Crit Damage (the substats that result in the highest
+damage increases) has 1 point of value (in other words, the relative
+value of crit is 1), the <u>relative value of the stat%</u> a character
+<u>scales from</u> (Atk%, HP% or Def%) is about <strong>0.5</strong>.
+Furthermore, the <u>flat stat’s relative value</u> (Flat Atk, Flat Def
+and Flat HP) is almost always <u>half of that</u>, so around
+<strong>0.25</strong>. Furthermore, a very clear pattern is observed for
+the relative value of a <u>specific attribute substat rolls</u> (basic%,
+heavy%, skill% and liberation%) across all the characters – <em>[since
+Atk% and Element% are very close in effectiveness for almost all
+characters with a working build (a fact that surprisingly many are
+unaware of), and since Element% and Attribute% are additive (for our
+context, it means they’re the same thing), I theorized that their
+relative value <u>should be the same as the relative value of Element%
+(~Atk%) times the <strong>ratio</strong> of <strong>this</strong> type
+of damage a character deals in the rotation]</u></em>. For example, if a
+character deals 85% of their damage as skill damage, then the relative
+value of Skill% should be <span class="math inline">\(0.5*0.85 =
+0.425\)</span>. And sure enough, <u>this is the case every time for all
+characters when calculating damage increases per average substat rolls
+manually</u> <em>[Note that when this is not the case (for weird
+characters like Brant), we can just as simply use the manually
+calculated version. Also note that the values only need to be roughly
+the same, as all the deviations observed cause practically zero change
+to the Echo Scores (a fact you can also easily verify yourself
+later!]</em>!</p>
+<p>The last para is dense with information so looking at the relative
+values of some characters should aid in understanding* (ignore ER%
+values for now).</p>
+<p>Phrolova:</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 13%" />
+<col style="width: 15%" />
+<col style="width: 14%" />
+<col style="width: 15%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>Substat Name:</strong></th>
+<th><strong>Crit Rate</strong></th>
+<th><strong>Crit Damage</strong></th>
+<th><strong>Atk%</strong></th>
+<th><strong>Flat Atk</strong></th>
+<th><strong>HP%</strong></th>
+<th><strong>Flat HP</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Substat Relative Value:</strong></td>
+<td>1</td>
+<td>1</td>
+<td>0.5</td>
+<td>0.25</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Def%</strong></td>
+<td><strong>Flat Def</strong></td>
+<td><strong>Basic%</strong></td>
+<td><strong>Heavy%</strong></td>
+<td><strong>Skill%</strong></td>
+<td><strong>Lib%</strong></td>
+<td><strong>ER%</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0.025 (=0.5*0.05)</td>
+<td>0</td>
+<td>0.225 (=0.5*0.45)</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Carlotta:</p>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 13%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 15%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>Substat Name:</strong></th>
+<th><strong>Crit Rate</strong></th>
+<th><strong>Crit Damage</strong></th>
+<th><strong>Atk%</strong></th>
+<th><strong>Flat Atk</strong></th>
+<th><strong>HP%</strong></th>
+<th><strong>Flat HP</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Substat Relative Value:</strong></td>
+<td>1</td>
+<td>1</td>
+<td>0.5</td>
+<td>0.25</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Def%</strong></td>
+<td><strong>Flat Def</strong></td>
+<td><strong>Basic%</strong></td>
+<td><strong>Heavy%</strong></td>
+<td><strong>Skill%</strong></td>
+<td><strong>Lib%</strong></td>
+<td><strong>ER%</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0.425 (=0.5*0.85)</td>
+<td>0</td>
+<td>0-0.6</td>
+</tr>
+</tbody>
+</table>
+<p>Camellya:</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 13%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 13%" />
+<col style="width: 15%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>Substat Name:</strong></th>
+<th><strong>Crit Rate</strong></th>
+<th><strong>Crit Damage</strong></th>
+<th><strong>Atk%</strong></th>
+<th><strong>Flat Atk</strong></th>
+<th><strong>HP%</strong></th>
+<th><strong>Flat HP</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Substat Relative Value:</strong></td>
+<td>1</td>
+<td>1</td>
+<td>0.5</td>
+<td>0.25</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Def%</strong></td>
+<td><strong>Flat Def</strong></td>
+<td><strong>Basic%</strong></td>
+<td><strong>Heavy%</strong></td>
+<td><strong>Skill%</strong></td>
+<td><strong>Lib%</strong></td>
+<td><strong>ER%</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0.35 (=0.5*0.7)</td>
+<td>0</td>
+<td>0</td>
+<td>0.075 (=0.5*0.15)</td>
+<td>0-0.15</td>
+</tr>
+</tbody>
+</table>
+<p>Cartethyia:</p>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 13%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 15%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>Substat Name:</strong></th>
+<th><strong>Crit Rate</strong></th>
+<th><strong>Crit Damage</strong></th>
+<th><strong>Atk%</strong></th>
+<th><strong>Flat Atk</strong></th>
+<th><strong>HP%</strong></th>
+<th><strong>Flat HP</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Substat Relative Value:</strong></td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0.5</td>
+<td>0.25</td>
+</tr>
+<tr>
+<td><strong>Def%</strong></td>
+<td><strong>Flat Def</strong></td>
+<td><strong>Basic%</strong></td>
+<td><strong>Heavy%</strong></td>
+<td><strong>Skill%</strong></td>
+<td><strong>Lib%</strong></td>
+<td><strong>ER%</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0.25 (=0.5*0.5)</td>
+<td>0</td>
+<td>0.05 (=0.5*0.1)</td>
+<td>0.125 (=0.5*0.25)</td>
+<td>0-0.6</td>
+</tr>
+</tbody>
+</table>
+<p>(*The values presented here may not exactly be the values used in the
+calculator for these characters, if better or improved data is
+obtained).</p>
+<p><em>[An important mathematical fact about substats that many will
+find interesting is as follows: The <strong>sum</strong> <strong>of the
+<u>relative value</u> of all the attribute bonuses</strong> (basic,
+heavy, skill, liberation) is <strong><u>always</u></strong> <strong>less
+than or equal to 0.5</strong>. This is simply because the sum of the
+overall damage contribution from these attributes is
+<strong>always</strong> less than or equal to 100% (as a matter of
+course). Since the (relative) value of a fully general attribute bonus
+is the same (on average) as Atk%, the relative value of an average roll
+of Atk% sub stat will <strong>always</strong> be greater than or equal
+to all the relative values of the average roll of attribute dmg% sub
+stats <strong>combined</strong>. Practically, this means that if you
+have an Echo that gives (average rolls of) Basic%, Heavy%, Skill% and
+Liberation%, this Echo will <strong>always</strong> be weaker than an
+Echo that just gives an average roll of Atk%, <strong>no matter</strong>
+what character or situation].</em></p>
+<h2 id="example-calculation"><strong>Example Calculation</strong></h2>
+<p>Let’s calculate the achieved value of the above-mentioned Echo for
+Phrolova:</p>
+<ul>
+<li><p>9.3% Crit Rate</p></li>
+<li><p>15% Crit Damage</p></li>
+<li><p>8.6% Atk</p></li>
+<li><p>10.1% Skill</p></li>
+<li><p>9.4% HP</p></li>
+</ul>
+<p>First, we count the <strong>number</strong> of average substat rolls
+for each substat (<span
+class="math inline">\(\frac{SV}{SA}\)</span>):</p>
+<ul>
+<li><p>Crit Rate: <span class="math inline">\(\frac{9.3}{8.4} =
+1.107\)</span></p></li>
+<li><p>Crit Damage: <span class="math inline">\(\frac{15}{16.8} =
+0.893\)</span></p></li>
+<li><p>Atk%: <span class="math inline">\(\frac{8.6}{9} =
+0.956\)</span></p></li>
+<li><p>Skill%: <span class="math inline">\(\frac{10.1}{9} =
+1.122\)</span></p></li>
+<li><p>HP%: <span class="math inline">\(\frac{9.4}{9} = 1.044\)</span>
+(this is an unnecessary step of course, as Phrolova doesn’t scale from
+HP)</p></li>
+</ul>
+<p>Next, these numbers are multiplied by their respective relative
+values of the average substat rolls to produce the relative values of
+these <strong>particular</strong> substat rolls (it may be useful to
+consider that the <span class="math inline">\(no.\ of\ avg*\
+\frac{value}{avg} = value\ of\ avg\)</span>) (<span
+class="math inline">\(*RV\)</span>):</p>
+<ul>
+<li><p>Crit Rate: <span class="math inline">\(1.107*1 =
+1.107\)</span></p></li>
+<li><p>Crit Damage: <span class="math inline">\(0.893*1 =
+0.893\)</span></p></li>
+<li><p>Atk%: <span class="math inline">\(0.956*0.5 =
+0.478\)</span></p></li>
+<li><p>Skill%: <span class="math inline">\(1.122*0.225 =
+0.252\)</span></p></li>
+<li><p>HP%: <span class="math inline">\(1.044*0 = 0\)</span></p></li>
+</ul>
+<p>The sum of these values is (<span
+class="math inline">\(\sum_{i}^{}{(\frac{{SV}_{i}}{{SA}_{i}}*{RV}_{i})}\)</span>):
+<span class="math inline">\(1.107 + 0.893 + 0.478 + 0.252 =
+\mathbf{2.73}\)</span>, which is the achieved value of this Echo for
+Phrolova.</p>
+{% endraw %}
+</div>
+<div class="art_nav">
+  <a href="{{url_for('co')}}"><button>Previous</button></a>
+  <a href="{{url_for('contents')}}"><button>Contents</button></a>
+  <a href="{{url_for('pv')}}"><button>Next</button></a>
+</div>
+{% endblock %}

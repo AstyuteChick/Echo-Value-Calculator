@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="text_stuff">
+<p>This section provides documentations on various topics related to the
+EVC.</p>
+<p>More pages like “Echo Value Calculator – Code,” “FAQs,” “Charts and
+Data” etc. will be added soon, alongside improvements and additions to
+current pages as necessary.</p>
+<h1 id="contents"><strong><u>Contents</u></strong></h1>
+<ul>
+<li><p><a href="{{url_for('goals')}}"><strong>Goals</strong></a></p></li>
+<li><p><a href="{{url_for('assumptions')}}"><strong>Assumptions</strong></a></p></li>
+<li><p><a href="{{url_for('cd')}}"><strong>Character Data</strong></a></p></li>
+<li><p><strong>Guides</strong></p>
+<ul>
+<li><p><a href="{{url_for('clg')}}"><strong>Character levelling Guide</strong></a></p></li>
+</ul></li>
+<li><p><strong>Echo Value Calculator – Theory</strong></p>
+<ul>
+<li><p><a href="{{url_for('co')}}"><strong>Concept Overview</strong></a></p></li>
+<li><p><a href="{{url_for('av')}}"><strong>Achieved Value</strong></a></p>
+<ul>
+<li><p>Example Calculation</p></li>
+</ul></li>
+<li><p><a href="{{url_for('pv')}}"><strong>Potential Value</strong></a></p></li>
+<li><p><a href="{{url_for('esbs')}}"><strong>Echo Scores and Build Scores</strong></a></p>
+<ul>
+<li><p>Consequences and Interpretations of Echo Scores</p></li>
+</ul></li>
+<li><p><a href="{{url_for('er')}}"><strong>Energy Regen (ER) – Static and Dynamic
+values</strong></a></p>
+<ul>
+<li><p>Why even consider ER?</p></li>
+<li><p>What is the value of ER?</p></li>
+<li><p>ER in Achieved Value</p></li>
+<li><p>ER in Potential Value</p></li>
+<li><p>From Echo Score to Build Score</p></li>
+</ul></li>
+</ul></li>
+<li><p><strong>Additional Required Theory</strong></p>
+<ul>
+<li><p><a href="{{url_for('cre')}}"><strong>Crit Ratio Equivalency</strong></a></p></li>
+<li><p><a href="{{url_for('rc')}}"><strong>Resonance Cost, Outros and ER
+Requirements</strong></a></p></li>
+</ul></li>
+<li><p><strong>Echo Value Calculator - Code</strong></p>
+<ul>
+<li><p><a href="{{url_for('sc')}}"><strong>Source code for the engine</strong></a></p></li>
+</ul>
+</ul>
+</div>
+<div class="art_nav">
+  <a href="{{url_for('goals')}}"><button>Next</button></a>
+</div>
+{% endblock %}

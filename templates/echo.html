@@ -1,0 +1,75 @@
+
+{% extends "base.html" %}
+
+{% block body %}
+<div>
+    <form method="POST" action="{{url_for('echo')}}">
+        <div class="BaseConfig">
+
+            <div class="Outro">
+                <label for="buff_echo">Energy buffs from outros: </label>
+                <select name="buff_echo" onchange="this.form.submit()">
+                    <option value="None" {% if "None"==prev_buff %} selected="selected" {% endif %}>None</option>
+                    <option value="Zhezhi" {% if "Zhezhi"==prev_buff %} selected="selected" {% endif %}>Zhezhi</option>
+                    <option value="Yangyang" {% if "Yangyang"==prev_buff %} selected="selected" {% endif %}>Yangyang</option>
+                </select>
+            </div>
+
+            <div class="Char">
+                <label for="char_echo">Select your character: </label>
+                <select name="char_echo" onchange="this.form.submit()">
+                    {% for char_name in char_data %}
+                    <option value="{{char_name}}" {% if char_name==prev_char %} selected="selected" {% endif %}>{{char_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="ER">
+                <label for="er_tot_echo">Total ER of the build* : </label>
+                <input name="er_tot_echo" value="{{prev_er}}">
+            </div>
+
+        </div>
+        <div class="substats">
+            <div class="sub_in">
+                <div class="sub_title"><h2>Echo Sub Stats: </h2></div>
+
+                {% set color_space=namespace(cask="var(--b1)") %}
+                {% for stat_name in stat_names %}
+                    {% if stat_name!="ER(%)" %}
+                        {% if char_data[prev_char][0][(loop.index-1)]!=0.0%}
+                            {% if color_space.cask=="var(--b2)" %} {% set color_space.cask="var(--b1)" %} {% else %} {% set color_space.cask="var(--b2)" %} {% endif %}
+                        {% endif %}
+                    {% else %}
+                        {% if char_data[prev_char][1][0]!=0.0%}
+                            {% if color_space.cask=="var(--b2)" %} {% set color_space.cask="var(--b1)" %} {% else %} {% set color_space.cask="var(--b2)" %} {% endif %}
+                        {% endif %}
+                    {% endif %}
+                    <div class="sub_names" style="background-color: {{color_space.cask}};  
+                                {% if stat_name!='ER(%)' %} 
+                                    {% if char_data[prev_char][0][(loop.index-1)]==0.0 %} display: None; {% endif %}
+                                {% else %} 
+                                    {% if char_data[prev_char][1][0]==0.0 or char_data[prev_char][1][0]<=100.0 %} display: None; {% endif %}
+                                {% endif %}">
+                        <label for="{{stat_name}}">{{stat_name}}</label>
+                        <select name="{{stat_name}}" style="background-color: {{color_space.cask}};">
+                            <option value=0.0>0.0</option>
+                            {% for stat_roll in stat_rolls[stat_name]%}
+                            <option value={{stat_roll}}>{{stat_roll|string}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endfor %}
+
+                <div class="sub_sub">
+                    <input type="submit" value="Submit">
+                </div>
+            </div>
+            <div class="sub_anal">
+                <div><h2 {% if echo_score|float>= 88 %} style="background-color: #FFD700; color: hsl(0, 0%, 0%);" {% elif echo_score|float>=66 %} style="background-color: #FF38AE; color: hsl(0, 0%, 0%);" {% elif echo_score|float>=44 %} style="background-color: #00E1FF; color: hsl(0, 0%, 0%);" {% elif echo_score|float>0 %} style="background-color: #69BA18; color: hsl(0, 0%, 0%);" {% else %} style="background-color: var(--ac); color: var(--txt);" {% endif %} > {{echo_score}}</h2></div>
+                <div><h2 {% if echo_score|float>= 88 %} style="background-color: #FFD700; color: hsl(0, 0%, 0%);" {% elif echo_score|float>=66 %} style="background-color: #FF38AE; color: hsl(0, 0%, 0%);" {% elif echo_score|float>=44 %} style="background-color: #00E1FF; color: hsl(0, 0%, 0%);" {% elif echo_score|float>0 %} style="background-color: #69BA18; color: hsl(0, 0%, 0%);" {% else %} style="background-color: var(--ac); color: var(--txt);" {% endif %} > {{echo_tier}}</h2></div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

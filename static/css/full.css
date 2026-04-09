@@ -1,0 +1,18 @@
+
+.echo_grid{
+    display: grid;
+    grid-template-columns: 300px 300px 300px 300px 300px;
+}
+
+.sub_anal_f div{
+    text-align:center;
+}
+
+.sub_anal_f div h2{
+    border-style: None;
+    font-size: 1.5em;
+    font-weight: bold;
+    display: inline-block;
+    padding: 10px;
+    margin-top: 20px;
+}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block head %}
+<script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript">
+</script>
+{% endblock %}
+{% block body %}
+<div class="text_stuff">
+{% raw %}
+<h1 id="resonance-cost-outros-and-er-requirements"><strong><u>Resonance
+Cost, Outros and ER requirements</u></strong></h1>
+<p>The total ER on the builds should be recalibrated with the outro ER
+buffs. The most common example is probably Zhezhi with Carlotta.</p>
+<p>This part is speculative, but the idea is that during a rotation, the
+character needs to <strong>generate a certain amount of Resonance Energy
+particles</strong> to cast their Liberation, called the Resonance Cost.
+(For Carlotta, her Liberation has the Resonance cost of 125, meaning she
+needs 125 particles). <strong>Assuming that the Energy Regen% is a
+multiplier</strong> (so that 200% ER means 2 particles are generated
+whenever 1 would normally be generated), we can know the particles
+generated in a rotation.</p>
+<p>Taking Carlotta’s example specifically, her recommended ER amount is
+115 to 125% (sourced from Prydwen.gg), and her Resonance cost is 125. If
+she generates X particles in her rotation and assuming 125% total ER as
+the safe amount, we have <span class="math inline">\(X*125\% =
+125\)</span>, meaning she generates 100 particles. Zhezhi’s ability
+reads like a flat restoration of 15 particles, unaffected by ER. This
+reduces her Resonance Cost to 110 particles. Given that she generates
+100 particles, we have <span class="math inline">\(100*Y\% =
+110\)</span>, where Y is the new total resonance energy required. This
+is simply 110, meaning 110% ER is the safe ER required with Zhezhi.</p>
+<p>In general, for a character with the <strong>Resonance Cost of
+RC</strong>, a flat reduction of <strong>X from outros</strong>, and the
+<strong>initial ER requirements of iER</strong>, the <strong>new ER
+requirements, nER</strong> can be found by (equating particles generated
+per rotation):</p>
+<p><span class="math display">\[\frac{RC}{iER} = \frac{RC - X}{nER}
+\rightarrow nER = iER - \frac{X}{RC}iER\]</span></p>
+<p>This equation basically reads: the same percentage reduction occurs
+in the required ER as the percentage reduction in Resonance Cost.</p>
+{% endraw %}
+</div>
+<div class="art_nav">
+  <a href="{{url_for('cre')}}"><button>Previous</button></a>
+  <a href="{{url_for('contents')}}"><button>Contents</button></a>
+  <a href="{{url_for('sc')}}"><button>Next</button></a>
+</div>
+{% endblock %}

@@ -2,6 +2,8 @@
 __pycache__/
 *.py[codz]
 *$py.class
+# chatgpt recommended
+*.pyc
 
 # C extensions
 *.so
@@ -136,6 +138,8 @@ celerybeat.pid
 
 # Environments
 .env
+# chatgpt recommended
+*.env
 .envrc
 .venv
 env/
@@ -143,6 +147,18 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+#From ChatGpt
+*.db
+*.sqlite3
+*.log
+node_modules/
+dist/
+build/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
 
 # Spyder project settings
 .spyderproject

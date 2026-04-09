@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block head %}
+<script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript">
+</script>
+{% endblock %}
+{% block body %}
+<div class="text_stuff">
+{% raw %}
+<h1 id="potential-value"><strong><u>Potential Value</u></strong></h1>
+<p><em>[After finishing the achieved value section, keen readers who’re
+also familiar with other Gatcha-game gear systems (Genshin in
+particular) may have noticed some similarities with the achieved value
+calculations and what’s commonly called as “counting substats” when
+determining the worth of Artifacts, for example. You may think of
+Artifacts as an Echo with 8 to 9 stat lines, where you may roll
+previously rolled stats but there <strong>must be at least</strong> 4
+unique stats.</em></p>
+<p><em>To determine the worth of an Artifact, you simply count how many
+average rolls of each (useful) substats you have. Counting, in total, 5
+to 6 or more per Artifact is considered a good piece []. This method is
+very quick, very easy, and very practically accurate too. It’s so easy,
+in fact, that no calculator (specialized or general) is required and
+simply glancing at the Artifacts for a few seconds is all it takes to
+determine its worth.</em></p>
+<p><em>The major and key differences between this and the calculations
+in the achieved value section are caused due to the difference in
+balancing approaches of substats in the gearing systems between
+Wuthering Waves and Genshin Impact. In GI, the average substat roll of
+crit (3%/3.3% cr or 6%/6.6% cd, iirc) approximately provides the same
+value as an average roll of Atk% (5%), and for stats like flat Atk,
+average effective values from average Atk% substats rolls are considered
+(so every 35ish flat Atk counts as 1 roll). All of these average substat
+amounts increase the damage of a character by roughly 2.2%
+iirc.</em></p>
+<p><em>However, this method of looking at all the stats, dividing them
+by the average value, and counting how many you have (in other words,
+exactly the first step of the calculations in the achieved value
+section) only works by itself if the stats provide roughly the same
+damage increases for a character (and across all characters of the same
+scaling-type). And the reason why “5/6 or more” counted useful substats
+is a good thing is because there is an inherent yet hidden assumption
+that, at most, the Artifact can only go up to 9 on average (meaning
+high-rolls are balanced by low-rolls and most rolls are close to
+average). In Wuthering Waves, however, there is no clear upper point
+that applies to all characters and these upper points are <strong>very
+significantly</strong> different to each other, and moreover, this upper
+point can also <strong>significantly</strong> change from one Echo to
+the next for a specific character, as will be shown later! Of course,
+there are many caveats that could be discussed (for both games), but
+they don’t affect the essence of this discussion].</em></p>
+<p>We calculated the achieved value of 2.73 for Phrolova with a given
+Echo. However, this value on its own does <strong>not</strong> tell us
+the worth of the Echo. Just like points on an exam, 50 points means two
+completely different things if the <strong>potential</strong> number of
+points achievable in an exam are 50, or 100.</p>
+<p>Therefore, to calculate this potential value of an Echo for Phrolova,
+we consider an Echo that’s the hypothetically best Echo Phrolova could
+have. This means an Echo that has 5 substats that Phrolova values the
+most, all rolled at max. The 5 most valuable substats for Phrolova are
+the 5 substats with the greatest relative values. For Phrolova, they are
+Crit Rate, Crit Damage, Atk%, Flat Atk and Skill%.</p>
+<p>Rather than considering an Echo that has these substats rolled at
+maximum, it is <strong>very important</strong> to consider an Echo that
+has all these substat rolled exactly at average instead. One of the main
+reasons for doing this is because considering max rolled Echoes provides
+no intuitive insight about the Echo’s score (highly important in the
+section discussing analysis of Echoes and Tier Brackets), and it’s
+simply “less fun” (rather than numbers without meaning, this approach
+makes the Echo scores have practical meaning). This point will be
+elaborated in detail later, and will be much obvious with examples later
+on.</p>
+<p>Finally, here is our “hypothetically best Echo” for Phrolova, with
+the best 5 substats rolled exactly at average:</p>
+<ul>
+<li><p>Crit Rate: 8.4%</p></li>
+<li><p>Crit Damage: 16.8%</p></li>
+<li><p>Atk%: 9%</p></li>
+<li><p>Flat Atk: 45</p></li>
+<li><p>Skill%: 9%</p></li>
+</ul>
+<p>The achieved value of this hypothetical Echo (“hypothetical” because
+it is not possible to roll these substats) is defined as the Potential
+Value of an Echo for Phrolova. It is easy to see that the potential
+value is equal to (<span class="math inline">\(\sum_{i =
+1}^{5}{ORV}_{i}\)</span>): <span class="math inline">\(1 + 1 + 0.5 +
+0.25 + 0.225 = \ 2.975\)</span>.</p>
+{% endraw %}
+</div>
+<div class="art_nav">
+  <a href="{{url_for('av')}}"><button>Previous</button></a>
+  <a href="{{url_for('contents')}}"><button>Contents</button></a>
+  <a href="{{url_for('esbs')}}"><button>Next</button></a>
+</div>
+{% endblock %}

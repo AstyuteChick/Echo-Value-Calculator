@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block head %}
+<script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript">
+</script>
+{% endblock %}
+{% block body %}
+<div class="text_stuff">
+{% raw %}
+<h1 id="concept-overview"><strong><u>Concept Overview</u></strong></h1>
+<p><strong>NOTE: In the next articles, certain sections are enclosed in
+square brackets “[<em>-</em>]” and are in <em>italics</em>. Readers may skip these
+sections without loss of continuity and/or understanding. They are only
+there to over-explain content, add more justifications or caveats, or
+provide extra information.</strong></p>
+<p><strong>Note for first-time readers</strong>: This section is best
+skimmed. This is an overview, big-picture explanation and is intended as
+something to refer back to as each individual concept is explained.</p>
+<p>Here is the <strong>main <u>conceptual</u> formula</strong>:</p>
+<p><span class="math display">\[\mathbf{ES} = \frac{AV}{PV}*100 =
+\frac{\sum_{i}^{}\left( \frac{{SV}_{i}}{{SA}_{i}}*{RV}_{i}
+\right)}{\sum_{i = 1}^{5}{ORV}_{i}}*100,\]</span></p>
+<p>where:</p>
+<ul>
+<li><p><span class="math inline">\(ES\)</span> = <strong>Echo
+Score</strong></p></li>
+<li><p><span class="math inline">\(AV\)</span> =
+<strong>Achieved</strong> Value / <u>Total</u> <u>Relative</u>
+<u>Value</u> of <u>Average</u> <u>Substat rolls</u> present on an Echo
+under consideration*</p></li>
+<li><p><span class="math inline">\(PV\)</span> =
+<strong>Potential</strong> Value / <u>Total</u> <u>Relative</u>
+<u>Value</u> of the <u>Current</u> <u>Best 5</u> <u>Average</u>
+<u>Substat Rolls</u>*</p></li>
+<li><p><span class="math inline">\(SV\)</span> = Substat Roll (the
+actual number (value) displayed on the Echoes)</p></li>
+<li><p><span class="math inline">\(SA\)</span> = Substat Average (the
+average value of this substat)</p></li>
+<li><p><span class="math inline">\(RV\)</span> = <strong><u>Relative</u>
+value of the average of this <u>substat</u> (not the stat) compared to
+other substats (dynamic for ER!)</strong></p></li>
+<li><p><span class="math inline">\(ORV\)</span> =
+<strong>Ordered</strong> Relative value (arranged in descending order,
+from <u>highest to lowest</u>)</p></li>
+</ul>
+<p>*This is technically incomplete still, as the values are also
+weighted and effective, but this is automatic for all stats except ER
+with the method used.</p>
+<p>The <strong>Build Score</strong> is simply the average Echo Score of
+the five Echoes of a set, <strong><u>however</u></strong>, each Echo
+processed <strong>may have an impact</strong> on the next Echo’s
+achieved value and potential value during a full analysis of a build,
+increasing the accuracy of the scores obtained.</p>
+<p>After clarifying and justifying these terms, anybody should be able
+to calculate the scores using a pen, paper, and a (normal) calculator
+(albeit with significantly more time and effort than just using the
+EVC).</p>
+{% endraw %}
+</div>
+<div class="art_nav">
+  <a href="{{url_for('clg')}}"><button>Previous</button></a>
+  <a href="{{url_for('contents')}}"><button>Contents</button></a>
+  <a href="{{url_for('av')}}"><button>Next</button></a>
+</div>
+{% endblock %}

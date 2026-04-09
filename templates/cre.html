@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block head %}
+<script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript">
+</script>
+{% endblock %}
+{% block body %}
+<div class="text_stuff">
+{% raw %}
+<h1 id="crit-ratio-equivalency"><strong><u>Crit Ratio
+Equivalency</u></strong></h1>
+<p>Critical hits work similarly in most games, and the generally
+accepted crit ratio for optimal DPS is the 1:2 ratio for critical rate
+and critical damage respectively. However, the critical damage stat that
+is used to draw this conclusion is a percentage increase (as it works in
+Genshin Impact) as opposed to a critical damage multiplier that is seen
+on the stat screen in Wuthering Waves.</p>
+<p>The point of this section is to show that <strong>these two stats are
+the exact same thing and that you can convert between the two by adding
+or subtracting 100</strong>, and therefore you can apply the optimal
+crit ratio logic here as well.</p>
+<p>In mathematical terms, we want to show the following:</p>
+<p><span class="math display">\[{CD}_{WW} - 100 = {CD}_{GI},\
+\]</span></p>
+<p>where <span class="math inline">\({CD}_{WW}\)</span> is the crit
+damage as seen in Wuthering Waves and <span
+class="math inline">\({CD}_{GI}\)</span> is the crit damage that is seen
+in Genshin Impact.</p>
+<p>By definition, <span class="math inline">\({CD}_{GI}\)</span> is a
+<strong>percentage increase</strong> in damage. If you have 150% <span
+class="math inline">\({CD}_{GI}\)</span>, your damage
+<strong>increases</strong> by 150%. If your normal hits do 75 damage,
+150% of 75 is 112.5, meaning you will do 75 + 112.5 = 187.5 damage on
+critical hits. In general, for X damage on normal hits, your crit hits
+will do <span class="math inline">\(X + X*{CD}_{GI}\)</span> damage.</p>
+<p>By definition, <span class="math inline">\({CD}_{WW}\)</span> is a
+<strong>damage multiplier</strong>. If you have 250% <span
+class="math inline">\({CD}_{WW}\)</span>, your damage is
+<strong>multiplied</strong> by 250%. If your normal hits do 75 damage,
+250% of 75 is 187.5, which is the damage you’ll do on critical hits, the
+same as above. In general, for X damage on normal hits, your crit hits
+do <span class="math inline">\(X*{CD}_{WW}\)</span>.</p>
+<p>To prove this <strong>in general</strong> with the above definitions,
+we consider a scenario with a <strong>normal hit damage of X, and a
+critical hit damage of Y</strong>. We then define both versions of Crit
+Damage using the same scenario and the above definitions:</p>
+<p><span class="math display">\[\frac{Y - X}{X}*100 = {CD}_{GI};\
+\frac{Y}{X}*100 = {CD}_{WW}\]</span></p>
+<p>Making Y the subject in both equations and then equating them, we
+have:</p>
+<p><span class="math display">\[\frac{{CD}_{GI}}{100}*X + X =
+\frac{{CD}_{WW}}{100}*X \rightarrow \frac{{CD}_{GI}}{100} + 1 =
+\frac{{CD}_{WW}}{100}\]</span></p>
+<p><span class="math display">\[\rightarrow {CD}_{GI} + 100 =
+{CD}_{WW}\]</span></p>
+<p><strong>proving the above conjecture</strong>.</p>
+<p>With this, we can modify the known result of the optimal crit ratio
+for Wuthering Waves by simply converting it to the ones used in games
+like Genshin Impact. <strong>The ratio of crit rate with (crit damage -
+100) should be 1:2, with optimal ranges being 1:1.6 to 1:2.2 (also a
+previously well-known result).</strong></p>
+{% endraw %}
+</div>
+<div class="art_nav">
+  <a href="{{url_for('er')}}"><button>Previous</button></a>
+  <a href="{{url_for('contents')}}"><button>Contents</button></a>
+  <a href="{{url_for('rc')}}"><button>Next</button></a>
+</div>
+{% endblock %}
