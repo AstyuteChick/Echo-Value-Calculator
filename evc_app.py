@@ -209,4 +209,4 @@ def sitemap():
     return send_file("sitemap.xml")
 
 
-if __name__ == "__main__": evc_app.run(debug=False)
+if __name__ == "__main__": evc_app.run(debug=True)
