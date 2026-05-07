@@ -1,0 +1,55 @@
+<!-- Required Variables: 
+  
+ -->
+{% extends base2.html %}
+
+{% block title %}{% block calcTitle %}EVC 4.0{% endblock %}{% endblock %}
+
+{% block section %}
+<header>
+  <h2>Echo Score</h2>
+</header>
+<form>
+  <fieldset class="charDetails">
+    <legend>Required Details</legend>
+    <section class="charSelect">
+      <h3>Character</h3>
+      <label for="char-search">Search your character</label>
+      <input id="char-search" name="charSearch" type="search" placeholder="Search your character">
+      <ul>
+        {% for char_name in char_data %}
+        <li><button type="button" data-char-id="{{char_name}}">
+          <span>Img</span>
+          <span>{{char_name}}</span>
+        </button></li>
+        {% endfor %}
+      </ul>
+      <input type="hidden" id="char-select" name="charSelect" required>
+    </section>
+    <section class="teamSelect">
+      <h3>Team</h3>
+      <ul>
+        {% for team in teams[char] %}
+        <li><button type="button" data-team-id="{{char}}{{team|string}}">
+          <span>
+            <span>Img</span>
+            <span>{{team[0]}}</span>
+          </span>
+          <span>
+            <span>Img</span>
+            <span>{{team[1]}}</span>
+          </span>
+        </button></li>
+        {% endfor %}
+      </ul>
+      <input type="hidden" id="team-select" name="teamSelect" required>
+    </section>
+    <section class="totEr">
+      <label for="tot-er">Total ER</label>
+      <input id="tot-er" name="totEr" type="number" inputmode="decimal" placeholder="100.0" required>    
+    </section>
+  </fieldset>
+  {% block calcSection %}
+  {% endblock %}
+</form>
+{% endblock %}

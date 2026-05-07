@@ -1,0 +1,36 @@
+{% extends "calcBase.html" %}
+
+{% block calcTitle %}EVC4.0 - Echo Score{% endblock %}
+
+{% block calcSection %}
+<div class="echoAndResultBlock">
+  <div class="echoBlock">
+    <fieldset>
+      <legend>Echo Stats</legend>
+      <label><!--This should be div for statrow, holds two select, stat name and stat val, and stat val options are empty, later populated with js-->
+        Stat1
+        <select id="stat-1" name="stat1" placeholder="0.0">
+          <option value="7.5">7.5</option>
+          <option value="9.9">9.9</option>
+        </select>
+      </label>
+      <label>
+        Stat2
+        <select id="stat-2" name="stat2" placeholder="0.0">
+          <option value="15">15</option>
+          <option value="19.8">19.8</option>
+        </select>
+      </label>
+    </fieldset>
+    <button type="Submit">Submit</button>
+  </div>
+  <section class="resultConsole">
+    <h3>Results</h3>
+    <dl>
+      <div><dt>Score</dt><dd>75</dd></div>
+      <div><dt>Tier</dt><dd>Well-Built</dd></div>
+    </dl>
+    <p>Analysis based on character and score. </p>
+  </section>
+</div>
+{% endblock %}
