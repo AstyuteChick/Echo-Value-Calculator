@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EVC 4.0</title>
+</head>
+<body>
+  <nav>
+    <button type="button"> <!--Hamburger button-->
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul>
+      <li><a>
+        <span>ImagePlaceholder</span>
+        <span>Echo Score</span>
+      </a></li>
+      <li><a>
+        <span>ImagePlaceholder</span>
+        <span>Build Score</span>
+      </a></li>
+      <li><a>
+        <span>ImagePlaceholder</span>
+        <span>Full Score</span>
+      </a></li>
+    </ul>
+  </nav>
+  <main>
+    <header>
+      <h1>Echo Value Calculator</h1>
+      <div class="profMenu">
+        <button type="button">Settings Button</button>
+        <div hidden>
+          <ul>
+            <li>
+              <label>
+                Dark Mode
+                <input type="checkbox" id="dark-mode" name="darkMode" checked>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <section>
+      <header>
+        <h2>Echo Score</h2>
+      </header>
+      <form>
+        <fieldset class="charDetails">
+          <legend>Required Details</legend>
+          <label><!--Replace this with section, h3, label-input, ul-li-btn, input-->
+            Character
+            <input id="char-select" name="charSelect" type="search" placeholder="Search your character" required>
+          </label>
+          <label>
+            Team
+            <select id="team-select" name="teamSelect">
+              <option>
+                <span>ImagePlaceholderForChar1</span>
+                <span>Charcter1Name</span>
+                <span>ImagePlaceholderForChar2</span>
+                <span>Character2Name</span>
+              </option>
+              <option>
+                <span>ImagePlaceholderForChar1</span>
+                <span>Charcter1Name</span>
+                <span>ImagePlaceholderForChar2</span>
+                <span>Character2Name</span>
+              </option>
+            </select>
+          </label>
+          <label>
+            Total Er:
+            <input id="tot-er" name="totEr" type="number" inputmode="decimal" placeholder="100.0" required>
+          </label>
+        </fieldset>
+        <div class="echoAndResultBlock">
+          <div class="echoBlock">
+            <fieldset>
+              <legend>Echo Stats</legend>
+              <label><!--This should be div for statrow, holds two select, stat name and stat val, and stat val options are empty, later populated with js-->
+                Stat1
+                <select id="stat-1" name="stat1" placeholder="0.0">
+                  <option value="7.5">7.5</option>
+                  <option value="9.9">9.9</option>
+                </select>
+              </label>
+              <label>
+                Stat2
+                <select id="stat-2" name="stat2" placeholder="0.0">
+                  <option value="15">15</option>
+                  <option value="19.8">19.8</option>
+                </select>
+              </label>
+            </fieldset>
+            <button type="Submit">Submit</button>
+          </div>
+          <section class="resultConsole">
+            <h3>Results</h3>
+            <dl>
+              <div><dt>Score</dt><dd>75</dd></div>
+              <div><dt>Tier</dt><dd>Well-Built</dd></div>
+            </dl>
+            <p>Analysis based on character and score. </p>
+          </section>
+        </div>
+      </form>
+    </section>
+    <footer>
+      <!--Links to privacy policy, about, contact etc.-->
+    </footer>
+  </main>
+</body>
+</html>
