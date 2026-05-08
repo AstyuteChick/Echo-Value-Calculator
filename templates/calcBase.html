@@ -1,7 +1,5 @@
-<!-- Required Variables: 
-  
- -->
-{% extends base2.html %}
+
+{% extends "base2.html" %}
 
 {% block title %}{% block calcTitle %}EVC 4.0{% endblock %}{% endblock %}
 
@@ -18,7 +16,7 @@
       <input id="char-search" name="charSearch" type="search" placeholder="Search your character">
       <ul>
         {% for char_name in char_data %}
-        <li><button type="button" data-char-id="{{char_name}}">
+        <li><button type="button" data-char-id="{{char_name}}" class="btn">
           <span>Img</span>
           <span>{{char_name}}</span>
         </button></li>
@@ -26,24 +24,13 @@
       </ul>
       <input type="hidden" id="char-select" name="charSelect" required>
     </section>
-    <section class="teamSelect">
-      <h3>Team</h3>
-      <ul>
-        {% for team in teams[char] %}
-        <li><button type="button" data-team-id="{{char}}{{team|string}}">
-          <span>
-            <span>Img</span>
-            <span>{{team[0]}}</span>
-          </span>
-          <span>
-            <span>Img</span>
-            <span>{{team[1]}}</span>
-          </span>
-        </button></li>
-        {% endfor %}
-      </ul>
-      <input type="hidden" id="team-select" name="teamSelect" required>
-    </section>
+    <label for="team-select">Team</label>
+    <select id="team-select" name="teamSelect">
+      <option value="">Select your character's team</option>
+      {% for team in teams %}
+      <option value="{{team}}">{{team}}</option>
+      {% endfor %}
+    </select>
     <section class="totEr">
       <label for="tot-er">Total ER</label>
       <input id="tot-er" name="totEr" type="number" inputmode="decimal" placeholder="100.0" required>    

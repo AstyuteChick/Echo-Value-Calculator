@@ -1,52 +1,57 @@
-<!-- 
-  List of variables:
 
- -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}EVC 4.0{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="/css/base2.css">
+  <link rel="stylesheet" type="text/css" href="/css/general2.css">
+  {# <link rel="stylesheet" type="text/css" href="/css/echo.css">
+  <link rel="stylesheet" type="text/css" href="/css/build.css">
+  <link rel="stylesheet" type="text/css" href="/css/full.css"> #}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Questrial&display=swap" rel="stylesheet">
 </head>
 <body>
   <nav>
-    <button type="button"> <!--Hamburger button-->
+    <button type="button" class="btn hamburger"> <!--Hamburger button-->
       <span></span>
       <span></span>
       <span></span>
     </button>
     <ul>
       <li><a>
-        <span>Img</span>
+        <img src="{{url_for('static', filename='images/Echo_Icon.png')}}" alt="" class="navIcon">
         <span>Echo Score</span>
       </a></li>
       <li><a>
-        <span>Img</span>
+        <img src="{{url_for('static', filename='images/Build_Icon.png')}}" alt="" class="navIcon">
         <span>Build Score</span>
       </a></li>
       <li><a>
-        <span>Img</span>
+        <img src="{{url_for('static', filename='images/Full_Icon.png')}}" alt="" class="navIcon">
         <span>Full Score</span>
       </a></li>
       <li><a>
-        <span>Img</span>
+        <span></span>
         <span>Instructions</span>
       </a></li>
       <li><a>
-        <span>Img</span>
+        <span></span>
         <span>Change Logs</span>
       </a></li>
       <li><a>
-        <span>Img</span>
+        <span></span>
         <span>Reports</span>
       </a></li>
       <li><a>
-        <span>Img</span>
+        <span></span>
         <span>About</span>
       </a></li>
       <li><a>
-        <span>Img</span>
+        <span></span>
         <span>Articles</span>
       </a></li>
     </ul>
@@ -55,7 +60,7 @@
     <header>
       <h1>Echo Value Calculator</h1>
       <div class="profMenu">
-        <button type="button">Settings Button</button>
+        <button type="button" class="btn">Settings Button</button>
         <div hidden>
           <ul>
             <li>

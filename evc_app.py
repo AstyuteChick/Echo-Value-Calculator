@@ -10,8 +10,8 @@ def home(): return redirect(url_for("echo"))
 @evc_app.route("/echo", methods=["GET", "POST"])
 def echo():
     if request.method == "GET":
-        return render_template("echo.html", sbs="echo_b", stat_names=GameData.substat_names, stat_rolls=GameData.substat_rolls, char_data=Character.data, echo_score="Your score will be displayed here",
-                               echo_tier="Your Echo tier will be shown here", prev_char="Carlotta", prev_er="100", prev_buff="None")
+        return render_template("echo2.html", sbs="echo_b", stat_names=GameData.substat_names, stat_rolls=GameData.substat_rolls, char_data=Character.data, echo_score="Your score will be displayed here",
+                               echo_tier="Your Echo tier will be shown here", prev_char="Carlotta", prev_er="100", prev_buff="None", teams=["Zhezhi", "Yangyang"])
     elif request.method == "POST":
         try:
             es, et = main(request.form["char_echo"],
@@ -21,8 +21,8 @@ def echo():
                            request.form["Def(%)"], request.form["Flat Def"], request.form["Basic(%)"], request.form["Heavy(%)"], request.form["Skill(%)"], request.form["Liberation(%)"],
                            request.form["ER(%)"]],
                            "echo")
-            return render_template("echo.html", sbs="echo_b", stat_names=GameData.substat_names, stat_rolls=GameData.substat_rolls, char_data=Character.data, echo_score=es, echo_tier=et,
-                                   prev_char=request.form["char_echo"], prev_er=request.form["er_tot_echo"], prev_buff=request.form["buff_echo"])
+            return render_template("echo2.html", sbs="echo_b", stat_names=GameData.substat_names, stat_rolls=GameData.substat_rolls, char_data=Character.data, echo_score=es, echo_tier=et,
+                                   prev_char=request.form["char_echo"], prev_er=request.form["er_tot_echo"], prev_buff=request.form["buff_echo"], teams=["Zhezhi", "Yangyang"])
         except Exception as msg: return render_template("error.html", error_msg="Echo: "+str(msg))
     else: raise ValueError
 

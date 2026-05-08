@@ -7,22 +7,30 @@
   <div class="echoBlock">
     <fieldset>
       <legend>Echo Stats</legend>
-      <label><!--This should be div for statrow, holds two select, stat name and stat val, and stat val options are empty, later populated with js-->
-        Stat1
-        <select id="stat-1" name="stat1" placeholder="0.0">
-          <option value="7.5">7.5</option>
-          <option value="9.9">9.9</option>
+      <div class="statBlock">
+        <label for="stat-name-1">Echo Line 1: </label>
+        <select id="stat-name-1" name="statName1">
+          <option value="">Select Sub-Stat</option>
+          <option value="Crit Rate(%)">Crit Rate(%)</option>
+          <option value="Atk(%)">Atk(%)</option>
         </select>
-      </label>
-      <label>
-        Stat2
-        <select id="stat-2" name="stat2" placeholder="0.0">
-          <option value="15">15</option>
-          <option value="19.8">19.8</option>
+        <select id="stat-value-1" name="statValue1">
+          <option value="">Select Value of Substat</option>
         </select>
-      </label>
+      </div>
+      <div class="statBlock">
+        <label for="stat-name-2">Echo Line 1: </label>
+        <select id="stat-name-2" name="statName2">
+          <option value="">Select Sub-Stat</option>
+          <option value="Crit Rate(%)">Crit Rate(%)</option>
+          <option value="Atk(%)">Atk(%)</option>
+        </select>
+        <select id="stat-value-2" name="statValue2">
+          <option value="">Select Value of Substat</option>
+        </select>
+      </div>
     </fieldset>
-    <button type="Submit">Submit</button>
+    <button type="Submit" class="btn">Submit</button>
   </div>
   <section class="resultConsole">
     <h3>Results</h3>
