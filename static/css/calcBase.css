@@ -1,0 +1,148 @@
+/* Still need to add shadows across board */
+
+h2 {
+    font-family: Cascadia Code;
+    text-align: center;
+}
+
+.calcForm {
+    margin: 0 auto;
+}
+
+.charDetails {
+    border: 0.0625em solid color-mix(in srgb, var(--txt) 16%, transparent);
+    display: flex;
+    align-items: center;
+    gap: 4em;
+    border-radius: 0.5em;
+    background-color: var(--b1); 
+}
+
+.charDetails legend {
+    padding: 0.25em 0.5em;
+    border-radius: 0.5em;
+    font-weight: 600;
+    border: 2px solid var(--txt);
+    background-color: var(--bgc);
+}
+
+.formControl {
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+    padding: 0.2em 0.75em;
+}
+
+.formControl > label {
+    font-weight: 600;
+}
+
+.charSelect {
+    margin-left: 1em;
+}
+
+.selectedChar {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    width: 12em;
+    background-color: var(--bgc);
+    padding: 0.2em 0.75em;
+    border-radius: 0.5em;
+}
+
+.selectedChar img {
+    height: 4em;
+    width: 4em;
+    border-radius: 0.5em;
+}
+
+.selectedChar span {
+    font-weight: 500;
+}
+
+.charMenu {
+    position: relative;
+}
+
+.charMenu input, .teamSelect select,  .totEr input {
+    border-radius: 0.5em;
+    border: 1px solid color-mix(in srgb, var(--txt) 16%, transparent);
+    color: inherit;
+    font-family: inherit;
+    width: 16em;
+    padding: 0.5em 0.75em;
+    background-color: var(--bgc);
+    color: var(--txt);
+    transition: border-color var(--ani), background-color var(--ani);
+}
+
+.charMenu input:hover, .teamSelect select:hover,  .totEr input:hover {
+    border-color: color-mix(in srgb, var(--ac) 75%, var(--txt) 25%);
+}
+
+.charMenu input:focus, .teamSelect select:focus,  .totEr input:focus {
+    outline: none;
+    border-color: var(--ac);
+    background-color: var(--b2);
+}
+
+.charMenu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: calc(100% + 0.2em);
+    left: 0%;
+    right: 0%;
+    max-height: 32em;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: none;
+}
+
+.charOption {
+    width: 16em;
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    border-radius: 0.5em;
+    padding: 0.2em 0.75em;
+    background-color: var(--bgc);
+    transition: background-color var(--ani), color var(--ani);
+    cursor: pointer;
+}
+
+.charOption:hover {
+    background-color: var(--ac);
+}
+
+.charOption:active {
+    background-color: var(--sc);
+    color: var(--bgc);
+}
+
+.charOption img {
+    height: 5em;
+    width: 5em;
+    border-radius: 0.5em;
+}
+
+.charOption span {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.teamSelect select option {
+    border-radius: 0.5em;
+    background-color: var(--bgc);
+    font-family: inherit;
+    color: var(--txt);
+    transition: background-color var(--ani);
+}
+
+.teamSelect select option:hover {
+    background-color: var(--ac);
+}

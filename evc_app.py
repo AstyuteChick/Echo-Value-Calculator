@@ -11,7 +11,7 @@ def home(): return redirect(url_for("echo"))
 def echo():
     if request.method == "GET":
         return render_template("echo2.html", sbs="echo_b", stat_names=GameData.substat_names, stat_rolls=GameData.substat_rolls, char_data=Character.data, echo_score="Your score will be displayed here",
-                               echo_tier="Your Echo tier will be shown here", prev_char="Carlotta", prev_er="100", prev_buff="None", teams=["Zhezhi", "Yangyang"])
+                               echo_tier="Your Echo tier will be shown here", prev_char="Augusta", prev_er="100", prev_buff="None", teams=["Zhezhi", "Yangyang"])
     elif request.method == "POST":
         try:
             es, et = main(request.form["char_echo"],

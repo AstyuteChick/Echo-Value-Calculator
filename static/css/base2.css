@@ -1,4 +1,28 @@
 
+:root.dm {
+    --bgc: hsl(0, 0%, 8%);
+    --b1: hsl(0, 0%, 12%);
+    --b2: hsl(0, 0%, 16%);
+    --ac: #2323ff;
+    --sc: #9BB0FF;
+    --txt: hsl(0, 0%, 96%);
+    --ani: 0.16s;
+}
+
+:root {
+    --bgc: hsl(0, 0%, 96%);
+    --b1: hsl(0, 0%, 92%);
+    --b2: hsl(0, 0%, 88%);
+    --ac: #9BB0FF;
+    --sc: #2323ff;
+    --txt: hsl(0, 0%, 4%);
+    --ani: 0.16s;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
     display: flex;
     flex-direction: row;
@@ -176,4 +200,8 @@ h1 {
 
 .profMenu > div ul li label:hover {
     background-color: var(--ac);
+}
+
+main > section {
+    padding: 2em;
 }

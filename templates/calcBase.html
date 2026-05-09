@@ -5,34 +5,41 @@
 
 {% block section %}
 <header>
-  <h2>Echo Score</h2>
+  <h2>{% block calcHeading %}Calc Heading{% endblock %}</h2>
 </header>
-<form>
+<form class="calcForm">
   <fieldset class="charDetails">
-    <legend>Required Details</legend>
-    <section class="charSelect">
-      <h3>Character</h3>
-      <label for="char-search">Search your character</label>
-      <input id="char-search" name="charSearch" type="search" placeholder="Search your character">
-      <ul>
-        {% for char_name in char_data %}
-        <li><button type="button" data-char-id="{{char_name}}" class="btn">
-          <span>Img</span>
-          <span>{{char_name}}</span>
-        </button></li>
-        {% endfor %}
-      </ul>
+    <legend>Required details</legend>
+    <section class="formControl charSelect">
+      <label for="char-search">Character: </label>
+      <div class="selectedChar">
+        <img src="{{url_for('static', filename='images/Resonator_Augusta.webp')}}" alt="" class="char_portrait">
+        <span>{{prev_char}}</span>
+      </div>
+      <div class="charMenu">
+        <input id="char-search" name="charSearch" type="search" placeholder="Search your character">
+        <ul>
+          {% for char_name in char_data %}
+          <li><button type="button" data-char-id="{{char_name}}" class="btn charOption">
+            <img src="{{url_for('static', filename='images/Resonator_Augusta.webp')}}" alt="" class="char_portrait">
+            <span>{{char_name}}</span>
+          </button></li>
+          {% endfor %}
+        </ul>
+      </div>
       <input type="hidden" id="char-select" name="charSelect" required>
     </section>
-    <label for="team-select">Team</label>
-    <select id="team-select" name="teamSelect">
-      <option value="">Select your character's team</option>
-      {% for team in teams %}
-      <option value="{{team}}">{{team}}</option>
-      {% endfor %}
-    </select>
-    <section class="totEr">
-      <label for="tot-er">Total ER</label>
+    <section class="formControl teamSelect">
+      <label for="team-select">Team: </label>
+      <select id="team-select" name="teamSelect" required>
+        <option value="">Select your character's team</option>
+        {% for team in teams %}
+        <option value="{{team}}">{{team}}</option>
+        {% endfor %}
+      </select>
+    </section>
+    <section class="formControl totEr">
+      <label for="tot-er">Total ER: </label>
       <input id="tot-er" name="totEr" type="number" inputmode="decimal" placeholder="100.0" required>    
     </section>
   </fieldset>
