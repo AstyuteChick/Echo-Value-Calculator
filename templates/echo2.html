@@ -1,42 +1,35 @@
 {% extends "calcBase.html" %}
 
-{% block calcTitle %}EVC4.0 - Echo Score{% endblock %}
+{% block calcTitle %}EVC 4.0 - Echo Score{% endblock %}
+
+{% block calcHeading %}Echo Score{% endblock %}
 
 {% block calcSection %}
 <div class="echoAndResultBlock">
   <div class="echoBlock">
-    <fieldset>
-      <legend>Echo Stats</legend>
-      <div class="statBlock">
-        <label for="stat-name-1">Echo Line 1: </label>
-        <select id="stat-name-1" name="statName1">
+    <fieldset class="flst echoDetailsFlst">
+      <legend class="lgd">Echo Stats</legend>
+      {% for echo_no in range(1, 6) %}
+      <div class="statsBlock">
+        <label for="stat-name-{{echo_no}}">Echo Line {{echo_no}}: </label>
+        <select id="stat-name-{{echo_no}}" name="statName{{echo_no}}" class="slct statNameSlct">
           <option value="">Select Sub-Stat</option>
           <option value="Crit Rate(%)">Crit Rate(%)</option>
           <option value="Atk(%)">Atk(%)</option>
         </select>
-        <select id="stat-value-1" name="statValue1">
+        <select id="stat-value-{{echo_no}}" name="statValue{{echo_no}}" class="slct statValueSlct">
           <option value="">Select Value of Substat</option>
         </select>
       </div>
-      <div class="statBlock">
-        <label for="stat-name-2">Echo Line 1: </label>
-        <select id="stat-name-2" name="statName2">
-          <option value="">Select Sub-Stat</option>
-          <option value="Crit Rate(%)">Crit Rate(%)</option>
-          <option value="Atk(%)">Atk(%)</option>
-        </select>
-        <select id="stat-value-2" name="statValue2">
-          <option value="">Select Value of Substat</option>
-        </select>
-      </div>
+      {% endfor %}
     </fieldset>
-    <button type="Submit" class="btn">Submit</button>
+    <button type="Submit" class="btn subBtn">Submit</button>
   </div>
   <section class="resultConsole">
     <h3>Results</h3>
     <dl>
-      <div><dt>Score</dt><dd>75</dd></div>
-      <div><dt>Tier</dt><dd>Well-Built</dd></div>
+      <div><dt>Score</dt><dd class="resultVal scoreVal">75</dd></div>
+      <div><dt>Tier</dt><dd class="resultVal tierVal">Well-Built</dd></div>
     </dl>
     <p>Analysis based on character and score. </p>
   </section>

@@ -5,80 +5,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}EVC 4.0{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="/css/general2.css">
   <link rel="stylesheet" type="text/css" href="/css/base2.css">
   <link rel="stylesheet" type="text/css" href="/css/calcBase.css">
-  {# <link rel="stylesheet" type="text/css" href="/css/echo.css">
-  <link rel="stylesheet" type="text/css" href="/css/build.css">
+  <link rel="stylesheet" type="text/css" href="/css/echo2.css">
+  {# <link rel="stylesheet" type="text/css" href="/css/build.css">
   <link rel="stylesheet" type="text/css" href="/css/full.css"> #}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Questrial&display=swap" rel="stylesheet">
 </head>
 <body>
-  <nav>
-    <button type="button" class="btn hamburger"> <!--Hamburger button-->
+  <nav class="nv mainNv">
+    <button type="button" class="btn hamburgerBtn">
       <span></span>
       <span></span>
       <span></span>
     </button>
-    <ul>
+    <ul class="noLst navLst">
       <li><a>
-        <img src="{{url_for('static', filename='images/Echo_Icon.png')}}" alt="" class="navIcon">
+        <img src="{{url_for('static', filename='images/Echo_Icon.png')}}" alt="">
         <span>Echo Score</span>
       </a></li>
       <li><a>
-        <img src="{{url_for('static', filename='images/Build_Icon.png')}}" alt="" class="navIcon">
+        <img src="{{url_for('static', filename='images/Build_Icon.png')}}" alt="">
         <span>Build Score</span>
       </a></li>
       <li><a>
-        <img src="{{url_for('static', filename='images/Full_Icon.png')}}" alt="" class="navIcon">
+        <img src="{{url_for('static', filename='images/Full_Icon.png')}}" alt="">
         <span>Full Score</span>
       </a></li>
       <li><a>
-        <img src="{{url_for('static', filename='images/Instructions_Icon.png')}}" alt="" class="navIcon">
+        <img src="{{url_for('static', filename='images/Instructions_Icon.png')}}" alt="">
         <span>Instructions</span>
       </a></li>
       <li><a>
-        <img src="{{url_for('static', filename='images/ChangeLogs_Icon.png')}}" alt="" class="navIcon">
+        <img src="{{url_for('static', filename='images/ChangeLogs_Icon.png')}}" alt="">
         <span>Change Logs</span>
       </a></li>
       <li><a>
-        <img src="{{url_for('static', filename='images/Reports_Icon.png')}}" alt="" class="navIcon">
+        <img src="{{url_for('static', filename='images/Reports_Icon.png')}}" alt="">
         <span>Reports</span>
       </a></li>
       <li><a>
-        <img src="{{url_for('static', filename='images/About_Icon.png')}}" alt="" class="navIcon">
+        <img src="{{url_for('static', filename='images/About_Icon.png')}}" alt="">
         <span>About</span>
       </a></li>
       <li><a>
-        <img src="{{url_for('static', filename='images/Articles_Icon.png')}}" alt="" class="navIcon">
+        <img src="{{url_for('static', filename='images/Articles_Icon.png')}}" alt="">
         <span>Articles</span>
       </a></li>
     </ul>
   </nav>
   <main>
-    <header>
+    <header class="head mainHead">
       <h1>Echo Value Calculator 4.0</h1>
       <div class="profMenu">
-        <button type="button" class="btn">
+        <button type="button" class="btn setBtn">
           <img src="{{url_for('static', filename='images/Settings_Icon.png')}}" alt="">
         </button>
-        <div>
-          <ul>
-            <li>
-              <label>
-                <span>Dark Mode</span>
-                <input type="checkbox" id="dark-mode" name="darkMode" checked>
-              </label>
-            </li>
-          </ul>
-        </div>
+        <div><ul class="noLst setOptsLst">
+          <li><label>
+            <span>Dark Mode</span>
+            <input type="checkbox" id="dark-mode" name="darkMode" checked>
+          </label></li>
+        </ul></div>
       </div>
     </header>
-    <section>
-      {% block section %}
-      {% endblock %}
-    </section>
+    {% block section %}
+    {% endblock %}
     <footer>
       <!--Links to privacy policy, about, contact etc.-->
     </footer>

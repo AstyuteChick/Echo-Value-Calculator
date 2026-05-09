@@ -1,0 +1,86 @@
+
+.echoAndResultBlock {
+    display: grid;
+    align-items: start;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 2rem;
+}
+
+.echoBlock, .resultConsole {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--pds);
+}
+
+.echoDetailsFlst {
+    background-color: var(--b1);
+}
+
+.statsBlock {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: var(--pds) var(--pdn);
+}
+
+.statsBlock > label {
+    font-size: var(--fsb);
+}
+
+.statNameSlct, .statValueSlct {
+    background-color: var(--bgc);
+}
+
+.subBtn {
+    margin-top: 0.5rem;
+    padding: var(--pds) var(--pdn);
+    border: 3px solid var(--txt);
+    font-size: var(--fsb);
+}
+
+.resultConsole {
+    align-self: start;
+    justify-self: center;
+    min-width: 37.5rem;
+    border: var(--bs);
+    background-color: var(--b1);
+    border-radius: var(--rn);
+    padding: var(--pdn);
+    margin-top: 2rem;
+}
+
+.resultConsole h3 {
+    margin: 0 0 1rem;
+    font-family: Cascadia Code;
+}
+
+.resultConsole dl {
+    margin: 1rem 0 0;
+    display: grid;
+    gap: 1rem;
+}
+
+.resultConsole dl > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: var(--pdn);
+    background-color: var(--b2);
+    border-radius: var(--rn);
+    border: 2px solid var(--ac);
+}
+
+.resultConsole dl > div dt {
+    font-size: var(--fsb);
+}
+
+@media (max-width: 900px) {
+  .echoAndResultBlock {
+    grid-template-columns: 1fr;
+  }
+  .resultConsole {
+    min-width: none;
+  }
+}

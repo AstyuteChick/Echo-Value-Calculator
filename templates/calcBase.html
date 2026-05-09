@@ -4,46 +4,46 @@
 {% block title %}{% block calcTitle %}EVC 4.0{% endblock %}{% endblock %}
 
 {% block section %}
-<header>
+<section class="calc">
   <h2>{% block calcHeading %}Calc Heading{% endblock %}</h2>
-</header>
-<form class="calcForm">
-  <fieldset class="charDetails">
-    <legend>Required details</legend>
-    <section class="formControl charSelect">
-      <label for="char-search">Character: </label>
-      <div class="selectedChar">
-        <img src="{{url_for('static', filename='images/Resonator_Augusta.webp')}}" alt="" class="char_portrait">
-        <span>{{prev_char}}</span>
-      </div>
-      <div class="charMenu">
-        <input id="char-search" name="charSearch" type="search" placeholder="Search your character">
-        <ul>
-          {% for char_name in char_data %}
-          <li><button type="button" data-char-id="{{char_name}}" class="btn charOption">
-            <img src="{{url_for('static', filename='images/Resonator_Augusta.webp')}}" alt="" class="char_portrait">
-            <span>{{char_name}}</span>
-          </button></li>
+  <form class="calcForm">
+    <fieldset class="flst charDetailsFlst">
+      <legend class="lgd">Required details</legend>
+      <section class="charSelect">
+        <label for="char-search">Character: </label>
+        <div class="selectedChar">
+          <img src="{{url_for('static', filename='images/Resonator_Augusta.webp')}}" alt="" class="charPortrait">
+          <span>{{prev_char}}</span>
+        </div>
+        <div class="charMenu">
+          <input id="char-search" name="charSearch" type="search" placeholder="Search your character" class="inp charSearchInp">
+          <ul class="noLst charOptsLst">
+            {% for char_name in char_data %}
+            <li><button type="button" data-char-id="{{char_name}}" class="btn charOptsBtn">
+              <img src="{{url_for('static', filename='images/Resonator_Augusta.webp')}}" alt="" class="charPortrait">
+              <span>{{char_name}}</span>
+            </button></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <input type="hidden" id="char-select" name="charSelect" required>
+      </section>
+      <section class="teamSelect">
+        <label for="team-select">Team: </label>
+        <select id="team-select" name="teamSelect" required class="slct teamSelectSlct">
+          <option value="">Select your character's team</option>
+          {% for team in teams %}
+          <option value="{{team}}">{{team}}</option>
           {% endfor %}
-        </ul>
-      </div>
-      <input type="hidden" id="char-select" name="charSelect" required>
-    </section>
-    <section class="formControl teamSelect">
-      <label for="team-select">Team: </label>
-      <select id="team-select" name="teamSelect" required>
-        <option value="">Select your character's team</option>
-        {% for team in teams %}
-        <option value="{{team}}">{{team}}</option>
-        {% endfor %}
-      </select>
-    </section>
-    <section class="formControl totEr">
-      <label for="tot-er">Total ER: </label>
-      <input id="tot-er" name="totEr" type="number" inputmode="decimal" placeholder="100.0" required>    
-    </section>
-  </fieldset>
-  {% block calcSection %}
-  {% endblock %}
-</form>
+        </select>
+      </section>
+      <section class="totEr">
+        <label for="tot-er">Total ER: </label>
+        <input id="tot-er" name="totEr" type="number" inputmode="decimal" placeholder="100.0" required class="inp totErInp">    
+      </section>
+    </fieldset>
+    {% block calcSection %}
+    {% endblock %}
+  </form>
+</section>
 {% endblock %}

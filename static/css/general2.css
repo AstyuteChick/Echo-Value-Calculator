@@ -1,0 +1,114 @@
+
+:root {
+    --bgc: hsl(0, 0%, 8%);
+    --b1: hsl(0, 0%, 12%);
+    --b2: hsl(0, 0%, 16%);
+    --ac: #2323ff;
+    --sc: #9BB0FF;
+    --txt: hsl(0, 0%, 96%);
+    --ani: 0.16s;
+    --rn: 0.5rem;
+    --rs: 0.25rem;
+    --rl: 0.75rem;
+    --pdn: 1em;
+    --pds: 0.5em;
+    --pdl: 1.5em;
+    --bs: 1px solid color-mix(in srgb, var(--txt) 16%, transparent);
+    --bm: 2px solid color-mix(in srgb, var(--txt) 16%, transparent);
+    --fsl: 1.5rem;
+    --fsb: 1.125rem;
+}
+
+:root.lm {
+    --bgc: hsl(0, 0%, 96%);
+    --b1: hsl(0, 0%, 92%);
+    --b2: hsl(0, 0%, 88%);
+    --ac: #9BB0FF;
+    --sc: #2323ff;
+    --txt: hsl(0, 0%, 4%);
+    --ani: 0.16s;
+    --rn: 0.5rem;
+    --rs: 0.25rem;
+    --rl: 0.75rem;
+    --pdn: 1em;
+    --pds: 0.5em;
+    --pdl: 1.5em;
+    --bs: 1px solid color-mix(in srgb, var(--txt) 16%, transparent);
+    --bm: 2px solid color-mix(in srgb, var(--txt) 16%, transparent);
+    --fsl: 1.5rem;
+    --fsb: 1.125rem;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+.btn {
+    background-color: inherit;
+    color: inherit;
+    font-family: inherit;
+    cursor: pointer;
+    border: 0;
+    border-radius: var(--rn);
+    background: none;
+    transition: background-color var(--ani), color var(--ani);
+}
+
+.btn:hover {
+    background-color: var(--ac);
+}
+
+.btn:active {
+    background-color: var(--sc);
+    color: var(--bgc);
+}
+
+.noLst {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.flst {
+    border: var(--bs);
+    border-radius: var(--rn);
+}
+
+.lgd {
+    padding: var(--pds) var(--pdn);
+    border-radius: 999px;
+    border: var(--bs);
+    background-color: var(--bgc);
+    font-weight: 600;
+}
+
+.charPortrait {
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--rn);
+}
+
+.slct, .inp {
+    border-radius: var(--rn);
+    border: var(--bs);
+    font-family: inherit;
+    padding: var(--pdn) var(--pdl);
+    color: var(--txt);
+    transition: border-color var(--ani), background-color var(--ani);
+}
+
+.slct:hover, .inp:hover {
+    border-color: color-mix(in srgb, var(--ac) 75%, var(--txt) 25%);
+}
+
+.slct:focus, .inp:focus {
+    outline: none;
+    border-color: var(--ac);
+}
+
+.resultVal {
+    font-family: Cascadia Code;
+    margin: 0 0 0 2rem;
+    font-weight: 800;
+    font-size: var(--fsl);
+}
