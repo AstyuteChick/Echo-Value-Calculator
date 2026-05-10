@@ -10,6 +10,7 @@ def home(): return redirect(url_for("echo"))
 @evc_app.route("/echo", methods=["GET", "POST"])
 def echo():
     if request.method == "GET":
+        return render_template("echo2.html", char_data=Character.data, prev_char="Augusta")
         return render_template("echo2.html", sbs="echo_b", stat_names=GameData.substat_names, stat_rolls=GameData.substat_rolls, char_data=Character.data, echo_score="Your score will be displayed here",
                                echo_tier="Your Echo tier will be shown here", prev_char="Augusta", prev_er="100", prev_buff="None", teams=["Zhezhi", "Yangyang"])
     elif request.method == "POST":

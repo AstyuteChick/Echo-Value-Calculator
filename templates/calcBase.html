@@ -12,7 +12,7 @@
       <section class="charSelect">
         <label for="char-search">Character: </label>
         <div class="selectedChar">
-          <img src="{{url_for('static', filename='images/Resonator_Augusta.webp')}}" alt="" class="charPortrait">
+          <img src="{{url_for('static', filename='images/Resonator_' ~prev_char.split('(')[0].strip().split(' ')[0].strip()~ '.webp')}}" alt="" class="charPortrait">
           <span>{{prev_char}}</span>
         </div>
         <div class="charMenu">
@@ -20,7 +20,7 @@
           <ul class="noLst charOptsLst">
             {% for char_name in char_data %}
             <li><button type="button" data-char-id="{{char_name}}" class="btn charOptsBtn">
-              <img src="{{url_for('static', filename='images/Resonator_Augusta.webp')}}" alt="" class="charPortrait">
+              <img src="{{url_for('static', filename='images/Resonator_' ~char_name.split('(')[0].strip().split(' ')[0].strip()~ '.webp')}}" alt="" class="charPortrait">
               <span>{{char_name}}</span>
             </button></li>
             {% endfor %}
@@ -46,4 +46,18 @@
     {% endblock %}
   </form>
 </section>
+{% endblock %}
+
+{% block initScripts%}
+
+{% block calcInitScripts %}
+{% endblock %}
+
+{% endblock%}
+
+{% block scripts %}
+
+{% block calcScripts %}
+{% endblock %}
+
 {% endblock %}
