@@ -90,7 +90,7 @@ h2 {
     background-color: var(--bgc);
 }
 
-.charOption span {
+.charOptsBtn span {
     min-width: 0;
     overflow: hidden;
     white-space: nowrap;
@@ -107,4 +107,26 @@ h2 {
 
 .teamSelect select option:hover {
     background-color: var(--ac);
+}
+
+@media (max-width: 1100px) {
+  .charDetailsFlst {
+    grid-template-columns: 1fr;
+  }
+
+  .charSelect,
+  .teamSelect,
+  .totEr {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 700px) {
+  body {
+    grid-template-columns: 1fr;
+  }
+
+  .mainNv {
+    min-height: auto;
+  }
 }

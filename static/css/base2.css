@@ -55,7 +55,7 @@ body {
     align-items: center;
     gap: 0.75em;
     padding: 0.75em 0.75em;
-    transition: background-color var(--ani), color var(--ani);
+    transition: background-color var(--ani), color var(--ani), transform var(--ani);
     border-radius: 0.2em;
     cursor: pointer;
 }
@@ -94,6 +94,8 @@ h1 {
     flex: 1;
     text-align: center;
     font-family: Cascadia Code;
+    /* border: 2px solid var(--ac);
+    border-radius: var(--rn); */
 }
 
 .profMenu {

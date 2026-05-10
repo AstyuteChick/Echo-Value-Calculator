@@ -42,7 +42,8 @@
 .resultConsole {
     align-self: start;
     justify-self: center;
-    min-width: 37.5rem;
+    width: min(100%, 37.5rem);
+    min-width: 0;
     border: var(--bs);
     background-color: var(--b1);
     border-radius: var(--rn);
@@ -81,6 +82,7 @@
     grid-template-columns: 1fr;
   }
   .resultConsole {
-    min-width: none;
+    min-width: 0;
+    width: 100%;
   }
 }

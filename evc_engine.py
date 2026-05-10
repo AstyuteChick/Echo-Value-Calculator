@@ -3,7 +3,7 @@ import heapq
 class GameData:
 
     rel_val_stat_names=["Crit Rate(%)", "Crit Damage(%)", "Atk(%)", "Flat Atk", "HP(%)", "Flat HP", "Def(%)", "Flat Def", "Basic(%)", "Heavy(%)", "Skill(%)", "Liberation(%)"]
-    er_stat_names=["Required ER", "ER Importance", "Resonance Cost"]
+    er_stat_names=["Required ER", "ER Importance"]
     substat_names=["Crit Rate(%)", "Crit Damage(%)", "Atk(%)", "Flat Atk", "HP(%)", "Flat HP", "Def(%)", "Flat Def", "Basic(%)", "Heavy(%)", "Skill(%)", "Liberation(%)", "ER(%)"]
     substat_medians=[8.4, 16.8, 9.0, 45.0, 9.0, 450.0, 11.35, 55.0, 9.0, 9.0, 9.0, 9.0, 9.6]
     substat_max=[10.5, 21.0, 11.6, 60.0, 11.6, 580.0, 14.7, 70.0, 11.6, 11.6, 11.6, 11.6, 12.4]
@@ -41,6 +41,61 @@ class GameData:
 class Character:
 
     data: dict[str, list]={
+        #Name:          [[cr%, cd%, atk%, fatk, hp%, fhp, def%, fdef, ba%, ha%, skill%, liberation%], [req_er, imp_er, rc], analysis]
+        "Aalto (DPS)":                              [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.70, 0.0, 0.5*0.15, 0.5*0.10], [{"Default": 128.1}, 0.45, 150.0], True],
+        "Aalto (Sub-DPS)":                          [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.45, 0.0, 0.5*0.25, 0.5*0.15], [{"Default": 128.1}, 0.45, 150.0], True],
+        "Aemeath":                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.65], [{"Lynae + Mornye": 118.1, "Lynae + Shorekeeper": 123.1, "Default": 125.0}, 0.9, 125.0], True],
+        "Augusta":                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.75, 0.5*0.15, 0.0], [{"Iuno + Shorekeeper": 128.1, "Mortefi + Shorekeeper (Default)": 118.1}, 0.9, 125.0], True],
+        "Baizhi":                                   [[0.0, 0.0, 0.0, 0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Default": 233.1}, 1.0, 175.0], False],
+        "Brant (sub DPS, ER/ER 3 cost setup)" :     [[1.0, 1.0, 0.3, 0.2, 0.0, 0.0, 0.0, 0.0, 0.55, 0.0, 0.0, 0.05], [{"Default": 280.0}, 0.8, 175.0], True],
+        "Buling":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Carlotta": 128.1, "Phrolova (Default)": 138.1}, 1.0, 150.0], False],
+        "Calcharo" :                                [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.25, 0.0, 0.0, 0.5*0.6], [{"Default": 128.1}, 0.6, 125.0], True],
+        "Camellya":                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.7, 0.0, 0.0, 0.5*0.15], [{"Lynae + Shorekeeper (Default)": 118.1, "Roccia + Shorekeeper": 128.1}, 0.2, 125.0], True],
+        "Cantarella":                               [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.7, 0.0, 0.5*0.1, 0.0], [{"Midnight Veil (Phrolova + Roccia)": 123.1, "Moonlit Clouds (Carlotta + Shorekeeper)": 143.1, "Default": 138.1}, 0.8, 125.0], True],
+        "Carlotta":                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.85, 0.0], [{"Default": 128.1}, 0.6, 125.0], True],
+        "Cartethyia":                               [[1.0, 1.0, 0.0, 0.0, 0.5, 0.25, 0.0, 0.0, 0.5*0.55, 0.0, 0.5*0.1, 0.5*0.25], [{"Default": 115.0}, 0.6, 125.0], True],
+        "Changli" :                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.6, 0.5*0.25], [{"Mono Fusion": 108.1, "Default": 123.1}, 0.35, 125.0], True],
+        "Chisa":                                    [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.75], [{"Default": 128.1}, 0.7, 125.0], True],
+        "Chixia" :                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.5, 0.5*0.3], [{"Default": 145.0}, 0.3, 150.0], True],
+        "Ciaccona":                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.2, 0.5*0.15, 0.0, 0.5*0.3], [{"Default": 125.0}, 1.0, 125.0], True],
+        "Danjin" :                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.25, 0.5*0.25, 0.5*0.3], [{"Default": 0.0}, 0.0, 100.0], True],
+        "Encore (Hypercarry)":                      [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.5, 0.0, 0.5*0.15, 0.5*0.15], [{"Easy Rotation": 133.1, "Advanced Rotation": 108.1, "Default": 128.1}, 1.0, 125.0], True],
+        "Galbrena":                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.35, 0.0, 0.0], [{"Mono Fusion": 113.1, "Default": 128.1}, 0.6, 125.0], True],
+        "Hiyuki":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.1, 0.5*0.80], [{"Default": 120.0}, 0.8, 125.0], True],
+        "Iuno":                                     [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.85], [{"Main DPS": 113.1, "Sub DPS (Default)": 133.1}, 0.8, 125.0], True],
+        "Jianxin (DPS/sub DPS)":                    [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.25, 0.5*0.4, 0.0, 0.5*0.3], [{"Default": 138.1}, 0.3, 150.0], True],
+        "Jinhsi":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.75, 0.5*0.2], [{"Alternate Rotation Burst": 128.1, "Default": 118.1}, 0.2, 150.0], True],
+        "Jiyan":                                    [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.7, 0.5*0.15, 0.0], [{"Iuno + Ciaccona": 118.1, "Default": 128.1}, 1.0, 125.0], True],
+        "Lingyang":                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.35, 0.0, 0.5*0.3, 0.5*0.1], [{"Default": 128.1}, 0.4, 125.0], True],
+        "Lumi":                                     [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.35, 0.0, 0.5*0.25, 0.5*0.3], [{"Default": 155.0}, 1.0, 125.0], True],
+        "Lupa":                                     [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.15, 0.5*0.7], [{"Changli + Brant": 118.1, "Encore + Shorekeeper": 133.1, "Default": 123.1}, 1.0, 125.0], True],
+        "Luuk Herssen":                             [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.9, 0.0, 0.0, 0.0], [{"Sanhua + Mornye": 118.1, "Lynae + Mornye": 128.1, "Default": 125.0}, 0.3, 125.0], True],
+        "Lynae":                                    [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.6, 0.0, 0.0, 0.5*0.2], [{"Iuno + Ciaccona": 118.1, "Default": 128.1}, 0.9, 125.0], True],
+        "Mornye":                                   [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0], [{"Default": 260.0}, 1.0, 175.0], False],
+        "Mortefi":                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.1, 0.0, 0.5*0.15, 0.5*0.7], [{"Default": 123.1}, 1.0, 125.0], True],
+        "Phoebe":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.15, 0.5*0.45, 0.0, 0.5*0.15], [{"Main DPS": 0.0, "Sub DPS (Default)": 128.1}, 1.0, 125.0], True],
+        "Phrolova":                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.5, 0.0], [{"Default": 0.0}, 0.0, 0], True],
+        "Qiuyuan":                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.65, 0.0, 0.0], [{"Galbrena + Shorekeeper": 118.1, "Phrolova + Cantarella": 133.1, "Default": 128.1}, 1.0, 125.0], True],
+        "Roccia":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.55, 0.5*0.2, 0.0], [{"Phrolova + Cantarella": 118.1, "Camellya + Shorekeeper": 128.1, "Default": 133.1}, 1.0, 125.0], True],
+        "Aero Rover":                               [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.65, 0.5*0.2], [{"Iuno + Ciaccona": 128.1, "Cartethyia + Ciaccona (Default)": 138.1}, 1.0, 150.0], True],
+        "Havoc Rover":                              [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.3, 0.0, 0.5*0.2, 0.5*0.25], [{"Sub DPS / Phrolova + Cantarella": 143.1, "Main DPS / Lynae + Shorekeeper (Default)": 128.1}, 0.3, 125.0], True],
+        "Spectro Rover":                            [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.1, 0.5*0.3, 0.5*0.35], [{"Default": 125.0}, 1.0, 125.0], True],
+        "Sanhua":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.35, 0.5*0.25, 0.5*0.3], [{"Default": 115.0}, 1.0, 100.0], True],
+        "Sigrika":                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Qiuyuan + Ciaccona/Phrolova": 113.1, "Qiuyuan + Shorekeeper (Default)": 123.1}, 0.9, 100.0], True],
+        "Taoqi (sub DPS)":                          [[1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.25, 0.5*0.5, 0.0, 0.0, 0.5*0.5], [{"Default": 128.1}, 1.0, 125.0], True],
+        "Taoqi (sup)":                              [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0], [{"Default": 175.0}, 1.0, 125.0], False],
+        "The Shorekeeper":                          [[0.0, 1.0, 0.0, 0.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.75], [{"With Fallacy (Default)": 230, "No Fallacy": 240.0}, 1.0, 175.0], False],
+        "Verina":                                   [[0.0, 0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Default": 233.1}, 1.0, 175.0], False],
+        "Xiangli Yao":                              [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.1, 0.0, 0.5*0.15, 0.5*0.6], [{"Default": 123.1}, 0.8, 125.0], True],
+        "Yangyang":                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.3, 0.0, 0.5*0.15, 0.5*0.45], [{"Default": 115.0}, 0.3, 100.0], True],
+        "Yinlin":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.1, 0.5*0.60, 0.5*0.2], [{"Xiangli Yao + Shorekeeper": 128.1, "Default": 138.1}, 0.2, 125.0], True],
+        "Youhu":                                    [[0.0, 0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Default": 165.0}, 1.0, 100.0], False],
+        "Yuanwu":                                   [[1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.25, 0.0, 0.0, 0.5*0.5, 0.5*0.4], [{"No Liberation": 0.0, "Default": 138.1}, 1.0, 125.0], True],
+        "Zani":                                     [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.6, 0.0, 0.5*0.2], [{"Default": 123.1}, 0.9, 125.0], True],
+        "Zhezhi":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.8, 0.0, 0.0, 0.0], [{"Empyrean Anthem (Default)": 133.1, "Moonlit Clouds": 118.1}, 1.0, 125.0], True]    
+    }
+
+    data2: dict[str, list]={
         #Name:          [[cr%, cd%, atk%, fatk, hp%, fhp, def%, fdef, ba%, ha%, skill%, liberation%], [req_er, imp_er, rc], analysis]
         "Aalto (DPS)":                              [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.70, 0.0, 0.5*0.15, 0.5*0.10], [128.1, 0.45, 150.0], True],
         "Aalto (Sub-DPS)":                          [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.45, 0.0, 0.5*0.25, 0.5*0.15], [138.1, 1.0, 150.0], True],
@@ -98,10 +153,11 @@ class Character:
         "Zhezhi":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.8, 0.0, 0.0, 0.0], [138.1, 1.0, 125.0], True]
     }
 
-    def __init__(self, name: str)-> None:
+    def __init__(self, name: str, team: str)-> None:
         self.name=name
         self.rv=Character.data[self.name][0]
-        self.er=Character.data[self.name][1]
+        self.team=team
+        self.er=self.team
         self.anal=Character.data[self.name][2]
 
     @property
@@ -115,6 +171,33 @@ class Character:
                 break
         if char_found!=True: raise ValueError("Character not found")
         self._name=name
+
+    @property
+    def team(self)->list: return self._team
+    @team.setter
+    def team(self, team_in:str)->None:
+        team_stat=[]
+        team_stats=Character.data[self.name][1][0]
+        for team in team_stats:
+            if team_in == team: 
+                team_stat=team_stats[team]
+                break
+        if not team_stat:
+            if team_in=="Yangyang Outro":
+                for team in team_stats:
+                    if "Default" in team: 
+                        team_stat=team_stats[team]
+                        break
+                team_stat[0]=adjust_req_er(team_stat[0], team_stat[2], 20)
+            elif team_in=="Zhezhi Outro":
+                for team in team_stats:
+                    if "Default" in team: 
+                        team_stat=team_stats[team]
+                        break
+                team_stat[0]=adjust_req_er(team_stat[0], team_stat[2], 15)
+            else: raise ValueError("Team Didn't match any options")
+        if not team_stat: raise ValueError("Something went wrong")
+        self._team=team_stat
 
     @property
     def rv(self)-> dict: return self._rv
@@ -261,15 +344,12 @@ def analysis(score: float, na: bool) -> str:
 
     return score_tier
 
-def main(char: str, buff: str, tot_er: str, ssr: list, type: str,
+def main(char: str, team: str, tot_er: str, ssr: list, type_in: str,
          main_stats: dict={"echo_cost": [0, 0, 0, 0, 0], "echo_mainstat": ["", "", "", "", ""]}) -> tuple[str, str]:
 
-    char_player=Character(char)
+    char_player=Character(char, team)
 
     if char_player.er["Required ER"]!=0 and char_player.er["Required ER"]>100:
-        outro_buff=buff
-        if outro_buff=="Yangyang": char_player.er["Required ER"]=adjust_req_er(char_player.er["Required ER"], char_player.er["Resonance Cost"], 20)
-        elif outro_buff=="Zhezhi": char_player.er["Required ER"]=adjust_req_er(char_player.er["Required ER"], char_player.er["Resonance Cost"], 15)
         er_build=float(tot_er)
         er_net=er_build-char_player.er["Required ER"]
     else: er_net=0
@@ -279,7 +359,7 @@ def main(char: str, buff: str, tot_er: str, ssr: list, type: str,
     calc_mode="N"
     ssgd=GameData(calc_mode)
 
-    if type=="echo":
+    if type_in=="echo":
 
         echo_player=Echo(ssr)
         if char_player.er["Required ER"]<100: echo_player.ssr["ER(%)"]=0.0
@@ -291,7 +371,7 @@ def main(char: str, buff: str, tot_er: str, ssr: list, type: str,
 
         return str(es_total), es_tier
 
-    elif type=="full":
+    elif type_in=="full":
 
         echo_order=[]
         sanity_check=0
@@ -322,7 +402,7 @@ def main(char: str, buff: str, tot_er: str, ssr: list, type: str,
 
         return str(bs_total)+": "+str(es_total), str(bs_tier)+": "+str(es_tier)
 
-    elif type=="build":
+    elif type_in=="build":
 
         build_player=Build(ssr)
         if char_player.er["Required ER"]<100: build_player.build_stats["ER(%)"]=0.0
@@ -366,3 +446,11 @@ def main(char: str, buff: str, tot_er: str, ssr: list, type: str,
         return str(es_total), es_tier
 
     else: return "Error: ", "Type not specified"
+
+if __name__=="__main__":
+    for char in Character.data:
+        def_found=False
+        for team in Character.data[char][1][0]:
+            if "Default" in team: def_found=True
+        if def_found==False: raise ValueError(f"Default not found for {char}")
+        
