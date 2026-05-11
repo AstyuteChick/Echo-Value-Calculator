@@ -41,6 +41,6 @@
 
 {% block calcScripts %}
 <script id="char-data" type="application/json">{{char_data | tojson }}</script>
-<script>const StaticImgPath="{{url_for('static', filename='images/')}}";</script>
+<script>const staticImgPath="{{url_for('static', filename='images/')}}";</script>
 <script src="{{url_for('static', filename='js/echo.js')}}"></script>
 {% endblock %}
