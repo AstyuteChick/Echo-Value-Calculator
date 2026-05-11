@@ -75,16 +75,26 @@ function handleCharSearchType(){
 }
 
 function selectChar(charName){
+    if (!charName) return;
+    console.log(charName);
     state.selectedChar = charName;
-    const character = charData[charName];
     elms.searchChar.value = charName;
+    const img = document.createElement("img");
+    const spn = document.createElement("span");
+    const cleanCharName=charName.split('(')[0].trim().split(' ')[0].trim();
+    img.src = `${staticImgPath}Resonator_${cleanCharName}.webp`;
+    img.classList.add("charPortrait");
+    spn.textContent = charName;
+    elms.selectedChar.innerHTML = ``;
+    elms.selectedChar.appendChild(img);
+    elms.selectedChar.appendChild(spn);
     closeCharMenu();
 }
 
 function handleCharSearchClick(event){
-    const clickedBtn = event.target.closest(".charOptsLst");
+    const clickedBtn = event.target.closest(".charOptsBtn");
     if (!clickedBtn) return;
-    const charName = clickedBtn.children[0].dataset.charName;
+    const charName = clickedBtn.dataset.charName;
     selectChar(charName);
 }
 
@@ -94,4 +104,15 @@ function handleOutsideClick(event){
     if (!clickInCharOpts && !clickInCharInp) {closeCharMenu();}
 }
 
+function setState(){
+    if (state.isCharMenuOpen===false){
+        closeCharMenu();
+    } else {
+        openCharMenu();
+    }
+    selectChar(state.selectedChar);
+}
+
 setEventListeners();
+
+setState();
