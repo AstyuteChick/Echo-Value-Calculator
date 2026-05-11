@@ -49,15 +49,14 @@
 {% endblock %}
 
 {% block initScripts%}
-
-{% block calcInitScripts %}
-{% endblock %}
-
+<script id="char-data" type="application/json">{{char_data | tojson }}</script>
+<script>const staticImgPath="{{url_for('static', filename='images/')}}";</script>
+  {% block calcInitScripts %}
+  {% endblock %}
 {% endblock%}
 
 {% block scripts %}
-
-{% block calcScripts %}
-{% endblock %}
-
+<script src="{{url_for('static', filename='js/calcBase.js')}}"></script>
+  {% block calcScripts %}
+  {% endblock %}
 {% endblock %}

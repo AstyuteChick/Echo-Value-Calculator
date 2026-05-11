@@ -3,7 +3,7 @@ const charDataEle = document.querySelector("#char-data");
 const charData = JSON.parse(charDataEle.textContent);
 
 const state = {
-    selectedChar: null, 
+    selectedChar: `Aemeath`, 
     selectedTeam: null, 
     isCharMenuOpen: false
 };
@@ -12,7 +12,8 @@ const elms = {
     form: document.querySelector(".calcForm"), 
     selectedChar: document.querySelector(".selectedChar"), 
     searchChar: document.querySelector("#char-search"), 
-    charOptsLst: document.querySelector(".charOptsLst")
+    charOptsLst: document.querySelector(".charOptsLst"), 
+    teamSlct: document.querySelector("#team-select")
 };
 
 function setEventListeners(){
@@ -21,15 +22,14 @@ function setEventListeners(){
     elms.searchChar.addEventListener("focus", openCharMenu);
     elms.searchChar.addEventListener("input", handleCharSearchType);
     elms.charOptsLst.addEventListener("click", handleCharSearchClick);
+    elms.teamSlct.addEventListener("change", handleTeamChange);
     document.addEventListener("click", handleOutsideClick);
-};
+}
 
 function renderCharOpts(searchInp=""){
     const normInp = searchInp.toLowerCase().trim();
     const charNames = Object.keys(charData);
-    const filteredChars = charNames.filter(function(charName){
-        return charName.toLowerCase().includes(normInp);
-    });
+    const filteredChars = charNames.filter(function(charName){return charName.toLowerCase().includes(normInp);});
     if (filteredChars.length===0){
         elms.charOptsLst.innerHTML = `<li><span>No Characters Found</span></li>`;
         return;
@@ -44,7 +44,7 @@ function renderCharOpts(searchInp=""){
         const cleanCharName=charName.split('(')[0].trim().split(' ')[0].trim();
         spn.textContent = charName;
         img.src = `${staticImgPath}Resonator_${cleanCharName}.webp`;
-        img.classList.add("charPortrait")
+        img.classList.add("charPortrait");
         btn.type = "button";
         btn.classList.add("btn", "charOptsBtn");
         btn.dataset.charName = charName;
@@ -53,6 +53,19 @@ function renderCharOpts(searchInp=""){
         li.appendChild(btn);
         elms.charOptsLst.appendChild(li);
     });
+}
+
+function renderTeamOpts(charName){
+    elms.teamSlct.innerHTML = `<option value="">Select your character's team</option>`;
+    const charTeams = Object.keys(charData[charName][1][0]);
+    charTeams.forEach(function (team){
+        const opt = document.createElement("option");
+        opt.value = team;
+        opt.textContent = team;
+        elms.teamSlct.appendChild(opt);
+    });
+    state.selectedTeam = null;
+    elms.teamSlct.value = "";
 }
 
 function handleSubmit(event){event.preventDefault();}
@@ -76,7 +89,6 @@ function handleCharSearchType(){
 
 function selectChar(charName){
     if (!charName) return;
-    console.log(charName);
     state.selectedChar = charName;
     elms.searchChar.value = charName;
     const img = document.createElement("img");
@@ -89,6 +101,7 @@ function selectChar(charName){
     elms.selectedChar.appendChild(img);
     elms.selectedChar.appendChild(spn);
     closeCharMenu();
+    renderTeamOpts(charName);
 }
 
 function handleCharSearchClick(event){
@@ -104,6 +117,15 @@ function handleOutsideClick(event){
     if (!clickInCharOpts && !clickInCharInp) {closeCharMenu();}
 }
 
+function handleTeamChange(event){
+    const slctTeamVal = event.target.value;
+    if (slctTeamVal === "") {
+        state.selectedTeam = null;
+    } else {
+        state.selectedTeam = slctTeamVal;
+    }
+}
+
 function setState(){
     if (state.isCharMenuOpen===false){
         closeCharMenu();
@@ -111,6 +133,7 @@ function setState(){
         openCharMenu();
     }
     selectChar(state.selectedChar);
+    renderTeamOpts(state.selectedChar);
 }
 
 setEventListeners();
