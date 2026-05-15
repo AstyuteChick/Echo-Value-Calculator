@@ -17,7 +17,7 @@
         </div>
         <div class="charMenu">
           <input id="char-search" name="charSearch" type="search" placeholder="Search your character" class="inp charSearchInp">
-          <ul class="noLst charOptsLst">
+          <ul class="noLst charOptsLst" hidden>
             {% for char_name in char_data %}
             <li><button type="button" data-char-id="{{char_name}}" class="btn charOptsBtn">
               <img src="{{url_for('static', filename='images/Resonator_' ~char_name.split('(')[0].strip().split(' ')[0].strip()~ '.webp')}}" alt="" class="charPortrait">
@@ -49,7 +49,7 @@
 {% endblock %}
 
 {% block initScripts%}
-<script id="char-data" type="application/json">{{char_data | tojson }}</script>
+<script id="char-data" type="application/json">{{char_data|tojson}}</script>
 <script>const staticImgPath="{{url_for('static', filename='images/')}}";</script>
   {% block calcInitScripts %}
   {% endblock %}

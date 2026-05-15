@@ -126,16 +126,10 @@ function handleTeamChange(event){
     }
 }
 
-function setState(){
-    if (state.isCharMenuOpen===false){
-        closeCharMenu();
-    } else {
-        openCharMenu();
-    }
+function setup(){
     selectChar(state.selectedChar);
-    renderTeamOpts(state.selectedChar);
 }
 
 setEventListeners();
+setup();
 
-setState();

@@ -13,12 +13,10 @@
       <div class="statsBlock">
         <label for="stat-name-{{echo_no}}">Echo Line {{echo_no}}: </label>
         <select id="stat-name-{{echo_no}}" name="statName{{echo_no}}" class="slct statNameSlct">
-          <option value="">Select Sub-Stat</option>
-          <option value="Crit Rate(%)">Crit Rate(%)</option>
-          <option value="Atk(%)">Atk(%)</option>
+          <option value="noVal">Select Sub-Stat</option>
         </select>
         <select id="stat-value-{{echo_no}}" name="statValue{{echo_no}}" class="slct statValueSlct">
-          <option value="">Select Value of Substat</option>
+          <option value="noVal">Select Value of Substat</option>
         </select>
       </div>
       {% endfor %}
@@ -37,7 +35,10 @@
 {% endblock %}
 
 {% block calcInitScripts %}
+<script id="echo-data" type="application/json">{{echo_data|tojson}}</script>
+<script id="substat-rolls-data" type="application/json">{{substat_rolls|tojson}}</script>
 {% endblock %}
 
 {% block calcScripts %}
+<script src="{{url_for('static', filename='js/echo.js')}}"></script>
 {% endblock %}

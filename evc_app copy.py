@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, url_for, redirect, send_file, jsonify
+from flask import Flask, render_template, request, url_for, redirect, send_file
 from evc_engine import *
 
 evc_app=Flask(__name__, template_folder="templates", static_folder="static", static_url_path="/")
@@ -7,16 +7,25 @@ evc_app=Flask(__name__, template_folder="templates", static_folder="static", sta
 @evc_app.route("/")
 def home(): return redirect(url_for("echo"))
 
-@evc_app.route("/echo", methods=["GET"])
-def echo(): return render_template("echo2.html", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls = GameData.substat_rolls)
-
-@evc_app.route("/calcEcho", methods=["POST"])
-def calc_echo():
-    data=request.get_json()
-    try: 
-        es, et = main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "echo")
-        return jsonify({"score": es, "tier": et})
-    except Exception as msg: return jsonify({"score": msg, "tier": "NA"})
+@evc_app.route("/echo", methods=["GET", "POST"])
+def echo():
+    if request.method == "GET":
+        return render_template("echo2.html", char_data=Character.data, prev_char="Aemeath")
+        return render_template("echo2.html", sbs="echo_b", stat_names=GameData.substat_names, stat_rolls=GameData.substat_rolls, char_data=Character.data, echo_score="Your score will be displayed here",
+                               echo_tier="Your Echo tier will be shown here", prev_char="Augusta", prev_er="100", prev_buff="None", teams=["Zhezhi", "Yangyang"])
+    elif request.method == "POST":
+        try:
+            es, et = main(request.form["char_echo"],
+                          request.form["buff_echo"],
+                          request.form["er_tot_echo"],
+                          [request.form["Crit Rate(%)"], request.form["Crit Damage(%)"], request.form["Atk(%)"], request.form["Flat Atk"], request.form["HP(%)"], request.form["Flat HP"],
+                           request.form["Def(%)"], request.form["Flat Def"], request.form["Basic(%)"], request.form["Heavy(%)"], request.form["Skill(%)"], request.form["Liberation(%)"],
+                           request.form["ER(%)"]],
+                           "echo")
+            return render_template("echo2.html", sbs="echo_b", stat_names=GameData.substat_names, stat_rolls=GameData.substat_rolls, char_data=Character.data, echo_score=es, echo_tier=et,
+                                   prev_char=request.form["char_echo"], prev_er=request.form["er_tot_echo"], prev_buff=request.form["buff_echo"], teams=["Zhezhi", "Yangyang"])
+        except Exception as msg: return render_template("error.html", error_msg="Echo: "+str(msg))
+    else: raise ValueError
 
 @evc_app.route("/build", methods=["GET", "POST"])
 def build():
