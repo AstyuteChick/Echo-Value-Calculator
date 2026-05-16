@@ -4,21 +4,14 @@ const echoData = JSON.parse(echoDataEle.textContent);
 const substatRollsEle = document.querySelector("#substat-rolls-data");
 const substatRollsData = JSON.parse(substatRollsEle.textContent);
 
-state["echoData"] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+state["echoData"] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0];
 state["usefulStats"] = [];
 state["pickedStats"] = [];
 
 elms["allEchoNameSlct"] = document.querySelectorAll(".statNameSlct");
 elms["allEchoValSlct"] = document.querySelectorAll(".statValueSlct");
-
-function setEchoEventListeners(){
-    elms["allEchoNameSlct"].forEach(function (slct){
-        slct.dataset.prevVal = slct.value;
-        slct.addEventListener("change", handleSubstatChange);
-    });
-    elms["allEchoValSlct"].forEach(function (slct){slct.addEventListener("change", handleSubstatChange);});
-    elms["charOptsLst"].addEventListener("click", renderSubstatNames);
-}
+elms["scoreVal"] = document.querySelector(".scoreVal");
+elms["tierVal"] = document.querySelector(".tierVal");
 
 function renderSubstatNames(){
     elms["allEchoNameSlct"].forEach(function (nameSlct){nameSlct.innerHTML = "<option value = 'noVal'>Select Echo Substat</option>"});
@@ -38,15 +31,9 @@ function renderSubstatNames(){
 function updateSubstatOpts(){
     elms["allEchoNameSlct"].forEach(function (nameSlct){
         const curVal = nameSlct.value;
-        // const prevVal = nameSlct.dataset.prevVal;
         nameSlct.innerHTML = "<option value = 'noVal'>Select Echo Substat</option>";
         state.usefulStats.forEach(function (stat){
-            if (stat === curVal) {
-                const opt = document.createElement("option");
-                opt.value = stat;
-                opt.textContent = stat;
-                nameSlct.appendChild(opt);
-            } else if (!state.pickedStats.includes(stat)) {
+            if (stat === curVal || !state.pickedStats.includes(stat)) {
                 const opt = document.createElement("option");
                 opt.value = stat;
                 opt.textContent = stat;
@@ -62,12 +49,76 @@ function handleSubstatChange(event){
     const prevVal = curSlct.dataset.prevVal;
     curSlct.dataset.prevVal = curSlct.value;
     if (curSlct.value !== "noVal") {
-        if (prevVal !== "noVal") {state.pickedStats.splice(state.pickedStats.indexOf(prevVal), 1);}
+        if (prevVal !== "noVal") {
+            state.pickedStats.splice(state.pickedStats.indexOf(prevVal), 1);
+            state.echoData[echoData.indexOf(prevVal)] = 0.0;
+        }
         state.pickedStats.push(curSlct.value);
     } else {
         state.pickedStats.splice(state.pickedStats.indexOf(prevVal), 1);
+        state.echoData[echoData.indexOf(prevVal)] = 0.0;
     }
     updateSubstatOpts();
+}
+
+function renderValOpts(event){
+    const nameSlct = event.currentTarget;
+    const echoNo = nameSlct.id[nameSlct.id.length - 1];
+    elms["allEchoValSlct"].forEach(function (valSlct){
+        if (valSlct.id[valSlct.id.length - 1] !== echoNo) return;
+        valSlct.innerHTML = `<option value="noVal">Select Value</option>`;
+        if (nameSlct.value === "noVal") return;
+        substatRollsData[nameSlct.value].forEach(function (val){
+            const opt = document.createElement("option");
+            opt.value = val;
+            opt.textContent = val;
+            valSlct.appendChild(opt);
+        });
+    });
+}
+
+function handleValOptsChange(event){
+    const valSlct = event.currentTarget;
+    const echoNo = valSlct.id[valSlct.id.length - 1];
+    const statName = elms.allEchoNameSlct[Number(echoNo) - 1].value;
+    state.echoData[echoData.indexOf(statName)] = valSlct.value === "noVal" ? 0.0 : Number(valSlct.value);
+    console.log(state.echoData);
+}
+
+function updateResults(result){
+    elms.scoreVal.innerHTML = result.score;
+    elms.tierVal.innerHTML = result.tier;
+}
+
+async function calcResults(){
+    try {
+        const response = await fetch("/calcEcho", {
+            method: "POST", 
+            headers: {"Content-Type": "application/json"}, 
+            body: JSON.stringify({
+                char: state.selectedChar, 
+                team: state.selectedTeam, 
+                totEr: state.totEr, 
+                ssr: state.echoData
+            })
+        });
+        if (!response.ok) {throw new Error("Server Error");}
+        const result = await response.json();
+        updateResults(result);
+    } catch (error) {
+        console.error("Submit Failed: ", error)
+    }
+}
+
+function setEchoEventListeners(){
+    elms["charOptsLst"].addEventListener("click", renderSubstatNames);
+    elms["allEchoNameSlct"].forEach(function (slct){
+        slct.dataset.prevVal = slct.value;
+        slct.addEventListener("change", handleSubstatChange);
+    });
+    elms["allEchoNameSlct"].forEach(function (slct){slct.addEventListener("change", renderValOpts);});
+    elms["allEchoValSlct"].forEach(function (slct){slct.addEventListener("change", handleValOptsChange);});
+    elms["form"].addEventListener("submit", calcResults);
 }
 
 setEchoEventListeners();

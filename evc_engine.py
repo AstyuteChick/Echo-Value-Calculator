@@ -3,7 +3,7 @@ import heapq
 class GameData:
 
     rel_val_stat_names=["Crit Rate(%)", "Crit Damage(%)", "Atk(%)", "Flat Atk", "HP(%)", "Flat HP", "Def(%)", "Flat Def", "Basic(%)", "Heavy(%)", "Skill(%)", "Liberation(%)"]
-    er_stat_names=["Required ER", "ER Importance"]
+    er_stat_names=["Required ER", "ER Importance", "Resonance Cost"]
     substat_names=["Crit Rate(%)", "Crit Damage(%)", "Atk(%)", "Flat Atk", "HP(%)", "Flat HP", "Def(%)", "Flat Def", "Basic(%)", "Heavy(%)", "Skill(%)", "Liberation(%)", "ER(%)"]
     substat_medians=[8.4, 16.8, 9.0, 45.0, 9.0, 450.0, 11.35, 55.0, 9.0, 9.0, 9.0, 9.0, 9.6]
     substat_max=[10.5, 21.0, 11.6, 60.0, 11.6, 580.0, 14.7, 70.0, 11.6, 11.6, 11.6, 11.6, 12.4]
@@ -44,7 +44,7 @@ class Character:
         #Name:          [[cr%, cd%, atk%, fatk, hp%, fhp, def%, fdef, ba%, ha%, skill%, liberation%], [{name: req_er}, imp_er, rc], analysis]
         "Aalto (DPS)":                              [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.70, 0.0, 0.5*0.15, 0.5*0.10], [{"Default": 128.1}, 0.45, 150.0], True],
         "Aalto (Sub-DPS)":                          [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.45, 0.0, 0.5*0.25, 0.5*0.15], [{"Default": 128.1}, 0.45, 150.0], True],
-        "Aemeath":                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.65], [{"Lynae + Mornye": 118.1, "Lynae + Shorekeeper": 123.1, "Default": 125.0}, 0.9, 125.0], True],
+        "Aemeath":                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.65], [{"Lynae + Mornye": 120.0, "Lynae + Shorekeeper": 123.1, "Default": 125.0}, 0.9, 125.0], True],
         "Augusta":                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.75, 0.5*0.15, 0.0], [{"Iuno + Shorekeeper": 128.1, "Mortefi + Shorekeeper (Default)": 118.1}, 0.9, 125.0], True],
         "Baizhi":                                   [[0.0, 0.0, 0.0, 0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Default": 233.1}, 1.0, 175.0], False],
         "Brant (sub DPS, ER/ER 3 cost setup)" :     [[1.0, 1.0, 0.3, 0.2, 0.0, 0.0, 0.0, 0.0, 0.55, 0.0, 0.0, 0.05], [{"Default": 280.0}, 0.8, 175.0], True],
@@ -99,6 +99,7 @@ class Character:
         self.name=name
         self.rv=Character.data[self.name][0]
         self.team=team
+        print(self.team)
         self.er=self.team
         self.anal=Character.data[self.name][2]
 
@@ -122,7 +123,7 @@ class Character:
         team_stats=Character.data[self.name][1][0]
         for team in team_stats:
             if team_in == team: 
-                team_stat=team_stats[team]
+                team_stat=float(team_stats[team])
                 break
         if not team_stat:
             if team_in=="Yangyang Outro":
@@ -139,7 +140,8 @@ class Character:
                 team_stat[0]=adjust_req_er(team_stat[0], team_stat[2], 15)
             else: raise ValueError("Team Didn't match any options")
         if not team_stat: raise ValueError("Something went wrong")
-        self._team=team_stat
+        er_stat = [team_stat, Character.data[self.name][1][1], Character.data[self.name][1][2]]
+        self._team=er_stat
 
     @property
     def rv(self)-> dict: return self._rv

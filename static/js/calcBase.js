@@ -5,7 +5,8 @@ const charData = JSON.parse(charDataEle.textContent);
 const state = {
     selectedChar: `Aemeath`, 
     selectedTeam: null, 
-    isCharMenuOpen: false
+    isCharMenuOpen: false, 
+    totEr: null
 };
 
 const elms = {
@@ -13,7 +14,8 @@ const elms = {
     selectedChar: document.querySelector(".selectedChar"), 
     searchChar: document.querySelector("#char-search"), 
     charOptsLst: document.querySelector(".charOptsLst"), 
-    teamSlct: document.querySelector("#team-select")
+    teamSlct: document.querySelector("#team-select"),
+    totErIn: document.querySelector("#tot-er")
 };
 
 function setEventListeners(){
@@ -23,6 +25,7 @@ function setEventListeners(){
     elms.searchChar.addEventListener("input", handleCharSearchType);
     elms.charOptsLst.addEventListener("click", handleCharSearchClick);
     elms.teamSlct.addEventListener("change", handleTeamChange);
+    elms.totErIn.addEventListener("input", handleTotErType);
     document.addEventListener("click", handleOutsideClick);
 }
 
@@ -126,10 +129,14 @@ function handleTeamChange(event){
     }
 }
 
+function handleTotErType(){
+    state.totEr = elms.totErIn.value;
+    console.log(state.totEr);
+}
+
 function setup(){
     selectChar(state.selectedChar);
 }
 
 setEventListeners();
 setup();
-
