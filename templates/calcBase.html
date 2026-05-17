@@ -51,6 +51,8 @@
 {% block initScripts%}
 <script id="char-data" type="application/json">{{char_data|tojson}}</script>
 <script>const staticImgPath="{{url_for('static', filename='images/')}}";</script>
+<script id="echo-data" type="application/json">{{echo_data|tojson}}</script>
+<script id="substat-rolls-data" type="application/json">{{substat_rolls|tojson}}</script>
   {% block calcInitScripts %}
   {% endblock %}
 {% endblock%}

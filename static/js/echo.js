@@ -1,17 +1,10 @@
 
-const echoDataEle = document.querySelector("#echo-data");
-const echoData = JSON.parse(echoDataEle.textContent);
-const substatRollsEle = document.querySelector("#substat-rolls-data");
-const substatRollsData = JSON.parse(substatRollsEle.textContent);
-
 state["echoData"] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 state["usefulStats"] = [];
 state["pickedStats"] = [];
 
 elms["allEchoNameSlct"] = document.querySelectorAll(".statNameSlct");
 elms["allEchoValSlct"] = document.querySelectorAll(".statValueSlct");
-elms["scoreVal"] = document.querySelector(".scoreVal");
-elms["tierVal"] = document.querySelector(".tierVal");
 
 function renderSubstatNames(){
     state["usefulStats"]=[];

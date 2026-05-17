@@ -2,6 +2,11 @@
 const charDataEle = document.querySelector("#char-data");
 const charData = JSON.parse(charDataEle.textContent);
 
+const echoDataEle = document.querySelector("#echo-data");
+const echoData = JSON.parse(echoDataEle.textContent);
+const substatRollsEle = document.querySelector("#substat-rolls-data");
+const substatRollsData = JSON.parse(substatRollsEle.textContent);
+
 const state = {
     selectedChar: `Aemeath`, 
     isCharMenuOpen: false, 
@@ -15,7 +20,9 @@ const elms = {
     searchChar: document.querySelector("#char-search"), 
     charOptsLst: document.querySelector(".charOptsLst"), 
     teamSlct: document.querySelector("#team-select"),
-    totErIn: document.querySelector("#tot-er")
+    totErIn: document.querySelector("#tot-er"), 
+    scoreVal: document.querySelector(".scoreVal"), 
+    tierVal: document.querySelector(".tierVal")
 };
 
 function renderCharOpts(searchInp=""){

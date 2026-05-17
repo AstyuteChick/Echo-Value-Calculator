@@ -38,7 +38,7 @@
 
 .statFlst {
     display: grid;
-    grid-template-columns: 7rem 1fr;
+    grid-template-columns: 9rem 1fr;
     align-items: center;
     padding: var(--pds);
     gap: 1rem;

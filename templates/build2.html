@@ -26,12 +26,6 @@
     <legend class="lgd">Enter your Total Echo Stats*</legend>
     <label for="ex1">Example 1: </label>
     <input id="ex1" name="ex1" type="number" inputmode="decimal" class="inp mainStatInp">
-    <label for="ex2">Example 2: </label>
-    <input id="ex2" name="ex2" type="number" inputmode="decimal" class="inp mainStatInp">
-    <label for="ex3">Example 3: </label>
-    <input id="ex3" name="ex3" type="number" inputmode="decimal" class="inp mainStatInp">
-    <label for="ex4">Example 4: </label>
-    <input id="ex4" name="ex4" type="number" inputmode="decimal" class="inp mainStatInp">
   </fieldset>
   <section class="resultConsole">
     <h3>Results</h3>
@@ -43,4 +37,11 @@
   </section>
 </div> 
 <button type="button" class="btn subBtn buildSubBtn">Submit</button>
+{% endblock %}
+
+{% block calcInitScripts %}
+{% endblock %}
+
+{% block calcScripts %}
+<script src="{{url_for('static', filename='js/build.js')}}"></script>
 {% endblock %}
