@@ -25,9 +25,8 @@ function renderCharOpts(searchInp=""){
     if (filteredChars.length===0){
         elms["charOptsLst"].innerHTML = `<li><span>No Characters Found</span></li>`;
         return;
-    } else {
-        elms["charOptsLst"].innerHTML = ``;
     }
+    elms["charOptsLst"].innerHTML = ``;
     filteredChars.forEach(function (charName){
         const li = document.createElement("li");
         const btn = document.createElement("button");
@@ -62,22 +61,23 @@ function renderTeamOpts(charName){
 
 function handleSubmit(event){event.preventDefault();}
 
+function handleCharSearchFocus(){
+    if (elms["searchChar"]) {elms["searchChar"].value = "";}
+    openCharMenu();
+}
+
 function openCharMenu(){
-    state["isCharMenuOpen"] = true;
     elms["charOptsLst"].hidden = false;
+    state["isCharMenuOpen"] = true;
     renderCharOpts(elms["searchChar"].value);
 }
 
 function closeCharMenu(){
-    state["isCharMenuOpen"] = false;
     elms["charOptsLst"].hidden = true;
+    state["isCharMenuOpen"] = false;
 }
 
-function handleCharSearchType(){
-    const inpVal = elms["searchChar"].value;
-    openCharMenu();
-    renderCharOpts(inpVal);
-}
+function handleCharSearchType(){renderCharOpts(elms["searchChar"].value);}
 
 function selectChar(charName){
     if (!charName) return;
@@ -99,8 +99,7 @@ function selectChar(charName){
 function handleCharSearchClick(event){
     const clickedBtn = event.target.closest(".charOptsBtn");
     if (!clickedBtn) return;
-    const charName = clickedBtn.dataset.charName;
-    selectChar(charName);
+    selectChar(clickedBtn.dataset.charName);
 }
 
 function handleOutsideClick(event){
@@ -123,7 +122,7 @@ function handleTotErType(){state["totEr"] = elms["totErIn"].value;}
 function setEventListeners(){
     if (!elms.form) return;
     elms["form"].addEventListener("submit", handleSubmit);
-    elms["searchChar"].addEventListener("focus", openCharMenu);
+    elms["searchChar"].addEventListener("focus", handleCharSearchFocus);
     elms["searchChar"].addEventListener("input", handleCharSearchType);
     elms["charOptsLst"].addEventListener("click", handleCharSearchClick);
     elms["teamSlct"].addEventListener("change", handleTeamChange);
