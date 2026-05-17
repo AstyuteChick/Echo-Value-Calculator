@@ -7,20 +7,31 @@
 {% block calcSection %}
 <div class = "costStatsAndResultBlock">
   <fieldset class = "flst costFlst">
-    <legend>Echo Cost Setup</legend>
+    <legend class="lgd">Echo Cost Setup</legend>
     <select id = "cost-slct" class="slct costSlct">
       <option value="noVal">Select your Echo-Cost setup</option>
       <option value="43311">43311</option>
       <option value="44111">44111</option>
     </select>
-    {% for echo_no in range(1, 6) %}
-    <select id="echo-ms-{{echo_no}}" class="slct mainStatSlct">
-      <option>Select your Echo's Main-stat</option>
-    </select>
-    {% endfor %}
+    <div class="costAndMainStatCont">
+      {% for echo_no in range(1, 6) %}
+      <label for="echo-ms-{{echo_no}}">? - Cost Echo: </label>
+      <select id="echo-ms-{{echo_no}}" class="slct mainStatSlct">
+        <option>Select your Echo's Main-stat</option>
+      </select>
+      {% endfor %}
+    </div>
   </fieldset>
   <fieldset class="flst statFlst">
-    <legend>Enter your Total Echo Stats*</legend>
+    <legend class="lgd">Enter your Total Echo Stats*</legend>
+    <label for="ex1">Example 1: </label>
+    <input id="ex1" name="ex1" type="number" inputmode="decimal" class="inp mainStatInp">
+    <label for="ex2">Example 2: </label>
+    <input id="ex2" name="ex2" type="number" inputmode="decimal" class="inp mainStatInp">
+    <label for="ex3">Example 3: </label>
+    <input id="ex3" name="ex3" type="number" inputmode="decimal" class="inp mainStatInp">
+    <label for="ex4">Example 4: </label>
+    <input id="ex4" name="ex4" type="number" inputmode="decimal" class="inp mainStatInp">
   </fieldset>
   <section class="resultConsole">
     <h3>Results</h3>

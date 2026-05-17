@@ -106,6 +106,44 @@
     border-color: var(--ac);
 }
 
+.resultConsole {
+    align-self: start;
+    justify-self: center;
+    width: min(100%, 37.5rem);
+    min-width: 0;
+    border: var(--bs);
+    background-color: var(--b1);
+    border-radius: var(--rn);
+    padding: var(--pdn);
+    margin-top: 2rem;
+}
+
+.resultConsole h3 {
+    margin: 0 0 1rem;
+    font-family: Cascadia Code;
+}
+
+.resultConsole dl {
+    margin: 1rem 0 0;
+    display: grid;
+    gap: 1rem;
+}
+
+.resultConsole dl > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: var(--pdn);
+    background-color: var(--b2);
+    border-radius: var(--rn);
+    border: 2px solid var(--ac);
+}
+
+.resultConsole dl > div dt {
+    font-size: var(--fsb);
+}
+
 .resultVal {
     font-family: Cascadia Code;
     margin: 0 0 0 2rem;

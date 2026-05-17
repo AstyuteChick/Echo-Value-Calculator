@@ -3,9 +3,10 @@
     display: grid;
     grid-template-columns: 1fr 1fr 2fr;
     margin-top: 2rem;
+    gap: 2rem;
 }
 
-.costFlst, .statFlst, .resultConsole {
+.costFlst, .resultConsole {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,9 +17,36 @@
     background-color: var(--b1);
 }
 
-.costSlct, .mainStatSlct {
+.costSlct, .mainStatSlct{
     background-color: var(--bgc);
+}
 
+.costAndMainStatCont {
+    background-color: var(--b2);
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    padding: var(--pdn);
+    border-radius: var(--rs);
+    gap: 1rem;
+    margin-top: 1rem;
+    align-items: center;
+}
+
+.mainStatInp {
+    background-color: var(--bgc);
+}
+
+.statFlst {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    align-items: center;
+    padding: var(--pds);
+    gap: 1rem;
+}
+
+.statFlst > label {
+    text-align: center;
+    padding: var(--pds) var(--pdn);
 }
 
 .subBtn {

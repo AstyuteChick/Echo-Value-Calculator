@@ -67,12 +67,12 @@ a {
 
 .navLst li a:hover {
     background-color: var(--ac);
-    transform: translateX(0.2rem);
 }
 
 .navLst li a:active {
     background-color: var(--sc);
     color: var(--bgc);
+    transform: translateX(0.2rem);
 }
 
 .selectedNav {
