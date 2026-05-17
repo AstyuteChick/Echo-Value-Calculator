@@ -9,8 +9,8 @@
   <link rel="stylesheet" type="text/css" href="/css/base2.css">
   <link rel="stylesheet" type="text/css" href="/css/calcBase.css">
   <link rel="stylesheet" type="text/css" href="/css/echo2.css">
-  {# <link rel="stylesheet" type="text/css" href="/css/build.css">
-  <link rel="stylesheet" type="text/css" href="/css/full.css"> #}
+  <link rel="stylesheet" type="text/css" href="/css/build2.css">
+  {# <link rel="stylesheet" type="text/css" href="/css/full.css"> #}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Questrial&display=swap" rel="stylesheet">
@@ -23,11 +23,11 @@
       <span></span>
     </button>
     <ul class="noLst navLst">
-      <li><a>
+      <li><a href="{{url_for('echo')}}" id="echo-score-nav" {% if active_page == 'echo' %} class="selectedNav" {% endif %}>
         <img src="{{url_for('static', filename='images/Echo_Icon.png')}}" alt="">
         <span>Echo Score</span>
       </a></li>
-      <li><a>
+      <li><a href="{{url_for('build')}}" id="build-score-nav" {% if active_page == 'build' %} class="selectedNav" {% endif %}>
         <img src="{{url_for('static', filename='images/Build_Icon.png')}}" alt="">
         <span>Build Score</span>
       </a></li>

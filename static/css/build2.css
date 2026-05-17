@@ -1,0 +1,28 @@
+
+.costStatsAndResultBlock {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    margin-top: 2rem;
+}
+
+.costFlst, .statFlst, .resultConsole {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--pds);
+}
+
+.costFlst, .statFlst {
+    background-color: var(--b1);
+}
+
+.costSlct, .mainStatSlct {
+    background-color: var(--bgc);
+
+}
+
+.subBtn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

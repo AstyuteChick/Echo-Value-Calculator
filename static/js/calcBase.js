@@ -4,8 +4,8 @@ const charData = JSON.parse(charDataEle.textContent);
 
 const state = {
     selectedChar: `Aemeath`, 
-    selectedTeam: null, 
     isCharMenuOpen: false, 
+    selectedTeam: null, 
     totEr: null
 };
 

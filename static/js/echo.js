@@ -14,6 +14,7 @@ elms["scoreVal"] = document.querySelector(".scoreVal");
 elms["tierVal"] = document.querySelector(".tierVal");
 
 function renderSubstatNames(){
+    state["usefulStats"]=[];
     elms["allEchoNameSlct"].forEach(function (nameSlct){nameSlct.innerHTML = "<option value = 'noVal'>Select Echo Substat</option>"});
     charData[state["selectedChar"]][0].forEach(function (relVal, ind){
         if (!relVal) return;
@@ -23,8 +24,8 @@ function renderSubstatNames(){
             opt.value = curStat;
             opt.textContent = curStat;
             nameSlct.appendChild(opt);
-        state["usefulStats"].push(curStat);
         });
+        state["usefulStats"].push(curStat);
     });
 }
 

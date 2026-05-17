@@ -8,54 +8,51 @@ evc_app=Flask(__name__, template_folder="templates", static_folder="static", sta
 def home(): return redirect(url_for("echo"))
 
 @evc_app.route("/echo", methods=["GET"])
-def echo(): return render_template("echo2.html", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls = GameData.substat_rolls)
+def echo(): return render_template("echo2.html", active_page="echo", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls)
 
 @evc_app.route("/calcEcho", methods=["POST"])
 def calc_echo():
     data=request.get_json()    
-    for x in range (len(data["ssr"])): data["ssr"][x] = float(data["ssr"][x])
+    for x in range (len(data["ssr"])): data["ssr"][x]=float(data["ssr"][x])
     
     try: 
-        es, et = main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "echo")
+        es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "echo")
         return jsonify({"score": es, "tier": et})
     except Exception as msg: return jsonify({"score": msg, "tier": "NA"})
 
-@evc_app.route("/build", methods=["GET", "POST"])
-def build():
-    if request.method == "GET":
-        return render_template("build.html", sbs="build_b", stat_names=GameData.substat_names, char_data=Character.data, echo_score="Build Score", echo_tier="Build Tier", prev_char="Carlotta",
-                                   prev_er="100", prev_buff="None", mainstat_dict=GameData.mainstat_vals)
-    elif request.method == "POST":
-        if request.form["change_char"]=="True": return render_template("build.html", sbs="build_b", stat_names=GameData.substat_names, char_data=Character.data, echo_score="Build Score",
-                                                                     echo_tier="Build Tier", prev_char=request.form["char_build"], prev_er=request.form["er_tot_build"],
-                                                                     prev_buff=request.form["buff_build"], mainstat_dict=GameData.mainstat_vals)
-        try:
-            if request.form["echo_setup"]=="43311":
-                echo_costs=[4, 3, 3, 1, 1]
-                echo_mainstats=[request.form["s1"], request.form["s2"], request.form["s3"], request.form["s4"], request.form["s5"]]
-                es, et = main(request.form["char_build"],
-                              request.form["buff_build"],
-                              request.form["er_tot_build"],
-                              [request.form["Crit Rate(%)_s"], request.form["Crit Damage(%)_s"], request.form["Atk(%)_s"], request.form["Flat Atk_s"], request.form["HP(%)_s"], request.form["Flat HP_s"],
-                               request.form["Def(%)_s"], request.form["Flat Def_s"], request.form["Basic(%)_s"], request.form["Heavy(%)_s"], request.form["Skill(%)_s"], request.form["Liberation(%)_s"],
-                               request.form["ER(%)_s"]],
-                               "build",
-                               {"echo_cost": echo_costs, "echo_mainstat": echo_mainstats})
-            else:
-                echo_costs=[4, 4, 1, 1, 1]
-                echo_mainstats=[request.form["c1"], request.form["c2"], request.form["c3"], request.form["c4"], request.form["c5"]]
-                es, et = main(request.form["char_build"],
-                              request.form["buff_build"],
-                              request.form["er_tot_build"],
-                              [request.form["Crit Rate(%)_c"], request.form["Crit Damage(%)_c"], request.form["Atk(%)_c"], request.form["Flat Atk_c"], request.form["HP(%)_c"], request.form["Flat HP_c"],
-                               request.form["Def(%)_c"], request.form["Flat Def_c"], request.form["Basic(%)_c"], request.form["Heavy(%)_c"], request.form["Skill(%)_c"], request.form["Liberation(%)_c"],
-                               request.form["ER(%)_c"]],
-                               "build",
-                               {"echo_cost": echo_costs, "echo_mainstat": echo_mainstats})
-            return render_template("build.html", sbs="build_b", stat_names=GameData.substat_names, char_data=Character.data, echo_score=es, echo_tier=et, prev_char=request.form["char_build"],
-                                   prev_er=request.form["er_tot_build"], prev_buff=request.form["buff_build"], mainstat_dict=GameData.mainstat_vals)
-        except Exception as msg: return render_template("error.html", error_msg="Build: "+str(msg))
-    else: raise ValueError
+@evc_app.route("/build", methods=["GET"])
+def build(): return render_template("build2.html", active_page="build", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls)
+    # elif request.method == "POST":
+    #     if request.form["change_char"]=="True": return render_template("build.html", sbs="build_b", stat_names=GameData.substat_names, char_data=Character.data, echo_score="Build Score",
+    #                                                                  echo_tier="Build Tier", prev_char=request.form["char_build"], prev_er=request.form["er_tot_build"],
+    #                                                                  prev_buff=request.form["buff_build"], mainstat_dict=GameData.mainstat_vals)
+    #     try:
+    #         if request.form["echo_setup"]=="43311":
+    #             echo_costs=[4, 3, 3, 1, 1]
+    #             echo_mainstats=[request.form["s1"], request.form["s2"], request.form["s3"], request.form["s4"], request.form["s5"]]
+    #             es, et = main(request.form["char_build"],
+    #                           request.form["buff_build"],
+    #                           request.form["er_tot_build"],
+    #                           [request.form["Crit Rate(%)_s"], request.form["Crit Damage(%)_s"], request.form["Atk(%)_s"], request.form["Flat Atk_s"], request.form["HP(%)_s"], request.form["Flat HP_s"],
+    #                            request.form["Def(%)_s"], request.form["Flat Def_s"], request.form["Basic(%)_s"], request.form["Heavy(%)_s"], request.form["Skill(%)_s"], request.form["Liberation(%)_s"],
+    #                            request.form["ER(%)_s"]],
+    #                            "build",
+    #                            {"echo_cost": echo_costs, "echo_mainstat": echo_mainstats})
+    #         else:
+    #             echo_costs=[4, 4, 1, 1, 1]
+    #             echo_mainstats=[request.form["c1"], request.form["c2"], request.form["c3"], request.form["c4"], request.form["c5"]]
+    #             es, et = main(request.form["char_build"],
+    #                           request.form["buff_build"],
+    #                           request.form["er_tot_build"],
+    #                           [request.form["Crit Rate(%)_c"], request.form["Crit Damage(%)_c"], request.form["Atk(%)_c"], request.form["Flat Atk_c"], request.form["HP(%)_c"], request.form["Flat HP_c"],
+    #                            request.form["Def(%)_c"], request.form["Flat Def_c"], request.form["Basic(%)_c"], request.form["Heavy(%)_c"], request.form["Skill(%)_c"], request.form["Liberation(%)_c"],
+    #                            request.form["ER(%)_c"]],
+    #                            "build",
+    #                            {"echo_cost": echo_costs, "echo_mainstat": echo_mainstats})
+    #         return render_template("build.html", sbs="build_b", stat_names=GameData.substat_names, char_data=Character.data, echo_score=es, echo_tier=et, prev_char=request.form["char_build"],
+    #                                prev_er=request.form["er_tot_build"], prev_buff=request.form["buff_build"], mainstat_dict=GameData.mainstat_vals)
+    #     except Exception as msg: return render_template("error.html", error_msg="Build: "+str(msg))
+    # else: raise ValueError
 
 @evc_app.route("/full", methods=["GET", "POST"])
 def full():
