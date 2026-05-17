@@ -12,8 +12,9 @@ def echo(): return render_template("echo2.html", char_data=Character.data, prev_
 
 @evc_app.route("/calcEcho", methods=["POST"])
 def calc_echo():
-    data=request.get_json()
-    print(data)
+    data=request.get_json()    
+    for x in range (len(data["ssr"])): data["ssr"][x] = float(data["ssr"][x])
+    
     try: 
         es, et = main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "echo")
         return jsonify({"score": es, "tier": et})

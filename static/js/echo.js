@@ -4,7 +4,7 @@ const echoData = JSON.parse(echoDataEle.textContent);
 const substatRollsEle = document.querySelector("#substat-rolls-data");
 const substatRollsData = JSON.parse(substatRollsEle.textContent);
 
-state["echoData"] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0];
+state["echoData"] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 state["usefulStats"] = [];
 state["pickedStats"] = [];
 
@@ -15,10 +15,10 @@ elms["tierVal"] = document.querySelector(".tierVal");
 
 function renderSubstatNames(){
     elms["allEchoNameSlct"].forEach(function (nameSlct){nameSlct.innerHTML = "<option value = 'noVal'>Select Echo Substat</option>"});
-    charData[state.selectedChar][0].forEach(function (relVal, ind){
+    charData[state["selectedChar"]][0].forEach(function (relVal, ind){
         if (!relVal) return;
         const curStat = echoData[ind];
-        state.usefulStats.push(curStat);
+        state["usefulStats"].push(curStat);
         elms["allEchoNameSlct"].forEach(function (nameSlct){
             const opt = document.createElement("option");
             opt.value = curStat;
@@ -32,8 +32,8 @@ function updateSubstatOpts(){
     elms["allEchoNameSlct"].forEach(function (nameSlct){
         const curVal = nameSlct.value;
         nameSlct.innerHTML = "<option value = 'noVal'>Select Echo Substat</option>";
-        state.usefulStats.forEach(function (stat){
-            if (stat === curVal || !state.pickedStats.includes(stat)) {
+        state["usefulStats"].forEach(function (stat){
+            if (stat === curVal || !state["pickedStats"].includes(stat)) {
                 const opt = document.createElement("option");
                 opt.value = stat;
                 opt.textContent = stat;
@@ -50,13 +50,13 @@ function handleSubstatChange(event){
     curSlct.dataset.prevVal = curSlct.value;
     if (curSlct.value !== "noVal") {
         if (prevVal !== "noVal") {
-            state.pickedStats.splice(state.pickedStats.indexOf(prevVal), 1);
-            state.echoData[echoData.indexOf(prevVal)] = 0.0;
+            state["pickedStats"].splice(state["pickedStats"].indexOf(prevVal), 1);
+            state["echoData"][echoData.indexOf(prevVal)] = 0.0;
         }
-        state.pickedStats.push(curSlct.value);
+        state["pickedStats"].push(curSlct.value);
     } else {
-        state.pickedStats.splice(state.pickedStats.indexOf(prevVal), 1);
-        state.echoData[echoData.indexOf(prevVal)] = 0.0;
+        state["pickedStats"].splice(state["pickedStats"].indexOf(prevVal), 1);
+        state["echoData"][echoData.indexOf(prevVal)] = 0.0;
     }
     updateSubstatOpts();
 }
@@ -80,14 +80,13 @@ function renderValOpts(event){
 function handleValOptsChange(event){
     const valSlct = event.currentTarget;
     const echoNo = valSlct.id[valSlct.id.length - 1];
-    const statName = elms.allEchoNameSlct[Number(echoNo) - 1].value;
-    state.echoData[echoData.indexOf(statName)] = valSlct.value === "noVal" ? 0.0 : Number(valSlct.value);
-    console.log(state.echoData);
+    const statName = elms["allEchoNameSlct"][Number(echoNo) - 1].value;
+    state["echoData"][echoData.indexOf(statName)] = valSlct.value === "noVal" ? 0.0 : Number(valSlct.value);
 }
 
 function updateResults(result){
-    elms.scoreVal.innerHTML = result.score;
-    elms.tierVal.innerHTML = result.tier;
+    elms["scoreVal"].innerHTML = result.score;
+    elms["tierVal"].innerHTML = result.tier;
 }
 
 async function calcResults(){

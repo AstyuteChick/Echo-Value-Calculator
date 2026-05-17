@@ -18,26 +18,15 @@ const elms = {
     totErIn: document.querySelector("#tot-er")
 };
 
-function setEventListeners(){
-    if (!elms.form) return;
-    elms.form.addEventListener("submit", handleSubmit);
-    elms.searchChar.addEventListener("focus", openCharMenu);
-    elms.searchChar.addEventListener("input", handleCharSearchType);
-    elms.charOptsLst.addEventListener("click", handleCharSearchClick);
-    elms.teamSlct.addEventListener("change", handleTeamChange);
-    elms.totErIn.addEventListener("input", handleTotErType);
-    document.addEventListener("click", handleOutsideClick);
-}
-
 function renderCharOpts(searchInp=""){
     const normInp = searchInp.toLowerCase().trim();
     const charNames = Object.keys(charData);
     const filteredChars = charNames.filter(function(charName){return charName.toLowerCase().includes(normInp);});
     if (filteredChars.length===0){
-        elms.charOptsLst.innerHTML = `<li><span>No Characters Found</span></li>`;
+        elms["charOptsLst"].innerHTML = `<li><span>No Characters Found</span></li>`;
         return;
     } else {
-        elms.charOptsLst.innerHTML = ``;
+        elms["charOptsLst"].innerHTML = ``;
     }
     filteredChars.forEach(function (charName){
         const li = document.createElement("li");
@@ -54,12 +43,12 @@ function renderCharOpts(searchInp=""){
         btn.appendChild(img);
         btn.appendChild(spn);
         li.appendChild(btn);
-        elms.charOptsLst.appendChild(li);
+        elms["charOptsLst"].appendChild(li);
     });
 }
 
 function renderTeamOpts(charName){
-    elms.teamSlct.innerHTML = `<option value="">Select your character's team</option>`;
+    elms["teamSlct"].innerHTML = `<option value="">Select your character's team</option>`;
     const charTeams = Object.keys(charData[charName][1][0]);
     charTeams.forEach(function (team){
         const opt = document.createElement("option");
@@ -67,42 +56,42 @@ function renderTeamOpts(charName){
         opt.textContent = team;
         elms.teamSlct.appendChild(opt);
     });
-    state.selectedTeam = null;
-    elms.teamSlct.value = "";
+    state["selectedTeam"] = null;
+    elms["teamSlct"].value = "";
 }
 
 function handleSubmit(event){event.preventDefault();}
 
 function openCharMenu(){
-    state.isCharMenuOpen = true;
-    elms.charOptsLst.hidden = false;
-    renderCharOpts(elms.searchChar.value);
+    state["isCharMenuOpen"] = true;
+    elms["charOptsLst"].hidden = false;
+    renderCharOpts(elms["searchChar"].value);
 }
 
 function closeCharMenu(){
-    state.isCharMenuOpen = false;
-    elms.charOptsLst.hidden = true;
+    state["isCharMenuOpen"] = false;
+    elms["charOptsLst"].hidden = true;
 }
 
 function handleCharSearchType(){
-    const inpVal = elms.searchChar.value;
+    const inpVal = elms["searchChar"].value;
     openCharMenu();
     renderCharOpts(inpVal);
 }
 
 function selectChar(charName){
     if (!charName) return;
-    state.selectedChar = charName;
-    elms.searchChar.value = charName;
+    state["selectedChar"] = charName;
+    elms["searchChar"].value = charName;
     const img = document.createElement("img");
     const spn = document.createElement("span");
     const cleanCharName=charName.split('(')[0].trim().split(' ')[0].trim();
     img.src = `${staticImgPath}Resonator_${cleanCharName}.webp`;
     img.classList.add("charPortrait");
     spn.textContent = charName;
-    elms.selectedChar.innerHTML = ``;
-    elms.selectedChar.appendChild(img);
-    elms.selectedChar.appendChild(spn);
+    elms["selectedChar"].innerHTML = ``;
+    elms["selectedChar"].appendChild(img);
+    elms["selectedChar"].appendChild(spn);
     closeCharMenu();
     renderTeamOpts(charName);
 }
@@ -123,19 +112,27 @@ function handleOutsideClick(event){
 function handleTeamChange(event){
     const slctTeamVal = event.target.value;
     if (slctTeamVal === "") {
-        state.selectedTeam = null;
+        state["selectedTeam"] = null;
     } else {
-        state.selectedTeam = slctTeamVal;
+        state["selectedTeam"] = slctTeamVal;
     }
 }
 
-function handleTotErType(){
-    state.totEr = elms.totErIn.value;
-    console.log(state.totEr);
+function handleTotErType(){state["totEr"] = elms["totErIn"].value;}
+
+function setEventListeners(){
+    if (!elms.form) return;
+    elms["form"].addEventListener("submit", handleSubmit);
+    elms["searchChar"].addEventListener("focus", openCharMenu);
+    elms["searchChar"].addEventListener("input", handleCharSearchType);
+    elms["charOptsLst"].addEventListener("click", handleCharSearchClick);
+    elms["teamSlct"].addEventListener("change", handleTeamChange);
+    elms["totErIn"].addEventListener("input", handleTotErType);
+    document.addEventListener("click", handleOutsideClick);
 }
 
 function setup(){
-    selectChar(state.selectedChar);
+    selectChar(state["selectedChar"]);
 }
 
 setEventListeners();

@@ -99,7 +99,6 @@ class Character:
         self.name=name
         self.rv=Character.data[self.name][0]
         self.team=team
-        print(self.team)
         self.er=self.team
         self.anal=Character.data[self.name][2]
 
