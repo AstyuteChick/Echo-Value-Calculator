@@ -50,7 +50,11 @@ function updateSubstatOpts(){
         console.log(curVal, state["usefulStats"].indexOf("ER(%)"));
         if (curVal==="ER(%)" && state["usefulStats"].indexOf("ER(%)")===-1) {
             nameSlct.value="noVal";
-            
+            const echoNo=Number(nameSlct.id[nameSlct.id.length-1]);
+            elms["allEchoValSlct"].forEach(function (valSlct){
+                if (Number(valSlct.id[valSlct.id.length-1])!==echoNo) return;
+                valSlct.value="noVal";
+            });
         }
         else {nameSlct.value=curVal;}
     });

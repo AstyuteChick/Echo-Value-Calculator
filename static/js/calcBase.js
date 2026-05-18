@@ -69,7 +69,7 @@ function renderTeamOpts(charName){
 function handleSubmit(event){event.preventDefault();}
 
 function handleCharSearchFocus(){
-    if (elms["searchChar"]) {elms["searchChar"].value = "";}
+    if (elms["searchChar"].value) {elms["searchChar"].value = "";}
     openCharMenu();
 }
 
@@ -103,7 +103,7 @@ function selectChar(charName){
     closeCharMenu();
     renderTeamOpts(charName);
     state["totEr"]=100.0;
-    elms["totErIn"].value=100.0;
+    elms["totErIn"].value="";
     elms["scoreVal"].innerHTML="[Your Echo Score]";
     elms["tierVal"].innerHTML="[Your Echo Tier]";
 }
@@ -129,7 +129,13 @@ function handleTeamChange(event){
     }
 }
 
-function handleTotErType(){state["totEr"] = elms["totErIn"].value;}
+function handleTotErFocus(){
+    if (elms["totErIn"].value) {elms["totErIn"].value="";}
+}
+
+function handleTotErType(){
+    state["totEr"] = elms["totErIn"].value;
+}
 
 function setEventListeners(){
     if (!elms.form) return;
@@ -138,13 +144,13 @@ function setEventListeners(){
     elms["searchChar"].addEventListener("input", handleCharSearchType);
     elms["charOptsLst"].addEventListener("click", handleCharSearchClick);
     elms["teamSlct"].addEventListener("change", handleTeamChange);
+    elms["totErIn"].addEventListener("focus", handleTotErFocus);
     elms["totErIn"].addEventListener("input", handleTotErType);
     document.addEventListener("click", handleOutsideClick);
 }
 
 function setup(){
     selectChar(state["selectedChar"]);
-    elms["totErIn"].value=100.0;
 }
 
 setEventListeners();

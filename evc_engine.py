@@ -1,3 +1,4 @@
+
 import heapq
 
 class GameData:
@@ -118,13 +119,13 @@ class Character:
     def team(self)->list: return self._team
     @team.setter
     def team(self, team_in:str)->None:
-        team_stat=[]
+        team_stat=None
         team_stats=Character.data[self.name][1][0]
         for team in team_stats:
             if team_in == team: 
                 team_stat=float(team_stats[team])
                 break
-        if not team_stat:
+        if team_stat==None:
             if team_in=="Yangyang Outro":
                 for team in team_stats:
                     if "Default" in team: 
@@ -138,7 +139,7 @@ class Character:
                         break
                 team_stat[0]=adjust_req_er(team_stat[0], team_stat[2], 15)
             else: raise ValueError("Team Didn't match any options")
-        if not team_stat: raise ValueError("Something went wrong")
+        if team_stat==None: raise ValueError("Something went wrong")
         er_stat = [team_stat, Character.data[self.name][1][1], Character.data[self.name][1][2]]
         self._team=er_stat
 

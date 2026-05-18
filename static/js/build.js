@@ -62,6 +62,10 @@ function handleBuildMainStatChange(event){
     state["mainStats"][echoNo-1]=curSlct.value;
 }
 
+function handleBuildStatFocus(event){
+    if (event.currentTarget.value){event.currentTarget.value="";}
+}
+
 function handleBuildStatInp(event){
     const curInp=event.currentTarget;
     state["buildData"][echoData.indexOf(curInp.id)]=curInp.value;
@@ -98,10 +102,10 @@ function setBuildEventListeners(){
     elms["charOptsLst"].addEventListener("click", renderBuildStatNames);
     elms["costSetup"].addEventListener("change", handleBuildCostChange);
     elms["mainStatSlct"].forEach(function (slct){slct.addEventListener("change", handleBuildMainStatChange);});
+    elms["statInp"].forEach(function (inp){inp.addEventListener("focus", handleBuildStatFocus)});
     elms["statInp"].forEach(function (inp){inp.addEventListener("input", handleBuildStatInp)});
     elms["form"].addEventListener("submit", calcBuildResults);
 }
 
 setBuildEventListeners();
 renderBuildStatNames();
-console.log(mainStatData);
