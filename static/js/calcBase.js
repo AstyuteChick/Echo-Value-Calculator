@@ -104,8 +104,6 @@ function selectChar(charName){
     renderTeamOpts(charName);
     state["totEr"]=100.0;
     elms["totErIn"].value="";
-    elms["scoreVal"].innerHTML="[Your Echo Score]";
-    elms["tierVal"].innerHTML="[Your Echo Tier]";
 }
 
 function handleCharSearchClick(event){

@@ -10,7 +10,7 @@
   <link rel="stylesheet" type="text/css" href="/css/calcBase.css">
   <link rel="stylesheet" type="text/css" href="/css/echo.css">
   <link rel="stylesheet" type="text/css" href="/css/build.css">
-  {# <link rel="stylesheet" type="text/css" href="/css/full.css"> #}
+  <link rel="stylesheet" type="text/css" href="/css/full.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Questrial&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@
         <img src="{{url_for('static', filename='images/Build_Icon.png')}}" alt="">
         <span>Build Score</span>
       </a></li>
-      <li><a>
+      <li><a href="{{url_for('full')}}" id="full-score-nav" {% if active_page == 'full' %} class="selectedNav" {% endif %}>
         <img src="{{url_for('static', filename='images/Full_Icon.png')}}" alt="">
         <span>Full Score</span>
       </a></li>

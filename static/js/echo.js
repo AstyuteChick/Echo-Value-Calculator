@@ -12,6 +12,8 @@ function renderEchoSubstatNames(){
     state["pickedStats"]=[];
     elms["allEchoNameSlct"].forEach(function (nameSlct){nameSlct.innerHTML = `<option value="noVal">Select Echo Substat</option>`});
     elms["allEchoValSlct"].forEach(function (valSlct){valSlct.innerHTML=`<option value="noVal">Select Value</option>`});
+    elms["scoreVal"].innerHTML="[Your Echo Score]";
+    elms["tierVal"].innerHTML="[Your Echo Tier]";
     charData[state["selectedChar"]][0].forEach(function (relVal, ind){
         if (!relVal) return;
         const curStat = echoData[ind];
@@ -24,7 +26,6 @@ function renderEchoSubstatNames(){
         state["usefulStats"].push(curStat);
     });
     const erArray=[charData[state["selectedChar"]][1][0][state["selectedTeam"]], charData[state["selectedChar"]][1][1], charData[state["selectedChar"]][1][2]];
-    console.log(erArray, echoData[12], );
     if (erArray[0]<=100 || erArray[1]===0 || erArray[0]===undefined) return;
     elms["allEchoNameSlct"].forEach(function (nameSlct){
         const opt=document.createElement("option");

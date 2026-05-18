@@ -49,7 +49,7 @@
     padding: var(--pds) var(--pdn);
 }
 
-.subBtn {
+.buildSubBtn {
     display: block;
     margin-left: auto;
     margin-right: auto;

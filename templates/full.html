@@ -1,0 +1,44 @@
+{% extends "calcBase.html" %}
+
+{% block calcTitle %}EVC 4.0 - Full Score{% endblock %}
+
+{% block calcHeading %}Full Score{% endblock %}
+
+{% block calcSection %}
+<div class="echoesBlock">
+  {% for echo_no in range(1, 6) %}
+  <fieldset class="flst fsEchoFlst">
+    <legend class="lgd">Echo {{echo_no}}</legend>
+    <span>Substats</span>
+    <span>Values</span>
+    {% for echo_line in range(1, 6) %}
+    <select class="slct fsEchoSlct" id="echo-{{echo_no}}-{{echo_line}}-stat">
+      <option value="noVal">Substat</option>
+    </select>
+    <select class="slct fsEchoSlct" id="echo-{{echo_no}}-{{echo_line}}-val">
+      <option value="noVal">Value</option>
+    </select>
+    {% endfor %}
+  </fieldset>
+  {% endfor %}
+</div>
+<div class="fullBtns">
+  <button type="button" class="btn fullResetBtn">Reset</button>
+  <button type="submit" class="btn fullSubBtn">Submit</button>
+</div>
+<section class="horiResultCons">
+  <h3>Results: </h3>
+  <dl>
+    <div><dt>Score: </dt><dd class="fullResultVal scoreVal">[Your Full Score]</dd></div>
+    <div><dt>Tier: </dt><dd class="fullResultVal tierVal">[Your Full Tier]</dd></div>
+  </dl>
+  <p hidden>Analysis based on character and score. </p>
+</section>
+{% endblock %}
+
+{% block calcInitScripts %}
+{% endblock %}
+
+{% block calcScripts %}
+<script src="{{url_for('static', filename='js/full.js')}}"></script>
+{% endblock %}

@@ -24,6 +24,8 @@ function renderBuildStatNames(){
         inp.hidden=true;
         inp.labels[0].hidden=true;
     });
+    elms["scoreVal"].innerHTML="[Your Build Score]";
+    elms["tierVal"].innerHTML="[Your Build Tier]";
     charData[state["selectedChar"]][0].forEach(function (relVal, ind){
         if (!relVal) return;
         elms["statInp"].forEach(function (inp){

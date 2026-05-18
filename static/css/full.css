@@ -1,0 +1,88 @@
+
+.echoesBlock {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: var(--pds) var(--pdn);
+    gap: 1rem;
+    background-color: var(--b1);
+    border: var(--bs);
+    border-radius: var(--rn);
+    align-items: stretch;
+    margin-top: 1rem;
+}
+
+.fsEchoFlst {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    padding: var(--pds) var(--pdn);
+    background-color: var(--b2);
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.fsEchoSlct {
+    background-color: var(--bgc);
+}
+
+.fullBtns {
+    display: flex;
+    justify-content: space-evenly;
+    padding: var(--pds) var(--pdn);
+    align-items: center;
+}
+
+.fullResetBtn {
+    padding: var(--pds) var(--pdn);
+    border: 1px solid var(--txt);
+    font-size: var(--fsb);
+}
+
+.fullSubBtn {
+    padding: var(--pds) var(--pdn);
+    border: 3px solid var(--txt);
+    font-size: var(--fsb);
+}
+
+.horiResultCons {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    border: var(--bs);
+    border-radius: var(--rn);
+    background-color: var(--b1);
+    padding: var(--pds) var(--pdn);
+    align-items: center;
+    justify-items: center;
+    gap: 1rem;
+}
+
+.horiResultCons > h3 {
+    font-family: Cascadia Code;
+}
+
+.horiResultCons > dl {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    padding: var(--pds) var(--pdn);
+}
+
+.horiResultCons > dl > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: var(--pds) var(--pdn);
+    background-color: var(--b2);
+    border-radius: var(--rn);
+    border: 2px solid var(--ac);
+}
+
+.resultConsole > dl > div dt {
+    font-size: var(--fsb);
+}
+
+.fullResultVal {
+    font-family: Cascadia Code;
+    font-weight: 600;
+    font-size: var(--fsl);
+}
