@@ -20,8 +20,8 @@
 }
 
 :root.lm {
-    --bgc: hsl(0, 0%, 94%);
-    --b1: hsl(0, 0%, 91%);
+    --bgc: hsl(0, 0%, 96%);
+    --b1: hsl(0, 0%, 92%);
     --b2: hsl(0, 0%, 88%);
     --ac: #00bbe7;
     --sc: #0066ff;
@@ -33,8 +33,8 @@
     --pdn: 1em;
     --pds: 0.5em;
     --pdl: 1.5em;
-    --bs: 1px solid color-mix(in srgb, var(--txt) 16%, transparent);
-    --bm: 2px solid color-mix(in srgb, var(--txt) 16%, transparent);
+    --bs: 1px solid color-mix(in srgb, var(--txt) 84%, transparent);
+    --bm: 2px solid color-mix(in srgb, var(--txt) 84%, transparent);
     --fsl: 1.5rem;
     --fsb: 1.125rem;
 }
