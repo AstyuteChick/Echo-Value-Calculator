@@ -1,51 +1,56 @@
 
-.EchoCostSetup{
-    padding: 10px;
-    border-style: solid;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 20px;
-    background-color: var(--b1);
-    display: inline-block;
-}
-
-.EchoCostSetup select{
-    color: var(--txt);
-    background-color: var(--b1);
-    font-family: Questrial;
-    font-size: 1.17em;
-
-}
-
-.EchoCostSetup label{
-    font-family: Questrial;
-    font-size: 1.17em;
-}
-
-.sub_names input{
-    color: var(--txt);
-    background-color: var(--b1);
-    font-family: Questrial;
-    font-size: 1.17em;
-}
-
-.build_grid{
+.costStatsAndResultBlock {
     display: grid;
-    grid-template-columns: 500px 500px 500px;
+    grid-template-columns: 1fr 1fr 2fr;
+    margin-top: 2rem;
+    gap: 2rem;
 }
 
-.main_in div{
-    padding: 10px;
-    font-family: Questrial;
-    color: var(--txt);
+.costFlst, .resultConsole {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--pds);
+}
+
+.costFlst, .statFlst {
     background-color: var(--b1);
 }
 
-.main_in div select{
-    padding: 10px;
-    margin: 10px;
-    font-family: Questrial;
-    color: var(--txt);
-    background-color: var(--b1);
-    font-size: 1.17em;
+.costSlct, .mainStatSlct{
+    background-color: var(--bgc);
+}
+
+.costAndMainStatCont {
+    background-color: var(--b2);
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    padding: var(--pdn);
+    border-radius: var(--rs);
+    gap: 1rem;
+    margin-top: 1rem;
+    align-items: center;
+}
+
+.statInp {
+    background-color: var(--bgc);
+}
+
+.statFlst {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    align-items: center;
+    padding: var(--pds);
+    gap: 1rem;
+}
+
+.statFlst > label {
+    text-align: center;
+    padding: var(--pds) var(--pdn);
+}
+
+.subBtn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

@@ -1,0 +1,51 @@
+
+.EchoCostSetup{
+    padding: 10px;
+    border-style: solid;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    background-color: var(--b1);
+    display: inline-block;
+}
+
+.EchoCostSetup select{
+    color: var(--txt);
+    background-color: var(--b1);
+    font-family: Questrial;
+    font-size: 1.17em;
+
+}
+
+.EchoCostSetup label{
+    font-family: Questrial;
+    font-size: 1.17em;
+}
+
+.sub_names input{
+    color: var(--txt);
+    background-color: var(--b1);
+    font-family: Questrial;
+    font-size: 1.17em;
+}
+
+.build_grid{
+    display: grid;
+    grid-template-columns: 500px 500px 500px;
+}
+
+.main_in div{
+    padding: 10px;
+    font-family: Questrial;
+    color: var(--txt);
+    background-color: var(--b1);
+}
+
+.main_in div select{
+    padding: 10px;
+    margin: 10px;
+    font-family: Questrial;
+    color: var(--txt);
+    background-color: var(--b1);
+    font-size: 1.17em;
+}

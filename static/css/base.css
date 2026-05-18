@@ -1,68 +1,161 @@
 
-.canvas1 {
+body {
+    min-height: 100vh;
+    margin: 0;
     display: grid;
-    grid-template-columns: 1fr 7fr;
+    grid-template-columns: 16rem 1fr;
     background-color: var(--bgc);
+    color: var(--txt);
+    font-family: Questrial;
 }
 
-.sidebar {
-    padding: 10px;
-    margin-top: 100px;
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.mainNv {
+    /* border: solid; */
+    min-height: 100vh;
+    padding: var(--pdn);
+    background-color: var(--b1);
+}
+
+.hamburgerBtn {
+    width: 100%;
+    height: 3em;
     display: flex;
     flex-direction: column;
-}
-
-.sidebar_prime {
-    margin-left: 50px;
-}
-
-.amz_aff {
-    margin-top: 50px;
-}
-
-.amz_aff ul li {
-    margin-bottom: 10px;
-}
-
-.sidebar a {
-    margin-bottom: 40px;
-    border-style: solid;
-    border-color: var(--txt);
-    color: var(--txt);
-    text-align: center;
-    cursor: pointer;
-    background-color: var(--b1);
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+    margin-bottom: 1em;
     transition: background-color var(--ani);
 }
 
-.sidebar a:hover{
+.hamburgerBtn span {
+    display: block;
+    width: 3em;
+    height: 0.25em;
+    background-color: var(--txt);
+    border-radius: 999px;
+    transition: background-color var(--ani);
+}
+
+.hamburgerBtn:active span{
+    background-color: var(--bgc);
+}
+
+.navLst {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin: 0;
+    padding: 0;
+}
+
+.navLst li a {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    padding: 0.75em 0.75em;
+    transition: background-color var(--ani), color var(--ani), transform var(--ani);
+    border-radius: 0.2em;
+    cursor: pointer;
+}
+
+.navLst li a:hover {
     background-color: var(--ac);
 }
 
-.title1 {
-    max-width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
+.navLst li a:active {
+    background-color: var(--sc);
+    color: var(--bgc);
+    transform: translateX(0.2rem);
 }
 
-.title1 h1{
-    font-family: Cascadia Code;
-    background-color: var(--b1);
-    border-style: solid;
-    padding: 10px;
+.selectedNav {
+    background-color: var(--sc);
+    color: var(--bgc);
 }
 
-.note1 {
-    margin-left: 20px;
-    margin-bottom: 10px;
+.navLst li a img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--rn);
 }
 
-.note1 h3{
-    display: inline-block;
-    font-family: Cascadia Code;
-    background-color: var(--b1);
-    border-style: solid;
-    padding: 10px;
+.navLst li a span {
+    font-weight: 600;
+    font-size: var(--fsb);
+}
+
+main {
+    min-height: 100vh;
+}
+
+.mainHead {
+    display: flex;
+    align-items: center;
+}
+
+h1 {
+    flex: 1;
     text-align: center;
+    font-family: Cascadia Code;
+    /* border: 2px solid var(--ac);
+    border-radius: var(--rn); */
 }
 
+.profMenu {
+    display: inline-block;
+    position: relative;
+}
+
+.setBtn {
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--pdn);
+}
+
+.setBtn img {
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 999px;
+}
+
+.profMenu > div {
+    position: absolute;
+    top: calc(100% + 0.5em);
+    right: 0;
+    width: 10vw;
+    border: solid;
+    border-radius: 0.5em;
+    padding: 0.25em;
+    background-color: var(--b1);
+}
+
+.setOptsLst {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.setOptsLst li label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    padding: 0.75em 0.5em;
+    border-radius: 0.2em;
+    transition: background-color var(--ani);
+}
+
+.setOptsLst li label:hover {
+    background-color: var(--ac);
+}

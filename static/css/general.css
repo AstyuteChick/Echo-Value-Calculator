@@ -1,164 +1,152 @@
 
-:root{
-    --bgc: hsl(0, 0%, 5%);
-    --b1: hsl(0, 0%, 10%);
-    --b2: hsl(0, 0%, 15%);
-    --ac: #2323ff;
-    --sc: #9BB0FF;
-    --txt: hsl(0, 0%, 95%);
-    --ani: 0.15s;
+:root {
+    --bgc: hsl(0, 0%, 8%);
+    --b1: hsl(0, 0%, 12%);
+    --b2: hsl(0, 0%, 16%);
+    --ac: #0066ff;
+    --sc: #00bbe7;
+    --txt: hsl(0, 0%, 96%);
+    --ani: 0.16s;
+    --rn: 0.5rem;
+    --rs: 0.25rem;
+    --rl: 0.75rem;
+    --pdn: 1em;
+    --pds: 0.5em;
+    --pdl: 1.5em;
+    --bs: 1px solid color-mix(in srgb, var(--txt) 16%, transparent);
+    --bm: 2px solid color-mix(in srgb, var(--txt) 16%, transparent);
+    --fsl: 1.5rem;
+    --fsb: 1.125rem;
 }
 
-:root.light-mode{
-    --bgc: hsl(0, 0%, 95%);
-    --b1: hsl(0, 0%, 90%);
-    --b2: hsl(0, 0%, 85%);
-    --ac: #9BB0FF;
-    --sc: #2323ff;
-    --txt: hsl(0, 0%, 5%);
-    --ani: 0.15s;
+:root.lm {
+    --bgc: hsl(0, 0%, 94%);
+    --b1: hsl(0, 0%, 91%);
+    --b2: hsl(0, 0%, 88%);
+    --ac: #00bbe7;
+    --sc: #0066ff;
+    --txt: hsl(0, 0%, 4%);
+    --ani: 0.16s;
+    --rn: 0.5rem;
+    --rs: 0.25rem;
+    --rl: 0.75rem;
+    --pdn: 1em;
+    --pds: 0.5em;
+    --pdl: 1.5em;
+    --bs: 1px solid color-mix(in srgb, var(--txt) 16%, transparent);
+    --bm: 2px solid color-mix(in srgb, var(--txt) 16%, transparent);
+    --fsl: 1.5rem;
+    --fsb: 1.125rem;
 }
 
-a {
-  text-decoration: none;
-  color: var(--sc);
+*, *::before, *::after {
+    box-sizing: border-box;
 }
 
-body{
-    font-family: Questrial;
-    color: var(--txt);
-    border-color: var(--txt);
-}
-
-.light_dark_toggle{
-    padding: 10px;
+.btn {
+    background-color: inherit;
+    color: inherit;
+    font-family: inherit;
     cursor: pointer;
-    background-color: var(--b1);
-    color: var(--txt);
-    margin-bottom: 10px;
-    border: Solid;
-    transition: background-color var(--ani);
-    margin-left: 20px;
-    font-family: Questrial;
-    font-size: 1em;
+    border: 0;
+    border-radius: var(--rn);
+    background: none;
+    transition: background-color var(--ani), color var(--ani);
 }
 
-.light_dark_toggle:hover{
+.btn:hover {
     background-color: var(--ac);
 }
 
-.BaseConfig {
-    display: flex;
-    flex-direction: row;
+.btn:active {
+    background-color: var(--sc);
+    color: var(--bgc);
 }
 
-.BaseConfig div{
-    padding: 10px;
-    border-style: solid;
-    margin-left: 20px;
-    margin-right: 20px;
-    background-color: var(--b1);
+.noLst {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-.BaseConfig div select{
+.flst {
+    border: var(--bs);
+    border-radius: var(--rn);
+}
+
+.lgd {
+    padding: var(--pds) var(--pdn);
+    border-radius: 999px;
+    border: var(--bs);
+    background-color: var(--bgc);
+    font-weight: 600;
+}
+
+.charPortrait {
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--rn);
+}
+
+.slct, .inp {
+    border-radius: var(--rn);
+    border: var(--bs);
+    font-family: inherit;
+    padding: var(--pdn) var(--pdl);
     color: var(--txt);
+    transition: border-color var(--ani), background-color var(--ani);
+}
+
+.slct:hover, .inp:hover {
+    border-color: color-mix(in srgb, var(--ac) 75%, var(--txt) 25%);
+}
+
+.slct:focus, .inp:focus {
+    outline: none;
+    border-color: var(--ac);
+}
+
+.resultConsole {
+    align-self: start;
+    justify-self: center;
+    width: min(100%, 37.5rem);
+    min-width: 0;
+    border: var(--bs);
     background-color: var(--b1);
-    font-family: Questrial;
-    font-size: 1.17em;
+    border-radius: var(--rn);
+    padding: var(--pdn);
+    margin-top: 2rem;
 }
 
-.BaseConfig div input{
-    color: var(--txt);
-    background-color: var(--b1);
-    font-family: Questrial;
-    font-size: 1.17em;
+.resultConsole h3 {
+    margin: 0 0 1rem;
+    font-family: Cascadia Code;
 }
 
-.BaseConfig div label{
-    font-family: Questrial;
-    font-size: 1.17em;
-}
-
-.sub_title{
-    padding: 20px;
-    text-align: center;
-}
-
-.sub_names{
+.resultConsole dl {
+    margin: 1rem 0 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 15px;
+    gap: 1rem;
 }
 
-
-.sub_names select{
-    color: var(--txt);
-    font-family: Questrial;
-    font-size: 1.17em;
+.resultConsole dl > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: var(--pdn);
+    background-color: var(--b2);
+    border-radius: var(--rn);
+    border: 2px solid var(--ac);
 }
 
-.sub_names label{
-    color: var(--txt);
-    font-family: Questrial;
-    font-size: 1.17em;
+.resultConsole dl > div dt {
+    font-size: var(--fsb);
 }
 
-.sub_sub {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.sub_sub input{
-    padding: 10px;
-    color: var(--txt);
-    border-width: thick;
-    border-color: var(--txt);
-    font-size: 1.17em;
-    font-weight: bold;
-    background-color: var(--b1);
-    transition: background-color var(--ani);
-}
-
-.sub_sub input:hover{
-    background-color: var(--ac);
-}
-
-.sub_anal div{
-    text-align:center;
-}
-
-.sub_anal div h2{
-    border-style: None;
-    font-size: 1.5em;
-    font-weight: bold;
-    display: inline-block;
-    padding: 10px;
-    margin-top: 100px;
-}
-
-.text_stuff {
-    color: var(--txt);
-    font-family: Questrial;
-    font-size: 1.17em;
-}
-
-.art_nav {
-    text-align: center;
-    margin-top: 50px;
-}
-
-.art_nav a button{
-    padding: 10px;
-    margin-left: 100px;
-    color: var(--txt);
-    border-width: thick;
-    border-color: var(--txt);
-    font-size: 1.17em;
-    font-weight: bold;
-    background-color: var(--b1);
-    transition: background-color var(--ani);
-}
-
-.art_nav a button:hover{
-    background-color: var(--ac);
+.resultVal {
+    font-family: Cascadia Code;
+    margin: 0 0 0 2rem;
+    font-weight: 800;
+    font-size: var(--fsl);
 }

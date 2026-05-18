@@ -8,7 +8,7 @@ evc_app=Flask(__name__, template_folder="templates", static_folder="static", sta
 def home(): return redirect(url_for("echo"))
 
 @evc_app.route("/echo", methods=["GET"])
-def echo(): return render_template("echo2.html", active_page="echo", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls)
+def echo(): return render_template("echo.html", active_page="echo", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls)
 
 @evc_app.route("/calcEcho", methods=["POST"])
 def calc_echo():
@@ -21,7 +21,7 @@ def calc_echo():
     except Exception as msg: return jsonify({"score": msg, "tier": "NA"})
 
 @evc_app.route("/build", methods=["GET"])
-def build(): return render_template("build2.html", active_page="build", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls, 
+def build(): return render_template("build.html", active_page="build", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls, 
                                     main_stat_data=GameData.mainstat_vals)
 
 @evc_app.route("/calcBuild", methods=["POST"])
