@@ -12,10 +12,10 @@
     <span>Substats</span>
     <span>Values</span>
     {% for echo_line in range(1, 6) %}
-    <select class="slct fsEchoSlct" id="echo-{{echo_no}}-{{echo_line}}-stat">
+    <select class="slct fsEchoStatSlct" id="stat-{{echo_no}}{{echo_line}}">
       <option value="noVal">Substat</option>
     </select>
-    <select class="slct fsEchoSlct" id="echo-{{echo_no}}-{{echo_line}}-val">
+    <select class="slct fsEchoValSlct" id="val-{{echo_no}}{{echo_line}}">
       <option value="noVal">Value</option>
     </select>
     {% endfor %}

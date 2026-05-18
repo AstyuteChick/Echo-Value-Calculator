@@ -20,7 +20,11 @@
     gap: 0.5rem;
 }
 
-.fsEchoSlct {
+.fsEchoFlst > span {
+    padding: var(--pds) var(--pdn);
+}
+
+.fsEchoStatSlct, .fsEchoValSlct {
     background-color: var(--bgc);
 }
 
