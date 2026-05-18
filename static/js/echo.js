@@ -48,7 +48,6 @@ function updateSubstatOpts(){
                 nameSlct.appendChild(opt);
             }
         });
-        console.log(curVal, state["usefulStats"].indexOf("ER(%)"));
         if (curVal==="ER(%)" && state["usefulStats"].indexOf("ER(%)")===-1) {
             nameSlct.value="noVal";
             const echoNo=Number(nameSlct.id[nameSlct.id.length-1]);
@@ -106,7 +105,6 @@ function handleEchoTeamChange() {
     const teamReqEr=charData[state["selectedChar"]][1][0][state["selectedTeam"]];
     const erImp=charData[state["selectedChar"]][1][1];
     const rc=charData[state["selectedChar"]][1][2];
-    console.log(teamReqEr, erImp, rc);
     state["echoData"][12]=0.0;
     if (Number(teamReqEr)<=100 || erImp===0){
         if (state["usefulStats"].indexOf("ER(%)")!==-1) {
