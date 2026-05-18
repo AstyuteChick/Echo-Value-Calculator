@@ -4,7 +4,7 @@ const mainStatData=JSON.parse(mainStatDataEle.textContent);
 
 state["buildData"]=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 state["costSetup"]=[0, 0, 0, 0, 0];
-state["mainStats"]=["noVal", "noVal", "noVal", "noVal", "noVal"]
+state["mainStats"]=["noVal", "noVal", "noVal", "noVal", "noVal"];
 
 elms["costSetup"]=document.querySelector("#cost-slct");
 elms["mainStatSlct"]=document.querySelectorAll(".mainStatSlct");

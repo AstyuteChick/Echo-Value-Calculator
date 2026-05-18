@@ -10,7 +10,7 @@ function renderEchoSubstatNames(){
     state["echoData"]=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     state["usefulStats"]=[];
     state["pickedStats"]=[];
-    elms["allEchoNameSlct"].forEach(function (nameSlct){nameSlct.innerHTML = "<option value = 'noVal'>Select Echo Substat</option>"});
+    elms["allEchoNameSlct"].forEach(function (nameSlct){nameSlct.innerHTML = `<option value="noVal">Select Echo Substat</option>`});
     elms["allEchoValSlct"].forEach(function (valSlct){valSlct.innerHTML=`<option value="noVal">Select Value</option>`});
     charData[state["selectedChar"]][0].forEach(function (relVal, ind){
         if (!relVal) return;
@@ -23,6 +23,16 @@ function renderEchoSubstatNames(){
         });
         state["usefulStats"].push(curStat);
     });
+    const erArray=[charData[state["selectedChar"]][1][0][state["selectedTeam"]], charData[state["selectedChar"]][1][1], charData[state["selectedChar"]][1][2]];
+    console.log(erArray, echoData[12], );
+    if (erArray[0]<=100 || erArray[1]===0 || erArray[0]===undefined) return;
+    elms["allEchoNameSlct"].forEach(function (nameSlct){
+        const opt=document.createElement("option");
+        opt.value=echoData[12];
+        opt.textContent=echoData[12];
+        nameSlct.appendChild(opt);
+    });
+    state["usefulStats"].push(echoData[12]);
 }
 
 function updateSubstatOpts(){
@@ -37,7 +47,12 @@ function updateSubstatOpts(){
                 nameSlct.appendChild(opt);
             }
         });
-        nameSlct.value = curVal;
+        console.log(curVal, state["usefulStats"].indexOf("ER(%)"));
+        if (curVal==="ER(%)" && state["usefulStats"].indexOf("ER(%)")===-1) {
+            nameSlct.value="noVal";
+            
+        }
+        else {nameSlct.value=curVal;}
     });
 }
 
@@ -81,6 +96,27 @@ function handleValOptsChange(event){
     state["echoData"][echoData.indexOf(statName)] = valSlct.value === "noVal" ? 0.0 : Number(valSlct.value);
 }
 
+function handleEchoTeamChange() {
+    const erArr=[];
+    const teamReqEr=charData[state["selectedChar"]][1][0][state["selectedTeam"]];
+    const erImp=charData[state["selectedChar"]][1][1];
+    const rc=charData[state["selectedChar"]][1][2];
+    console.log(teamReqEr, erImp, rc);
+    state["echoData"][12]=0.0;
+    if (Number(teamReqEr)<=100 || erImp===0){
+        if (state["usefulStats"].indexOf("ER(%)")!==-1) {
+            state["usefulStats"].splice(state["usefulStats"].indexOf("ER(%)"), 1);
+        }
+        if (state["pickedStats"].indexOf("ER(%)")!==-1) {
+            state["pickedStats"].splice(state["pickedStats"].indexOf("ER(%)"), 1);
+        }
+    }
+    else {
+        if (state["usefulStats"].indexOf("ER(%)")===-1) {state["usefulStats"].push("ER(%)");}
+    }
+    updateSubstatOpts();
+}
+
 function updateEchoResults(result){
     elms["scoreVal"].innerHTML = result.score;
     elms["tierVal"].innerHTML = result.tier;
@@ -108,6 +144,7 @@ async function calcEchoResults(){
 
 function setEchoEventListeners(){
     elms["charOptsLst"].addEventListener("click", renderEchoSubstatNames);
+    elms["teamSlct"].addEventListener("change", handleEchoTeamChange);
     elms["allEchoNameSlct"].forEach(function (slct){
         slct.dataset.prevVal = slct.value;
         slct.addEventListener("change", handleEchoSubstatChange);
