@@ -6,9 +6,12 @@ state["pickedStats"] = [];
 elms["allEchoNameSlct"] = document.querySelectorAll(".statNameSlct");
 elms["allEchoValSlct"] = document.querySelectorAll(".statValueSlct");
 
-function renderSubstatNames(){
+function renderEchoSubstatNames(){
+    state["echoData"]=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     state["usefulStats"]=[];
+    state["pickedStats"]=[];
     elms["allEchoNameSlct"].forEach(function (nameSlct){nameSlct.innerHTML = "<option value = 'noVal'>Select Echo Substat</option>"});
+    elms["allEchoValSlct"].forEach(function (valSlct){valSlct.innerHTML=`<option value="noVal">Select Value</option>`});
     charData[state["selectedChar"]][0].forEach(function (relVal, ind){
         if (!relVal) return;
         const curStat = echoData[ind];
@@ -38,7 +41,7 @@ function updateSubstatOpts(){
     });
 }
 
-function handleSubstatChange(event){
+function handleEchoSubstatChange(event){
     const curSlct = event.currentTarget;
     const prevVal = curSlct.dataset.prevVal;
     curSlct.dataset.prevVal = curSlct.value;
@@ -55,7 +58,7 @@ function handleSubstatChange(event){
     updateSubstatOpts();
 }
 
-function renderValOpts(event){
+function renderEchoValOpts(event){
     const nameSlct = event.currentTarget;
     const echoNo = Number(nameSlct.id[nameSlct.id.length - 1]);
     elms["allEchoValSlct"].forEach(function (valSlct){
@@ -78,12 +81,12 @@ function handleValOptsChange(event){
     state["echoData"][echoData.indexOf(statName)] = valSlct.value === "noVal" ? 0.0 : Number(valSlct.value);
 }
 
-function updateResults(result){
+function updateEchoResults(result){
     elms["scoreVal"].innerHTML = result.score;
     elms["tierVal"].innerHTML = result.tier;
 }
 
-async function calcResults(){
+async function calcEchoResults(){
     try {
         const response = await fetch("/calcEcho", {
             method: "POST", 
@@ -97,22 +100,22 @@ async function calcResults(){
         });
         if (!response.ok) {throw new Error("Server Error");}
         const result = await response.json();
-        updateResults(result);
+        updateEchoResults(result);
     } catch (error) {
         console.error("Submit Failed: ", error)
     }
 }
 
 function setEchoEventListeners(){
-    elms["charOptsLst"].addEventListener("click", renderSubstatNames);
+    elms["charOptsLst"].addEventListener("click", renderEchoSubstatNames);
     elms["allEchoNameSlct"].forEach(function (slct){
         slct.dataset.prevVal = slct.value;
-        slct.addEventListener("change", handleSubstatChange);
+        slct.addEventListener("change", handleEchoSubstatChange);
+        slct.addEventListener("change", renderEchoValOpts);
     });
-    elms["allEchoNameSlct"].forEach(function (slct){slct.addEventListener("change", renderValOpts);});
     elms["allEchoValSlct"].forEach(function (slct){slct.addEventListener("change", handleValOptsChange);});
-    elms["form"].addEventListener("submit", calcResults);
+    elms["form"].addEventListener("submit", calcEchoResults);
 }
 
 setEchoEventListeners();
-renderSubstatNames();
+renderEchoSubstatNames();

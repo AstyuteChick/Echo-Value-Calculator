@@ -21,7 +21,19 @@ def calc_echo():
     except Exception as msg: return jsonify({"score": msg, "tier": "NA"})
 
 @evc_app.route("/build", methods=["GET"])
-def build(): return render_template("build2.html", active_page="build", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls)
+def build(): return render_template("build2.html", active_page="build", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls, 
+                                    main_stat_data=GameData.mainstat_vals)
+
+@evc_app.route("/calcBuild", methods=["POST"])
+def calc_build():
+    data=request.get_json()
+    try: 
+        echo_cost=data.get("echoCost")
+        echo_mainstats=data.get("echoMainStats")
+        es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "build", {"echo_cost": echo_cost, "echo_mainstat": echo_mainstats})
+        return jsonify({"score": es, "tier": et})
+    except Exception as msg: return jsonify({"score": msg, "tier": "NA"})
+
     # elif request.method == "POST":
     #     if request.form["change_char"]=="True": return render_template("build.html", sbs="build_b", stat_names=GameData.substat_names, char_data=Character.data, echo_score="Build Score",
     #                                                                  echo_tier="Build Tier", prev_char=request.form["char_build"], prev_er=request.form["er_tot_build"],

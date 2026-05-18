@@ -44,7 +44,7 @@ class Character:
         #Name:          [[cr%, cd%, atk%, fatk, hp%, fhp, def%, fdef, ba%, ha%, skill%, liberation%], [{name: req_er}, imp_er, rc], analysis]
         "Aalto (DPS)":                              [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.70, 0.0, 0.5*0.15, 0.5*0.10], [{"Default": 128.1}, 0.45, 150.0], True],
         "Aalto (Sub-DPS)":                          [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.45, 0.0, 0.5*0.25, 0.5*0.15], [{"Default": 128.1}, 0.45, 150.0], True],
-        "Aemeath":                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.65], [{"Lynae + Mornye": 118.1, "Lynae + Shorekeeper": 123.1, "Default": 125.0}, 0.9, 125.0], True],
+        "Aemeath":                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.65], [{"Lynae + Mornye": 120, "Lynae + Shorekeeper": 123.1, "Default": 125.0}, 0.9, 125.0], True],
         "Augusta":                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.75, 0.5*0.15, 0.0], [{"Iuno + Shorekeeper": 128.1, "Mortefi + Shorekeeper (Default)": 118.1}, 0.9, 125.0], True],
         "Baizhi":                                   [[0.0, 0.0, 0.0, 0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Default": 233.1}, 1.0, 175.0], False],
         "Brant (sub DPS, ER/ER 3 cost setup)" :     [[1.0, 1.0, 0.3, 0.2, 0.0, 0.0, 0.0, 0.0, 0.55, 0.0, 0.0, 0.05], [{"Default": 280.0}, 0.8, 175.0], True],

@@ -32,13 +32,13 @@
     align-items: center;
 }
 
-.mainStatInp {
+.statInp {
     background-color: var(--bgc);
 }
 
 .statFlst {
     display: grid;
-    grid-template-columns: 9rem 1fr;
+    grid-template-columns: 10rem 1fr;
     align-items: center;
     padding: var(--pds);
     gap: 1rem;

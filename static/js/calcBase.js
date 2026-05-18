@@ -11,7 +11,7 @@ const state = {
     selectedChar: `Aemeath`, 
     isCharMenuOpen: false, 
     selectedTeam: null, 
-    totEr: null
+    totEr: 100.0
 };
 
 const elms = {
@@ -81,6 +81,7 @@ function openCharMenu(){
 
 function closeCharMenu(){
     elms["charOptsLst"].hidden = true;
+    elms["searchChar"].value = state.selectedChar;
     state["isCharMenuOpen"] = false;
 }
 
@@ -101,6 +102,10 @@ function selectChar(charName){
     elms["selectedChar"].appendChild(spn);
     closeCharMenu();
     renderTeamOpts(charName);
+    state["totEr"]=100.0;
+    elms["totErIn"].value=100.0;
+    elms["scoreVal"].innerHTML="[Your Echo Score]";
+    elms["tierVal"].innerHTML="[Your Echo Tier]";
 }
 
 function handleCharSearchClick(event){
@@ -139,6 +144,7 @@ function setEventListeners(){
 
 function setup(){
     selectChar(state["selectedChar"]);
+    elms["totErIn"].value=100.0;
 }
 
 setEventListeners();
