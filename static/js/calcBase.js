@@ -54,7 +54,7 @@ function renderCharOpts(searchInp=""){
 }
 
 function renderTeamOpts(charName){
-    elms["teamSlct"].innerHTML = `<option value="">Select your character's team</option>`;
+    elms["teamSlct"].innerHTML = `<option value="noVal">Select your character's team</option>`;
     const charTeams = Object.keys(charData[charName][1][0]);
     charTeams.forEach(function (team){
         const opt = document.createElement("option");
@@ -63,7 +63,7 @@ function renderTeamOpts(charName){
         elms.teamSlct.appendChild(opt);
     });
     state["selectedTeam"] = null;
-    elms["teamSlct"].value = "";
+    elms["teamSlct"].value = "noVal";
 }
 
 function handleSubmit(event){event.preventDefault();}
@@ -120,7 +120,7 @@ function handleOutsideClick(event){
 
 function handleTeamChange(event){
     const slctTeamVal = event.target.value;
-    if (slctTeamVal === "") {
+    if (slctTeamVal === "noVal") {
         state["selectedTeam"] = null;
     } else {
         state["selectedTeam"] = slctTeamVal;
@@ -135,6 +135,20 @@ function handleTotErType(){
     state["totEr"] = elms["totErIn"].value;
 }
 
+function controlStyles(event) {
+    const elem=event.currentTarget;
+    let hasVal;
+    if (!elem.value) {
+        if (elem.textContent) {hasVal=true;}
+        else {hasVal=false;}
+    } else {
+        if (elem.value==="noVal") {hasVal=false;}
+        else {hasVal=true;}
+    }
+    if (hasVal===true) {elem.classList.add("hasVal");}
+    else {elem.classList.remove("hasVal");}
+}
+
 function setEventListeners(){
     elms["form"].addEventListener("submit", handleSubmit);
     elms["searchChar"].addEventListener("focus", handleCharSearchFocus);
@@ -144,6 +158,9 @@ function setEventListeners(){
     elms["totErIn"].addEventListener("focus", handleTotErFocus);
     elms["totErIn"].addEventListener("input", handleTotErType);
     document.addEventListener("click", handleOutsideClick);
+    elms["searchChar"].addEventListener("input", controlStyles);
+    elms["teamSlct"].addEventListener("change", controlStyles);
+    elms["totErIn"].addEventListener("input", controlStyles);
 }
 
 function setup(){

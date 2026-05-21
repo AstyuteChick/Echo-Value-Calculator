@@ -152,9 +152,14 @@ function setEchoEventListeners(){
         slct.dataset.prevVal = slct.value;
         slct.addEventListener("change", handleEchoSubstatChange);
         slct.addEventListener("change", renderEchoValOpts);
+        slct.addEventListener("change", controlStyles)
     });
-    elms["allEchoValSlct"].forEach(function (slct){slct.addEventListener("change", handleValOptsChange);});
+    elms["allEchoValSlct"].forEach(function (slct){
+        slct.addEventListener("change", handleValOptsChange);
+        slct.addEventListener("change", controlStyles)
+    });
     elms["form"].addEventListener("submit", calcEchoResults);
+
 }
 
 setEchoEventListeners();

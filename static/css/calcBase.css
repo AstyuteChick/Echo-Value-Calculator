@@ -50,6 +50,7 @@ h2 {
 .selectedChar span {
     font-weight: 500;
     font-size: var(--fsb);
+    color: var(--scTxt);
 }
 
 .charMenu {
@@ -94,6 +95,10 @@ h2 {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.teamSelectSlct.hasVal {
+    background-color: var(--acTxt);
 }
 
 .teamSelect select option {

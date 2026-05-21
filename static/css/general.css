@@ -1,10 +1,12 @@
 
 :root {
-    --bgc: hsl(0, 0%, 8%);
-    --b1: hsl(0, 0%, 12%);
-    --b2: hsl(0, 0%, 16%);
+    --bgc: hsl(0, 0%, 4%);
+    --b1: hsl(0, 0%, 8%);
+    --b2: hsl(0, 0%, 12%);
     --ac: #0066ff;
     --sc: #00bbe7;
+    --acTxt: #0066ff;
+    --scTxt: #00d0ff;
     --txt: hsl(0, 0%, 96%);
     --ani: 0.16s;
     --rn: 0.5rem;
@@ -19,12 +21,14 @@
     --fsb: 1.125rem;
 }
 
-:root.lm {
+:root.lightMode {
     --bgc: hsl(0, 0%, 96%);
     --b1: hsl(0, 0%, 92%);
     --b2: hsl(0, 0%, 88%);
     --ac: #00bbe7;
     --sc: #0066ff;
+    --scTxt: #0066ff;
+    --acTxt: #00d0ff;
     --txt: hsl(0, 0%, 4%);
     --ani: 0.16s;
     --rn: 0.5rem;

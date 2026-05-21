@@ -33,6 +33,11 @@
     background-color: var(--bgc);
 }
 
+.statNameSlct.hasVal, .statValueSlct.hasVal {
+    font-weight: 600;
+    color: var(--sc);
+}
+
 .subBtn {
     margin-top: 0.5rem;
     padding: var(--pds) var(--pdn);
