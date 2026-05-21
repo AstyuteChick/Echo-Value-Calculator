@@ -1,11 +1,11 @@
 
 const charDataEle = document.querySelector("#char-data");
-const charData = JSON.parse(charDataEle.textContent);
+const charData = JSON.parse(charDataEle.textContent); //Character.data
 
 const echoDataEle = document.querySelector("#echo-data");
-const echoData = JSON.parse(echoDataEle.textContent);
+const echoData = JSON.parse(echoDataEle.textContent); //GameData.substat_names (ordered substat names, list)
 const substatRollsEle = document.querySelector("#substat-rolls-data");
-const substatRollsData = JSON.parse(substatRollsEle.textContent);
+const substatRollsData = JSON.parse(substatRollsEle.textContent); //GameData.substat_rolls (dict -> statName: list of rolls)
 
 const state = {
     selectedChar: `Aemeath`, 
@@ -136,7 +136,6 @@ function handleTotErType(){
 }
 
 function setEventListeners(){
-    if (!elms.form) return;
     elms["form"].addEventListener("submit", handleSubmit);
     elms["searchChar"].addEventListener("focus", handleCharSearchFocus);
     elms["searchChar"].addEventListener("input", handleCharSearchType);
