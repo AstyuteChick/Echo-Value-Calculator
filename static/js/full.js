@@ -1,5 +1,5 @@
 
-function resetFullState(){
+function resetFullState() {
     state["fullData"]=[
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
@@ -15,13 +15,13 @@ function resetFullState(){
     elms["tierVal"].innerHTML="[Your Full Tier]";
 }
 
-function setFullElements(){
+function setFullElements() {
     elms["allEchoesNameSlct"]=document.querySelectorAll(".fsEchoStatSlct");
     elms["allEchoesValSlct"]=document.querySelectorAll(".fsEchoValSlct");
 }
 
-function renderFullSubstats(){
-    //also updates state
+function renderFullSubstats() {
+    // Also updates state
     elms["allEchoesNameSlct"].forEach(function (nameSlct) {nameSlct.innerHTML=`<option value="noVal">Substat</option>`;});
     charData[state["selectedChar"]][0].forEach(function (relVal, ind) {
         if (!relVal) return;
@@ -40,26 +40,48 @@ function resetFullVals() {
     elms["allEchoesValSlct"].forEach(function (valSlct) {valSlct.innerHTML=`<option value="noVal">Value</option>`;});
 }
 
-function handleFullCharClick(){
+function handleFullCharClick() {
     resetFullState();
     renderFullSubstats();
     resetFullVals();
 }
 
-function updateFullState(){
-    state["usefulStats"].push()
+function updateFullStateEr(erReq) {
+    if (erReq>100) {
+        if (!state["usefulStats"].includes("ER(%)")) {state["usefulStats"].push("ER(%)");}
+    } else {
+        if (state["usefulStats"].includes("ER(%)")) {state["usefulStats"].splice(state["usefulStats"].indexOf("ER(%)"), 1);}
+        state["pickedStats"].forEach(function (echo, ind) {
+            if (echo.includes("ER(%)")) {state["pickedStats"][ind].splice(echo.indexOf("ER(%)"), 1);}
+        });
+        state["fullData"].forEach(function (echo, ind) {state["fullData"][ind][12]=0;});
+    }
 }
 
-function handleFullTeamChange(event){
-    updateFullState();
-    updateFullSubstats();
+function updateFullSubstats() {
+    elms["allEchoesNameSlct"].forEach(function (nameSlct) {
+        const curStat=nameSlct.value;
+        const echoInd=Number(nameSlct.id[5])-1;
+        nameSlct.innerHTML=`<option value="noVal">Substat</option>`;
+        state["usefulStats"].forEach(function (stat) {
+            if (state["pickedStats"][echoInd].includes(stat) && stat!==curStat) return;
+            const opt=document.createElement("option");
+            opt.value=stat;
+            opt.textContent=stat;
+            nameSlct.appendChild(opt);
+        });
+        if (state["pickedStats"][echoInd].includes(curStat)) {nameSlct.value=curStat;}
+        else {nameSlct.value="noVal";}
+    });
 }
 
-function renderFullVals(){
+function updateFullVals() {
+    // Assumes substats are updated first, and value options are refreshed after every substat change
     elms["allEchoesValSlct"].forEach(function (valSlct) {
-        const statSlct=document.getElementById("stat-"+valSlct.id.slice(-2));
-        const statName=statSlct.value;
         const curVal=valSlct.value;
+        const nameSlct=document.getElementById(`stat-${valSlct.id.slice(-2)}`);
+        const statName=nameSlct.value;
+        const echoInd=Number(valSlct.id[4])-1;
         valSlct.innerHTML=`<option value="noVal">Value</option>`;
         if (statName==="noVal") return;
         substatRollsData[statName].forEach(function (roll) {
@@ -72,86 +94,61 @@ function renderFullVals(){
     });
 }
 
-
-
-function renderFullER(event){
-
+function handleFullTeamChange(event) {
     const teamSlct=event.currentTarget;
     const teamName=teamSlct.value;
-    state["fullData"].forEach(function (echo, ind) {state["fullData"][ind][12]=0;});
     let erReq=0;
-    if (teamName!=="noVal") {erReq=charData[state["selectedChar"]][1][0][teamName];}
-    console.log(erReq);
-    if (erReq>100) {
-        if (!state["usefulStats"].includes("ER(%)")) {state["usefulStats"].push("ER(%)");}
-    } else {
-        if (state["usefulStats"].includes("ER(%)")) {state["usefulStats"].splice(state["usefulStats"].indexOf("ER(%)"), 1)}
-    }
+    if (teamName!=="noVal"){erReq=charData[state["selectedChar"]][1][0][teamName];}
+    updateFullStateEr(erReq);
     updateFullSubstats();
+    updateFullVals();
 }
 
-function updateFullSubstats(){
-    // Updates available substats based on the state of useful and picked stats, and calls for val updates
-    elms["allEchoesNameSlct"].forEach(function (nameSlct) {
-        const statName=nameSlct.value;
-        const echoInd=Number(nameSlct.id[5])-1;
-        nameSlct.innerHTML=`<option value="noVal">Substat</option>`;
-        state["usefulStats"].forEach(function (stat) {
-            if (state["pickedStats"][echoInd].includes(stat) && stat!==statName) return;
-            const opt=document.createElement("option");
-            opt.value=stat;
-            opt.textContent=stat;
-            nameSlct.appendChild(opt);
-        });
-        if (statName==="ER(%)" && !state["usefulStats"].includes("ER(%)")) {nameSlct.value="noVal";}
-        else {nameSlct.value=statName;}
+function updateFullStateStats(prevStat, curStat, echoInd) {
+    if (prevStat!=="noVal") {state["pickedStats"][echoInd].splice(state["pickedStats"][echoInd].indexOf(prevStat), 1);}
+    if (curStat!=="noVal") {state["pickedStats"][echoInd].push(curStat);}
+}
+
+function renderFullVals(uid, curStat) {
+    // Only renders for the specific substat
+    const valSlct=document.getElementById(`val-${uid}`);
+    valSlct.innerHTML=`<option value="noVal">Value</option>`;
+    if (curStat==="noVal") return;
+    substatRollsData[curStat].forEach(function (roll) {
+        const opt=document.createElement("option");
+        opt.value=roll;
+        opt.textContent=roll;
+        valSlct.appendChild(opt);
     });
-    renderFullVals();
+    valSlct.value="noVal";
 }
 
-function handleFullSubstatChange(event){
-    // Updates state of picked stats and calls for update
+function handleFullSubstatChange(event) {
     const statSlct=event.currentTarget;
+    const prevStat=statSlct.dataset.prevVal;
+    const curStat=statSlct.value;
+    statSlct.dataset.prevVal=curStat;
     const echoInd=Number(statSlct.id[5])-1;
-    const statName=statSlct.value;
-    const prevStatName=statSlct.dataset.prevVal;
-    statSlct.dataset.prevVal=statName;
-    console.log(statName, prevStatName); 
-    if (prevStatName!=="noVal") {state["pickedStats"][echoInd].splice(state["pickedStats"][echoInd].indexOf(prevStatName), 1);}
-    if (statName!=="noVal") {state["pickedStats"][echoInd].push(statName);}
+    const uid=statSlct.id.slice(-2);
+    updateFullStateStats(prevStat, curStat, echoInd);
+    renderFullVals(uid, curStat);
     updateFullSubstats();
 }
 
-function handleFullTeamChange(event){
-    // Updates state of useful stats based on team and calls for update
-    const teamSlct=event.currentTarget;
-    const teamName=teamSlct.value;
-    state["fullData"].forEach(function (echo, ind) {state["fullData"][ind][12]=0;});
-    let erReq=0;
-    if (teamName!=="noVal") {erReq=charData[state["selectedChar"]][1][0][teamName];}
-    console.log(erReq);
-    if (erReq>100) {
-        if (!state["usefulStats"].includes("ER(%)")) {state["usefulStats"].push("ER(%)");}
-    } else {
-        if (state["usefulStats"].includes("ER(%)")) {state["usefulStats"].splice(state["usefulStats"].indexOf("ER(%)"), 1)}
-    }
-    updateFullSubstats();
-}
-
-
-
-function handleFullValChange(event){
-    // Updates state based on echo index, stat and value
+function handleFullValChange(event) {
     const valSlct=event.currentTarget;
-    const statRoll=valSlct.value;
-    if (statRoll==="noVal") return;
-    const uid=valSlct.id.slice(-2);
-    const statName=document.getElementById("stat-"+uid).value;
-    const statInd=echoData.indexOf(statName);
-    state["fullData"][Number(uid[0])-1][statInd]=statRoll;
+    const echoInd=Number(valSlct.id[4])-1;
+    const statSlct=document.getElementById(`stat-${valSlct.id.slice(-2)}`);
+    const statInd=echoData.indexOf(statSlct.value);
+    state["fullData"][echoInd][statInd]=valSlct.value==="noVal"?0:valSlct.value;
 }
 
-async function calcFullResults(){
+function updateFullResults(result) {
+    elms["scoreVal"].innerHTML=result.score;
+    elms["tierVal"].innerHTML=result.tier;
+}
+
+async function calcFullResults() {
     try {
         const response = await fetch("/calcFull", {
             method: "POST", 
@@ -171,14 +168,13 @@ async function calcFullResults(){
     }
 }
 
-function setFullEventListeners(){
+function setFullEventListeners() {
     elms["charOptsLst"].addEventListener("click", handleFullCharClick);
     elms["teamSlct"].addEventListener("change", handleFullTeamChange);
     elms["allEchoesNameSlct"].forEach(function (nameSlct) {
-        nameSlct.dataset.prevVal=nameSlct.value;
+        nameSlct.dataset.prevVal="noVal";
         nameSlct.addEventListener("change", handleFullSubstatChange);
     });
-    elms["allEchoesNameSlct"].forEach(function (nameSlct) {nameSlct.addEventListener("change", renderFullVals)});
     elms["allEchoesValSlct"].forEach(function (valSlct) {valSlct.addEventListener("change", handleFullValChange)});
     elms["form"].addEventListener("submit", calcFullResults);
 }
@@ -186,3 +182,4 @@ function setFullEventListeners(){
 resetFullState();
 setFullElements();
 setFullEventListeners();
+handleFullCharClick();
