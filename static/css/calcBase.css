@@ -48,9 +48,8 @@ h2 {
 }
 
 .selectedChar span {
-    font-weight: 500;
-    font-size: var(--fsb);
     color: var(--scTxt);
+    font-family: Cascadia Code;
 }
 
 .charMenu {
@@ -68,6 +67,10 @@ h2 {
 
 .charMenu input:focus, .teamSelect select:focus,  .totEr input:focus {
     background-color: var(--b2);
+}
+
+.charMenu input.hasVal, .teamSelect select.hasVal, .totEr input.hasVal {
+    color: var(--scTxt);
 }
 
 .charOptsLst {
@@ -98,7 +101,7 @@ h2 {
 }
 
 .teamSelectSlct.hasVal {
-    background-color: var(--acTxt);
+    color: var(--scTxt);
 }
 
 .teamSelect select option {

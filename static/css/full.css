@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     padding: var(--pds) var(--pdn);
-    gap: 1rem;
+    gap: 0.5rem;
     background-color: var(--b1);
     border: var(--bs);
     border-radius: var(--rn);
@@ -13,11 +13,11 @@
 
 .fsEchoFlst {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 11rem minmax(0, 1fr);
     padding: var(--pds) var(--pdn);
     background-color: var(--b2);
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.25rem;
 }
 
 .fsEchoFlst > span {
@@ -26,6 +26,11 @@
 
 .fsEchoStatSlct, .fsEchoValSlct {
     background-color: var(--bgc);
+}
+
+.fsEchoStatSlct.hasVal, .fsEchoValSlct.hasVal {
+    color: var(--scTxt);
+    font-weight: 600;
 }
 
 .fullBtns {

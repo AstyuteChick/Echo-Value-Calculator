@@ -22,7 +22,10 @@ function setFullElements() {
 
 function renderFullSubstats() {
     // Also updates state
-    elms["allEchoesNameSlct"].forEach(function (nameSlct) {nameSlct.innerHTML=`<option value="noVal">Substat</option>`;});
+    elms["allEchoesNameSlct"].forEach(function (nameSlct) {
+        nameSlct.innerHTML=`<option value="noVal">Substat</option>`;
+        nameSlct.classList.remove("hasVal");
+    });
     charData[state["selectedChar"]][0].forEach(function (relVal, ind) {
         if (!relVal) return;
         const statName=echoData[ind];
@@ -37,7 +40,10 @@ function renderFullSubstats() {
 }
 
 function resetFullVals() {
-    elms["allEchoesValSlct"].forEach(function (valSlct) {valSlct.innerHTML=`<option value="noVal">Value</option>`;});
+    elms["allEchoesValSlct"].forEach(function (valSlct) {
+        valSlct.innerHTML=`<option value="noVal">Rolls</option>`;
+        valSlct.classList.remove("hasVal");
+    });
 }
 
 function handleFullCharClick() {
@@ -70,8 +76,14 @@ function updateFullSubstats() {
             opt.textContent=stat;
             nameSlct.appendChild(opt);
         });
-        if (state["pickedStats"][echoInd].includes(curStat)) {nameSlct.value=curStat;}
-        else {nameSlct.value="noVal";}
+        if (state["pickedStats"][echoInd].includes(curStat)) {
+            nameSlct.value=curStat;
+            nameSlct.classList.add("hasVal");
+        }
+        else {
+            nameSlct.value="noVal";
+            nameSlct.classList.remove("hasVal");
+        }
     });
 }
 
@@ -82,8 +94,12 @@ function updateFullVals() {
         const nameSlct=document.getElementById(`stat-${valSlct.id.slice(-2)}`);
         const statName=nameSlct.value;
         const echoInd=Number(valSlct.id[4])-1;
-        valSlct.innerHTML=`<option value="noVal">Value</option>`;
-        if (statName==="noVal") return;
+        valSlct.innerHTML=`<option value="noVal">Rolls</option>`;
+        if (statName==="noVal") {
+            valSlct.value="noVal";
+            valSlct.classList.remove("hasVal");
+            return;
+        }
         substatRollsData[statName].forEach(function (roll) {
             const opt=document.createElement("option");
             opt.value=roll;
@@ -91,6 +107,8 @@ function updateFullVals() {
             valSlct.appendChild(opt);
         });
         valSlct.value=curVal;
+        if (curVal!=="noVal") {valSlct.classList.add("hasVal");}
+        else {valSlct.classList.remove("hasVal");}
     });
 }
 
@@ -112,7 +130,7 @@ function updateFullStateStats(prevStat, curStat, echoInd) {
 function renderFullVals(uid, curStat) {
     // Only renders for the specific substat
     const valSlct=document.getElementById(`val-${uid}`);
-    valSlct.innerHTML=`<option value="noVal">Value</option>`;
+    valSlct.innerHTML=`<option value="noVal">Rolls</option>`;
     if (curStat==="noVal") return;
     substatRollsData[curStat].forEach(function (roll) {
         const opt=document.createElement("option");
@@ -120,7 +138,8 @@ function renderFullVals(uid, curStat) {
         opt.textContent=roll;
         valSlct.appendChild(opt);
     });
-    valSlct.value="noVal";
+    valSlct.value="noVal"
+    valSlct.classList.remove("hasVal");
 }
 
 function handleFullSubstatChange(event) {
@@ -174,8 +193,12 @@ function setFullEventListeners() {
     elms["allEchoesNameSlct"].forEach(function (nameSlct) {
         nameSlct.dataset.prevVal="noVal";
         nameSlct.addEventListener("change", handleFullSubstatChange);
+        nameSlct.addEventListener("change", controlStyles)
     });
-    elms["allEchoesValSlct"].forEach(function (valSlct) {valSlct.addEventListener("change", handleFullValChange)});
+    elms["allEchoesValSlct"].forEach(function (valSlct) {
+        valSlct.addEventListener("change", handleFullValChange);
+        valSlct.addEventListener("change", controlStyles)
+    });
     elms["form"].addEventListener("submit", calcFullResults);
 }
 

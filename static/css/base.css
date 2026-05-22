@@ -3,7 +3,7 @@ body {
     min-height: 100vh;
     margin: 0;
     display: grid;
-    grid-template-columns: 16rem 1fr;
+    grid-template-columns: 16rem minmax(0, 1fr);
     background-color: var(--bgc);
     color: var(--txt);
     font-family: Questrial;
@@ -75,7 +75,12 @@ a {
     transform: translateX(0.2rem);
 }
 
-.selectedNav {
+.navLst li a.selectedNav {
+    background-color: var(--sc);
+    color: var(--bgc);
+}
+
+.navLst li a.selectedNav:hover {
     background-color: var(--sc);
     color: var(--bgc);
 }
@@ -93,6 +98,7 @@ a {
 
 main {
     min-height: 100vh;
+    width: 100%;
 }
 
 .mainHead {
@@ -104,8 +110,6 @@ h1 {
     flex: 1;
     text-align: center;
     font-family: Cascadia Code;
-    /* border: 2px solid var(--ac);
-    border-radius: var(--rn); */
 }
 
 .profMenu {
@@ -159,5 +163,3 @@ h1 {
 .setOptsLst li label:hover {
     background-color: var(--ac);
 }
-
-
