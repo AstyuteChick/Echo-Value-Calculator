@@ -14,6 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Questrial&display=swap" rel="stylesheet">
+  {% block head %}{% endblock %}
 </head>
 <body>
   <nav class="nv mainNv">
@@ -35,23 +36,23 @@
         <img src="{{url_for('static', filename='images/Full_Icon.png')}}" alt="">
         <span>Full Score</span>
       </a></li>
-      <li><a>
+      <li><a href="{{url_for('instruct')}}" id="inst-nav" {% if active_page == 'inst' %} class="selectedNav" {% endif %}>
         <img src="{{url_for('static', filename='images/Instructions_Icon.png')}}" alt="">
         <span>Instructions</span>
       </a></li>
-      <li><a>
+      <li><a href="{{url_for('logs')}}" id="logs-nav" {% if active_page == 'logs' %} class="selectedNav" {% endif %}>
         <img src="{{url_for('static', filename='images/ChangeLogs_Icon.png')}}" alt="">
         <span>Change Logs</span>
       </a></li>
-      <li><a>
+      <li><a href="{{url_for('reports')}}" id="reps-nav" {% if active_page == 'reps' %} class="selectedNav" {% endif %}>
         <img src="{{url_for('static', filename='images/Reports_Icon.png')}}" alt="">
         <span>Reports</span>
       </a></li>
-      <li><a>
+      <li><a href="{{url_for('about')}}" id="abt-nav" {% if active_page == 'abt' %} class="selectedNav" {% endif %}>
         <img src="{{url_for('static', filename='images/About_Icon.png')}}" alt="">
         <span>About</span>
       </a></li>
-      <li><a>
+      <li><a href="{{url_for('contents')}}" id="arts-nav" {% if active_page == 'arts' %} class="selectedNav" {% endif %}>
         <img src="{{url_for('static', filename='images/Articles_Icon.png')}}" alt="">
         <span>Articles</span>
       </a></li>

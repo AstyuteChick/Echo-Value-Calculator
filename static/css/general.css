@@ -154,3 +154,8 @@
     font-weight: 800;
     font-size: var(--fsl);
 }
+
+.textStuff {
+    padding: var(--pdn);
+    
+}

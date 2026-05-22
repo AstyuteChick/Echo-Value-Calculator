@@ -5,10 +5,10 @@
   type="text/javascript">
 </script>
 {% endblock %}
-{% block body %}
-<div class="text_stuff">
+{% block section %}
+<section class="textStuff">
 {% raw %}
-<h1 id="potential-value"><strong><u>Potential Value</u></strong></h1>
+<h2 id="potential-value"><strong><u>Potential Value</u></strong></h2>
 <p><em>[After finishing the achieved value section, keen readers who’re
 also familiar with other Gatcha-game gear systems (Genshin in
 particular) may have noticed some similarities with the achieved value
@@ -87,7 +87,7 @@ value is equal to (<span class="math inline">\(\sum_{i =
 1}^{5}{ORV}_{i}\)</span>): <span class="math inline">\(1 + 1 + 0.5 +
 0.25 + 0.225 = \ 2.975\)</span>.</p>
 {% endraw %}
-</div>
+</section>
 <div class="art_nav">
   <a href="{{url_for('av')}}"><button>Previous</button></a>
   <a href="{{url_for('contents')}}"><button>Contents</button></a>

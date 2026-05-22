@@ -30,11 +30,11 @@
   type="text/javascript">
 </script>
 {% endblock %}
-{% block body %}
-<div class="text_stuff">
+{% block section %}
+<section class="textStuff">
 {% raw %}
-<h1 id="echo-scores-and-build-scores"><strong><u>Echo Scores and Build
-Scores</u></strong></h1>
+<h2 id="echo-scores-and-build-scores"><strong><u>Echo Scores and Build
+Scores</u></strong></h2>
 <p>As we now have the achieved value and potential value of an Echo, we
 can now calculate the Echo Score, <span class="math inline">\(ES =
 \frac{AV}{PV}*100\)</span> . Here is the Echo again that we considered
@@ -61,12 +61,12 @@ characters that care about having ER, <strong>even if</strong>
 roll requirement (around 10%) can significantly impact the score of an
 Echo, and can have a substantial effect of the overall build score (as
 it should!). This will be justified and elaborated later).</p>
-<h2
-id="consequences-and-interpretations-of-echo-score"><strong>Consequences
-and interpretations of Echo Score</strong></h2>
 <h3
+id="consequences-and-interpretations-of-echo-score"><strong>Consequences
+and interpretations of Echo Score</strong></h3>
+<h4
 id="potential-value-of-an-echo-is-unique-to-the-particular-echo"><strong>Potential
-Value of an Echo is unique to the particular Echo</strong></h3>
+Value of an Echo is unique to the particular Echo</strong></h4>
 <p><em>[There is a subtle yet deliberate choosing of words when
 discussing the potential value of an Echo. Although the potential value
 of an Echo does not (yet) seem to rely on the specifics of a particular
@@ -76,8 +76,8 @@ may be different for another Echo for the same character. This is true
 for most characters, and cases like Phrolova are the exceptions, which
 is why she was chosen to simplify the discussion of prior
 topics]</em>.</p>
-<h4 id="echo-score-reflects-the-quality-of-an-echo"><strong>Echo Score
-reflects the quality of an Echo</strong></h4>
+<h5 id="echo-score-reflects-the-quality-of-an-echo"><strong>Echo Score
+reflects the quality of an Echo</strong></h5>
 <p><em>[Consider the following Echo:</em></p>
 <ul>
 <li><p><em>Crit Rate: 7.5%</em></p></li>
@@ -245,8 +245,8 @@ The scores obtained like this become meaningless and would require,
 again, to set <u>different goals for different characters</u>,
 indirectly requiring the addition of the potential value system
 anyways!]</em></p>
-<h4 id="same-echo-scores-on-different-characters"><strong>Same Echo
-Scores on different characters</strong></h4>
+<h5 id="same-echo-scores-on-different-characters"><strong>Same Echo
+Scores on different characters</strong></h5>
 <p><em>[The meaning of this situation should be apparent by now. If
 Ciaccona and Carlotta have two <strong>different</strong> Echoes but the
 Echo Score they get are exactly the same, respectively, then in terms of
@@ -265,7 +265,7 @@ difference isn’t this pronounced and is highly exaggerated in this
 example, and it’s more like the difference between taking a 100-point
 test and a 120-point test]</em>.</p>
 {% endraw %}
-</div>
+</section>
 <div class="art_nav">
   <a href="{{url_for('pv')}}"><button>Previous</button></a>
   <a href="{{url_for('contents')}}"><button>Contents</button></a>

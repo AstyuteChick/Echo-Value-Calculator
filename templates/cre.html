@@ -5,11 +5,11 @@
   type="text/javascript">
 </script>
 {% endblock %}
-{% block body %}
-<div class="text_stuff">
+{% block section %}
+<section class="textStuff">
 {% raw %}
-<h1 id="crit-ratio-equivalency"><strong><u>Crit Ratio
-Equivalency</u></strong></h1>
+<h2 id="crit-ratio-equivalency"><strong><u>Crit Ratio
+Equivalency</u></strong></h2>
 <p>Critical hits work similarly in most games, and the generally
 accepted crit ratio for optimal DPS is the 1:2 ratio for critical rate
 and critical damage respectively. However, the critical damage stat that
@@ -61,7 +61,7 @@ like Genshin Impact. <strong>The ratio of crit rate with (crit damage -
 100) should be 1:2, with optimal ranges being 1:1.6 to 1:2.2 (also a
 previously well-known result).</strong></p>
 {% endraw %}
-</div>
+</section>
 <div class="art_nav">
   <a href="{{url_for('er')}}"><button>Previous</button></a>
   <a href="{{url_for('contents')}}"><button>Contents</button></a>

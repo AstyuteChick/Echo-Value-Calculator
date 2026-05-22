@@ -30,10 +30,10 @@ table {
   type="text/javascript">
 </script>
 {% endblock %}
-{% block body %}
-<div class="text_stuff">
+{% block section %}
+<section class="textStuff">
 {% raw %}
-<h1 id="achieved-value"><strong><u>Achieved Value</u></strong></h1>
+<h2 id="achieved-value"><strong><u>Achieved Value</u></strong></h2>
 <p>Consider an Echo for Phrolova with the following substats (Phrolova
 allows us to ignore the complexities of ER% <u>for now</u>):</p>
 <ul>
@@ -447,7 +447,7 @@ have an Echo that gives (average rolls of) Basic%, Heavy%, Skill% and
 Liberation%, this Echo will <strong>always</strong> be weaker than an
 Echo that just gives an average roll of Atk%, <strong>no matter</strong>
 what character or situation].</em></p>
-<h2 id="example-calculation"><strong>Example Calculation</strong></h2>
+<h3 id="example-calculation"><strong>Example Calculation</strong></h3>
 <p>Let’s calculate the achieved value of the above-mentioned Echo for
 Phrolova:</p>
 <ul>
@@ -496,7 +496,7 @@ class="math inline">\(\sum_{i}^{}{(\frac{{SV}_{i}}{{SA}_{i}}*{RV}_{i})}\)</span>
 \mathbf{2.73}\)</span>, which is the achieved value of this Echo for
 Phrolova.</p>
 {% endraw %}
-</div>
+</section>
 <div class="art_nav">
   <a href="{{url_for('co')}}"><button>Previous</button></a>
   <a href="{{url_for('contents')}}"><button>Contents</button></a>

@@ -47,79 +47,79 @@ def calc_full():
 
 @evc_app.route("/instruct")
 def instruct():
-    return render_template("instruct.html", sbs="inst_b")
+    return render_template("instruct.html", active_page="inst")
 
 @evc_app.route("/logs")
 def logs():
-    return render_template("logs.html", sbs="logs_b")
+    return render_template("logs.html", active_page="logs")
 
 @evc_app.route("/reports")
 def reports():
-    return render_template("reports.html", sbs="reports_b")
+    return render_template("reports.html", active_page="reps")
 
 @evc_app.route("/about")
 def about():
-    return render_template("about.html", sbs="about_b")
+    return render_template("about.html", active_page="abt")
 
 @evc_app.route("/articles")
 def contents():
-    return render_template("contents.html", sbs="articles_b")
+    return render_template("contents.html", active_page="arts")
 
 @evc_app.route("/goals")
 def goals():
-    return render_template("goals.html", sbs="articles_b")
+    return render_template("goals.html", active_page="arts")
 
 @evc_app.route("/assumptions")
 def assumptions():
-    return render_template("assumptions.html", sbs="articles_b")
+    return render_template("assumptions.html", active_page="arts")
 
 @evc_app.route("/cd")
 def cd():
-    return render_template("cd.html", sbs="articles_b", char_data=Character.data)
+    return render_template("cd.html", active_page="arts", char_data=Character.data)
 
 @evc_app.route("/clg")
 def clg():
-    return render_template("clg.html", sbs="articles_b")
+    return render_template("clg.html", active_page="arts")
 
 @evc_app.route("/co")
 def co():
-    return render_template("co.html", sbs="articles_b")
+    return render_template("co.html", active_page="arts")
 
 @evc_app.route("/av")
 def av():
-    return render_template("av.html", sbs="articles_b")
+    return render_template("av.html", active_page="arts")
 
 @evc_app.route("/pv")
 def pv():
-    return render_template("pv.html", sbs="articles_b")
+    return render_template("pv.html", active_page="arts")
 
 @evc_app.route("/esbs")
 def esbs():
-    return render_template("esbs.html", sbs="articles_b")
+    return render_template("esbs.html", active_page="arts")
 
 @evc_app.route("/er")
 def er():
-    return render_template("er.html", sbs="articles_b")
+    return render_template("er.html", active_page="arts")
 
 @evc_app.route("/cre")
 def cre():
-    return render_template("cre.html", sbs="articles_b")
+    return render_template("cre.html", active_page="arts")
 
 @evc_app.route("/rc")
 def rc():
-    return render_template("rc.html", sbs="articles_b")
+    return render_template("rc.html", active_page="arts")
 
 @evc_app.route("/sc")
 def sc():
-    return render_template("sc.html", sbs="articles_b")
+    return render_template("sc.html", active_page="arts")
 
 @evc_app.route("/privacy")
 def privacy():
-    return render_template("privacy.html", sbs="privacy_b")
+    return render_template("privacy.html", active_page="noVal")
 
 @evc_app.route("/terms")
 def terms():
-    return render_template("terms.html", sbs="terms_b")
+    return render_template("terms.html", active_page="noVal")
 
 @evc_app.route("/ads.txt")
 def ads_txt():

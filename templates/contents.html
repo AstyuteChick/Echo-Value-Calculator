@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block body %}
-<div class="text_stuff">
+{% block section %}
+<section class="textStuff">
 <p>This section provides documentations on various topics related to the
 EVC.</p>
 <p>More pages like “Echo Value Calculator – Code,” “FAQs,” “Charts and
 Data” etc. will be added soon, alongside improvements and additions to
 current pages as necessary.</p>
-<h1 id="contents"><strong><u>Contents</u></strong></h1>
+<h2 id="contents"><strong><u>Contents</u></strong></h2>
 <ul>
 <li><p><a href="{{url_for('goals')}}"><strong>Goals</strong></a></p></li>
 <li><p><a href="{{url_for('assumptions')}}"><strong>Assumptions</strong></a></p></li>
@@ -48,7 +48,7 @@ Requirements</strong></a></p></li>
 <li><p><a href="{{url_for('sc')}}"><strong>Source code for the engine</strong></a></p></li>
 </ul>
 </ul>
-</div>
+</section>
 <div class="art_nav">
   <a href="{{url_for('goals')}}"><button>Next</button></a>
 </div>

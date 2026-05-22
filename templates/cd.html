@@ -30,10 +30,10 @@
   type="text/javascript">
 </script>
 {% endblock %}
-{% block body %}
-<div class="text_stuff">
-<h1 id="character-data">Character Data</h1>
-<h2 id="er-target"><strong>ER Target</strong></h2>
+{% block section %}
+<section class="textStuff">
+<h2 id="character-data">Character Data</h2>
+<h4 id="er-target"><strong>ER Target</strong></h4>
 <ul>
 <li><p>The character needs <strong>roughly</strong> amount of ER
 <strong>without</strong> being buffed by Zhezhi or Yangyang's outros.</p></li>
@@ -48,7 +48,7 @@ on the EVC score.</p></li>
 <li><p>For more details on how the target ER is considered and how it
 affects the EVC, check out the section on Energy Regen.</p></li>
 </ul>
-<h2 id="er-importance"><strong>ER Importance</strong></h2>
+<h4 id="er-importance"><strong>ER Importance</strong></h4>
 <ul>
 <li><p>This represents the “importance” of <strong>pressing the
 Liberation button</strong> for a character. While it is a quantitative
@@ -82,8 +82,8 @@ their liberation, resulting in ER being almost as good as crit, if not
 better.</p></li>
 </ul></li>
 </ul>
-<h2 id="attributes-basicheavyskillliberation"><strong>Attributes
-(Basic/Heavy/Skill/Liberation)</strong></h2>
+<h4 id="attributes-basicheavyskillliberation"><strong>Attributes
+(Basic/Heavy/Skill/Liberation)</strong></h4>
 <ul>
 <li><p>This value represents the <strong>percentage</strong> of this
 type of damage the character does in a rotation, as used by the
@@ -116,9 +116,10 @@ results (for more details on why this is the case, check out the
 </thead>
 <tbody>
 {% for char in char_data %}
+{% for team in char_data[char][1][0] %}
 <tr>
-<td><strong>{{char}}</strong></td>
-<td>{{char_data[char][1][0]}}</td>
+<td><strong>{{char}} ({{team}}): </strong></td>
+<td>{{char_data[char][1][0][team]}}</td>
 <td>
 {% if char_data[char][1][1] < 0.3 %} Min
 {% elif char_data[char][1][1] < 0.6 %} Norm
@@ -139,9 +140,10 @@ results (for more details on why this is the case, check out the
 {% endif %}
 </tr>
 {% endfor %}
+{% endfor %}
 </tbody>
 </table>
-</div>
+</section>
 <div class="art_nav">
   <a href="{{url_for('assumptions')}}"><button>Previous</button></a>
   <a href="{{url_for('contents')}}"><button>Contents</button></a>

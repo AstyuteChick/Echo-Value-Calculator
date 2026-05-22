@@ -5,10 +5,10 @@
   type="text/javascript">
 </script>
 {% endblock %}
-{% block body %}
-<div class="text_stuff">
+{% block section %}
+<section class="textStuff">
 {% raw %}
-<h1 id="concept-overview"><strong><u>Concept Overview</u></strong></h1>
+<h2 id="concept-overview"><strong><u>Concept Overview</u></strong></h2>
 <p><strong>NOTE: In the next articles, certain sections are enclosed in
 square brackets “[<em>-</em>]” and are in <em>italics</em>. Readers may skip these
 sections without loss of continuity and/or understanding. They are only
@@ -57,7 +57,7 @@ to calculate the scores using a pen, paper, and a (normal) calculator
 (albeit with significantly more time and effort than just using the
 EVC).</p>
 {% endraw %}
-</div>
+</section>
 <div class="art_nav">
   <a href="{{url_for('clg')}}"><button>Previous</button></a>
   <a href="{{url_for('contents')}}"><button>Contents</button></a>

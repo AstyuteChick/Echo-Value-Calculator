@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block body %}
-<div class="text_stuff">
-<h1 id="energy-regen-er-static-and-dynamic-values"><strong><u>Energy
-Regen (ER) – Static and Dynamic values</u></strong></h1>
+{% block section %}
+<section class="textStuff">
+<h2 id="energy-regen-er-static-and-dynamic-values"><strong><u>Energy
+Regen (ER) – Static and Dynamic values</u></strong></h2>
 <p>Thus far, all the sub stats and calculations have assumed the values
 to be <strong>static</strong> values. For example, how good Atk% is on
 Carlotta as compared to crit or Skill% <strong>practically does not
@@ -12,8 +12,8 @@ consequence) as long as players fit in the assumptions outlined in the
 assumptions section above].</em></p>
 <p>ER, however, does not work like the other stats we’ve used thus
 far.</p>
-<h2 id="why-even-consider-er"><strong>Why even consider
-ER?</strong></h2>
+<h3 id="why-even-consider-er"><strong>Why even consider
+ER?</strong></h3>
 <p><em>[ER is <strong>really important</strong>. For some characters
 like Carlotta, using liberation every rotation is mandatory to do
 majority of her damage. She is <strong>not</strong> a character like
@@ -45,8 +45,8 @@ of 5% more/less ER can quite significantly impact the Echo Scores
 because 5% is still <strong>more than half</strong> the average sub stat
 roll for ER – and if ER is a mandatory ability of the character, than
 the relative value starts approaching crit.</p>
-<h2 id="what-is-the-value-of-er"><strong>What is the value of
-ER?</strong></h2>
+<h3 id="what-is-the-value-of-er"><strong>What is the value of
+ER?</strong></h3>
 <p>Since <strong>all the previous values were DPS focused</strong>, it
 was easy to adjust them onto the same scale by considering how good they
 were relative to each other to do their specific job (of increasing
@@ -68,7 +68,7 @@ Furthermore, this method is also subject to many more considerations and
 improvements if considered seriously. As compared to the alternative
 method discussed next, this method requires far more effort to increase
 the accuracy by an insignificant and negligible amount]</em>.</p>
-<h2 id="er-in-achieved-value"><strong>ER in achieved value</strong></h2>
+<h3 id="er-in-achieved-value"><strong>ER in achieved value</strong></h3>
 <p>The <em>[alternate, more practical,]</em> method to evaluate ER would
 be to assume that the <strong>value</strong> of an average sub stat roll
 of ER (9.6%) <strong>is dynamic</strong> (as opposed to static) and
@@ -148,8 +148,8 @@ is</strong> (one multiplied by) <strong>the dynamic factor</strong>
 button is not pressed).</p>
 <h4 id="calculation-examples"><strong>Calculation examples</strong></h4>
 <p>-To Be Filled-</p>
-<h2 id="er-in-potential-value"><strong>ER in potential
-value</strong></h2>
+<h3 id="er-in-potential-value"><strong>ER in potential
+value</strong></h3>
 <p>ER has <strong>a huge impact</strong> on an Echo’s Potential value as
 well. Remember that Echo’s potential value is the value of the
 <strong>top 5 most important stats</strong>, so depending on the
@@ -205,8 +205,8 @@ important reason why it must be calculated.</p>
 <h4 id="calculation-examples-1"><strong>Calculation
 examples</strong></h4>
 <p>-To Be Filled-</p>
-<h2 id="from-echo-score-to-build-score"><strong>From Echo Score to Build
-Score</strong></h2>
+<h3 id="from-echo-score-to-build-score"><strong>From Echo Score to Build
+Score</strong></h3>
 <p>While the build score is simply the average score of the five Echoes
 in a set, the <strong>net ER value is tracked between Echoes</strong> as
 it determines both the achieved score as well as the echo potential
@@ -250,7 +250,7 @@ the Full Scores or there is a less than 1 point difference, there are
 cases when there is a discrepancy of more than 5 points (again this is
 very rare and I’ve personally only observed it doing Cartethyia’s Build
 analyses]</em>.</p>
-</div>
+</section>
 <div class="art_nav">
   <a href="{{url_for('esbs')}}"><button>Previous</button></a>
   <a href="{{url_for('contents')}}"><button>Contents</button></a>
