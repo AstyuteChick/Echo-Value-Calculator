@@ -131,13 +131,14 @@ function renderFullVals(uid, curStat) {
     // Only renders for the specific substat
     const valSlct=document.getElementById(`val-${uid}`);
     valSlct.innerHTML=`<option value="noVal">Rolls</option>`;
-    if (curStat==="noVal") return;
-    substatRollsData[curStat].forEach(function (roll) {
-        const opt=document.createElement("option");
-        opt.value=roll;
-        opt.textContent=roll;
-        valSlct.appendChild(opt);
-    });
+    if (curStat!=="noVal") {
+        substatRollsData[curStat].forEach(function (roll) {
+            const opt=document.createElement("option");
+            opt.value=roll;
+            opt.textContent=roll;
+            valSlct.appendChild(opt);
+        });
+    }
     valSlct.value="noVal"
     valSlct.classList.remove("hasVal");
 }

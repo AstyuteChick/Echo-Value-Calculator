@@ -1,133 +1,162 @@
 
-state["echoData"] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
-state["usefulStats"] = [];
-state["pickedStats"] = [];
-
-elms["allEchoNameSlct"] = document.querySelectorAll(".statNameSlct");
-elms["allEchoValSlct"] = document.querySelectorAll(".statValueSlct");
-
-function renderEchoSubstatNames(){
+function resetEchoState() {
     state["echoData"]=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     state["usefulStats"]=[];
     state["pickedStats"]=[];
-    elms["allEchoNameSlct"].forEach(function (nameSlct){nameSlct.innerHTML = `<option value="noVal">Select Echo Substat</option>`});
-    elms["allEchoValSlct"].forEach(function (valSlct){valSlct.innerHTML=`<option value="noVal">Select Value</option>`});
     elms["scoreVal"].innerHTML="[Your Echo Score]";
     elms["tierVal"].innerHTML="[Your Echo Tier]";
-    charData[state["selectedChar"]][0].forEach(function (relVal, ind){
+}
+
+function setEchoElements() {
+    elms["allEchoNameSlct"]=document.querySelectorAll(".statNameSlct");
+    elms["allEchoValSlct"]=document.querySelectorAll(".statValueSlct");
+}
+
+function renderEchoSubstats() {
+    // Also updates state of usefulstats
+    elms["allEchoNameSlct"].forEach(function (nameSlct) {
+        nameSlct.innerHTML=`<option value="noVal">Select Substat</option>`;
+        nameSlct.classList.remove("hasVal");
+    });
+    charData[state["selectedChar"]][0].forEach(function (relVal, ind) {
         if (!relVal) return;
-        const curStat = echoData[ind];
-        elms["allEchoNameSlct"].forEach(function (nameSlct){
-            const opt = document.createElement("option");
-            opt.value = curStat;
-            opt.textContent = curStat;
+        const statName=echoData[ind];
+        elms["allEchoNameSlct"].forEach(function (nameSlct) {
+            const opt=document.createElement("option");
+            opt.value=statName;
+            opt.textContent=statName;
             nameSlct.appendChild(opt);
         });
-        state["usefulStats"].push(curStat);
-    });
-    const erArray=[charData[state["selectedChar"]][1][0][state["selectedTeam"]], charData[state["selectedChar"]][1][1], charData[state["selectedChar"]][1][2]];
-    if (erArray[0]<=100 || erArray[1]===0 || erArray[0]===undefined) return;
-    elms["allEchoNameSlct"].forEach(function (nameSlct){
-        const opt=document.createElement("option");
-        opt.value=echoData[12];
-        opt.textContent=echoData[12];
-        nameSlct.appendChild(opt);
-    });
-    state["usefulStats"].push(echoData[12]);
-}
-
-function updateSubstatOpts(){
-    elms["allEchoNameSlct"].forEach(function (nameSlct){
-        const curVal = nameSlct.value;
-        nameSlct.innerHTML = "<option value = 'noVal'>Select Echo Substat</option>";
-        state["usefulStats"].forEach(function (stat){
-            if (stat === curVal || !state["pickedStats"].includes(stat)) {
-                const opt = document.createElement("option");
-                opt.value = stat;
-                opt.textContent = stat;
-                nameSlct.appendChild(opt);
-            }
-        });
-        if (curVal==="ER(%)" && state["usefulStats"].indexOf("ER(%)")===-1) {
-            nameSlct.value="noVal";
-            const echoNo=Number(nameSlct.id[nameSlct.id.length-1]);
-            elms["allEchoValSlct"].forEach(function (valSlct){
-                if (Number(valSlct.id[valSlct.id.length-1])!==echoNo) return;
-                valSlct.value="noVal";
-            });
-        }
-        else {nameSlct.value=curVal;}
+        state["usefulStats"].push(statName);
     });
 }
 
-function handleEchoSubstatChange(event){
-    const curSlct = event.currentTarget;
-    const prevVal = curSlct.dataset.prevVal;
-    curSlct.dataset.prevVal = curSlct.value;
-    if (curSlct.value !== "noVal") {
-        if (prevVal !== "noVal") {
-            state["pickedStats"].splice(state["pickedStats"].indexOf(prevVal), 1);
-            state["echoData"][echoData.indexOf(prevVal)] = 0.0;
-        }
-        state["pickedStats"].push(curSlct.value);
+function resetEchoVals() {
+    elms["allEchoValSlct"].forEach(function (valSlct) {
+        valSlct.innerHTML=`<option value="noVal">Select Roll</option>`;
+        valSlct.classList.remove("hasVal");
+    });
+}
+
+function handleEchoCharClick() {
+    resetEchoState();
+    renderEchoSubstats();
+    resetEchoVals();
+}
+
+function updateEchoStateEr(erReq) {
+    if (erReq>100) {
+        if (!state["usefulStats"].includes("ER(%)")) {state["usefulStats"].push("ER(%)");}
     } else {
-        state["pickedStats"].splice(state["pickedStats"].indexOf(prevVal), 1);
-        state["echoData"][echoData.indexOf(prevVal)] = 0.0;
+        if (state["usefulStats"].includes("ER(%)")) {state["usefulStats"].splice(state["usefulStats"].indexOf("ER(%)"), 1);}
+        if (state["pickedStats"].includes("ER(%)")) {state["pickedStats"].splice(state["pickedStats"].indexOf("ER(%)"), 1);}
+        state["echoData"][12]=0;
     }
-    updateSubstatOpts();
 }
 
-function renderEchoValOpts(event){
-    const nameSlct = event.currentTarget;
-    const echoNo = Number(nameSlct.id[nameSlct.id.length - 1]);
-    elms["allEchoValSlct"].forEach(function (valSlct){
-        if (Number(valSlct.id[valSlct.id.length - 1]) !== echoNo) return;
-        valSlct.innerHTML = `<option value="noVal">Select Value</option>`;
-        if (nameSlct.value === "noVal") return;
-        substatRollsData[nameSlct.value].forEach(function (val){
-            const opt = document.createElement("option");
-            opt.value = val;
-            opt.textContent = val;
+function updateEchoSubstats() {
+    elms["allEchoNameSlct"].forEach(function (nameSlct) {
+        const curStat=nameSlct.value;
+        nameSlct.innerHTML=`<option value="noVal">Select Substat</option>`;
+        state["usefulStats"].forEach(function (stat) {
+            if (state["pickedStats"].includes(stat) && curStat!==stat) return;
+            const opt=document.createElement("option");
+            opt.value=stat;
+            opt.textContent=stat;
+            nameSlct.appendChild(opt);
+        });
+        if (state["pickedStats"].includes(curStat)) {
+            nameSlct.value=curStat;
+            nameSlct.classList.add("hasVal");
+        }
+        else {
+            nameSlct.value="noVal";
+            nameSlct.classList.remove("hasVal");
+        }
+    });
+}
+
+function updateEchoVals() {
+    // Assumes substats are updated first, and value options are refreshed after every substat change
+    elms["allEchoValSlct"].forEach(function (valSlct) {
+        const curVal=valSlct.value;
+        const nameSlct=document.getElementById(`stat-name-${valSlct.id.slice(-1)}`);
+        const statName=nameSlct.value;
+        valSlct.innerHTML=`<option value="noVal">Select Roll</option>`;
+        if (statName==="noVal") {
+            valSlct.value="noVal";
+            valSlct.classList.remove("hasVal");
+            return;
+        }
+        substatRollsData[statName].forEach(function (roll) {
+            const opt=document.createElement("option");
+            opt.value=roll;
+            opt.textContent=roll;
             valSlct.appendChild(opt);
         });
+        valSlct.value=curVal;
+        if (curVal!=="noVal") {valSlct.classList.add("hasVal");}
+        else {valSlct.classList.remove("hasVal");}
     });
 }
 
-function handleValOptsChange(event){
-    const valSlct = event.currentTarget;
-    const echoNo = Number(valSlct.id[valSlct.id.length - 1]);
-    const statName = elms["allEchoNameSlct"][echoNo - 1].value;
-    state["echoData"][echoData.indexOf(statName)] = valSlct.value === "noVal" ? 0.0 : Number(valSlct.value);
+function handleEchoTeamChange(event) {
+    const teamSlct=event.currentTarget;
+    const teamName=teamSlct.value;
+    let erReq=0;
+    if (teamName!=="noVal"){erReq=charData[state["selectedChar"]][1][0][teamName];}
+    updateEchoStateEr(erReq);
+    updateEchoSubstats();
+    updateEchoVals();
 }
 
-function handleEchoTeamChange() {
-    const erArr=[];
-    const teamReqEr=charData[state["selectedChar"]][1][0][state["selectedTeam"]];
-    const erImp=charData[state["selectedChar"]][1][1];
-    const rc=charData[state["selectedChar"]][1][2];
-    state["echoData"][12]=0.0;
-    if (Number(teamReqEr)<=100 || erImp===0){
-        if (state["usefulStats"].indexOf("ER(%)")!==-1) {
-            state["usefulStats"].splice(state["usefulStats"].indexOf("ER(%)"), 1);
-        }
-        if (state["pickedStats"].indexOf("ER(%)")!==-1) {
-            state["pickedStats"].splice(state["pickedStats"].indexOf("ER(%)"), 1);
-        }
+function updateEchoStateStats(prevStat, curStat) {
+    if (prevStat!=="noVal") {state["pickedStats"].splice(state["pickedStats"].indexOf(prevStat), 1);}
+    if (curStat!=="noVal") {state["pickedStats"].push(curStat);}
+}
+
+function renderEchoVals(uid, curStat) {
+    // Only renders for the specific substat
+    const valSlct=document.getElementById(`stat-value-${uid}`);
+    valSlct.innerHTML=`<option value="noVal">Select Roll</option>`;
+    if (curStat!=="noVal") {
+        substatRollsData[curStat].forEach(function (roll) {
+            const opt=document.createElement("option");
+            opt.value=roll;
+            opt.textContent=roll;
+            valSlct.appendChild(opt);
+        });
     }
-    else {
-        if (state["usefulStats"].indexOf("ER(%)")===-1) {state["usefulStats"].push("ER(%)");}
-    }
-    updateSubstatOpts();
+    valSlct.value="noVal"
+    valSlct.classList.remove("hasVal");
 }
 
-function updateEchoResults(result){
-    elms["scoreVal"].innerHTML = result.score;
-    elms["tierVal"].innerHTML = result.tier;
+function handleEchoSubstatChange(event) {
+    const statSlct=event.currentTarget;
+    const prevStat=statSlct.dataset.prevVal;
+    const curStat=statSlct.value;
+    statSlct.dataset.prevVal=curStat;
+    const uid=statSlct.id.slice(-1);
+    updateEchoStateStats(prevStat, curStat);
+    renderEchoVals(uid, curStat);
+    updateEchoSubstats();
 }
 
-async function calcEchoResults(){
+function handleEchoValChange(event) {
+    const valSlct=event.currentTarget;
+    const statSlct=document.getElementById(`stat-name-${valSlct.id.slice(-1)}`);
+    const statInd=echoData.indexOf(statSlct.value);
+    state["echoData"][statInd]=valSlct.value==="noVal"?0:valSlct.value;
+}
+
+function updateEchoResults(result) {
+    elms["scoreVal"].innerHTML=result.score;
+    elms["tierVal"].innerHTML=result.tier;
+}
+
+async function calcEchoResults() {
     try {
-        const response = await fetch("/calcEcho", {
+        const response=await fetch("/calcEcho", {
             method: "POST", 
             headers: {"Content-Type": "application/json"}, 
             body: JSON.stringify({
@@ -145,22 +174,31 @@ async function calcEchoResults(){
     }
 }
 
-function setEchoEventListeners(){
-    elms["charOptsLst"].addEventListener("click", renderEchoSubstatNames);
+function echoDebugger() {
+    console.log(state["selectedChar"]);
+    console.log(state["selectedTeam"]);
+    console.log(state["totEr"]);
+    console.log(state["echoData"]);
+}
+
+function setEchoEventListeners() {
+    elms["charOptsLst"].addEventListener("click", handleEchoCharClick);
     elms["teamSlct"].addEventListener("change", handleEchoTeamChange);
-    elms["allEchoNameSlct"].forEach(function (slct){
-        slct.dataset.prevVal = slct.value;
+    elms["allEchoNameSlct"].forEach(function (slct) {
+        slct.dataset.prevVal=slct.value;
         slct.addEventListener("change", handleEchoSubstatChange);
-        slct.addEventListener("change", renderEchoValOpts);
         slct.addEventListener("change", controlStyles)
     });
-    elms["allEchoValSlct"].forEach(function (slct){
-        slct.addEventListener("change", handleValOptsChange);
+    elms["allEchoValSlct"].forEach(function (slct) {
+        slct.addEventListener("change", handleEchoValChange);
         slct.addEventListener("change", controlStyles)
     });
     elms["form"].addEventListener("submit", calcEchoResults);
 
+    document.addEventListener("click", echoDebugger);
 }
 
+resetEchoState();
+setEchoElements();
 setEchoEventListeners();
-renderEchoSubstatNames();
+handleEchoCharClick();
