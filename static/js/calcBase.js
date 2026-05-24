@@ -120,11 +120,14 @@ function handleOutsideClick(event) {
 }
 
 function handleTeamChange(event) {
-    const slctTeamVal=event.target.value;
-    if (slctTeamVal==="noVal") {
+    const teamSlct=event.currentTarget;
+    const teamName=teamSlct.value;
+    if (teamName==="noVal") {
         state["selectedTeam"]=null;
+        teamSlct.setCustomValidity("Please select a team");
     } else {
-        state["selectedTeam"]=slctTeamVal;
+        state["selectedTeam"]=teamName;
+        teamSlct.setCustomValidity("");
     }
 }
 
