@@ -48,7 +48,7 @@ h2 {
 }
 
 .selectedChar span {
-    color: var(--scTxt);
+    color: var(--acTxt);
     font-family: Cascadia Code;
 }
 
@@ -62,15 +62,16 @@ h2 {
 }
 
 .charMenu input:hover, .teamSelect select:hover,  .totEr input:hover {
-    border-color: color-mix(in srgb, var(--ac) 75%, var(--txt) 25%);
+    border-color: color-mix(in srgb, var(--sc) 75%, var(--txt) 25%);
 }
 
 .charMenu input:focus, .teamSelect select:focus,  .totEr input:focus {
     background-color: var(--b2);
+    border-color: color-mix(in srgb, var(--ac) 75%, var(--txt) 25%);
 }
 
 .charMenu input.hasVal, .teamSelect select.hasVal, .totEr input.hasVal {
-    color: var(--scTxt);
+    color: var(--acTxt);
 }
 
 .charOptsLst {
@@ -101,7 +102,7 @@ h2 {
 }
 
 .teamSelectSlct.hasVal {
-    color: var(--scTxt);
+    color: var(--acTxt);
 }
 
 .teamSelect select option {
@@ -113,7 +114,7 @@ h2 {
 }
 
 .teamSelect select option:hover {
-    background-color: var(--ac);
+    background-color: var(--sc);
 }
 
 @media (max-width: 1100px) {

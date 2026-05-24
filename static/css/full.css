@@ -83,7 +83,7 @@
     padding: var(--pds) var(--pdn);
     background-color: var(--b2);
     border-radius: var(--rn);
-    border: 2px solid var(--ac);
+    border: 2px solid var(--sc);
 }
 
 .resultConsole > dl > div dt {

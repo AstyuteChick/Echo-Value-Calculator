@@ -15,7 +15,6 @@ a {
 }
 
 .mainNv {
-    /* border: solid; */
     min-height: 100vh;
     padding: var(--pdn);
     background-color: var(--b1);
@@ -42,6 +41,10 @@ a {
     transition: background-color var(--ani);
 }
 
+.hamburgerBtn:hover span{
+    background-color: var(--bgc);
+}
+
 .hamburgerBtn:active span{
     background-color: var(--bgc);
 }
@@ -66,23 +69,22 @@ a {
 }
 
 .navLst li a:hover {
-    background-color: var(--ac);
+    background-color: var(--sc);
+    color: var(--bgc);
 }
 
 .navLst li a:active {
-    background-color: var(--sc);
-    color: var(--bgc);
+    background-color: var(--ac);
     transform: translateX(0.2rem);
 }
 
 .navLst li a.selectedNav {
-    background-color: var(--sc);
+    background-color: var(--ac);
     color: var(--bgc);
 }
 
 .navLst li a.selectedNav:hover {
-    background-color: var(--sc);
-    color: var(--bgc);
+    background-color: var(--ac);
 }
 
 .navLst li a img {
@@ -161,5 +163,6 @@ h1 {
 }
 
 .setOptsLst li label:hover {
-    background-color: var(--ac);
+    background-color: var(--sc);
+    color: var(--bgc);
 }

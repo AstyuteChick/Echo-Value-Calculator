@@ -3,11 +3,13 @@
     --bgc: hsl(0, 0%, 4%);
     --b1: hsl(0, 0%, 8%);
     --b2: hsl(0, 0%, 12%);
-    --ac: #0066ff;
-    --sc: #00bbe7;
-    --acTxt: #0066ff;
-    --scTxt: #00d0ff;
     --txt: hsl(0, 0%, 96%);
+    /* --ac: color-mix(in srgb, var(--txt), hsl(240, 66%, 50%) 80%);
+    --sc: color-mix(in srgb, var(--txt), hsl(240, 66%, 50%) 80%); */
+    --ac: #0267C1;
+    --sc: #A6E1FA;
+    --acTxt: #A6E1FA;
+    --scTxt: #0267C1;
     --ani: 0.16s;
     --rn: 0.5rem;
     --rs: 0.25rem;
@@ -25,22 +27,43 @@
     --bgc: hsl(0, 0%, 96%);
     --b1: hsl(0, 0%, 92%);
     --b2: hsl(0, 0%, 88%);
-    --ac: #00bbe7;
-    --sc: #0066ff;
-    --scTxt: #0066ff;
-    --acTxt: #00d0ff;
     --txt: hsl(0, 0%, 4%);
-    --ani: 0.16s;
-    --rn: 0.5rem;
-    --rs: 0.25rem;
-    --rl: 0.75rem;
-    --pdn: 1em;
-    --pds: 0.5em;
-    --pdl: 1.5em;
-    --bs: 1px solid color-mix(in srgb, var(--txt) 84%, transparent);
-    --bm: 2px solid color-mix(in srgb, var(--txt) 84%, transparent);
-    --fsl: 1.5rem;
-    --fsb: 1.125rem;
+    --ac: #A6E1FA;
+    --sc: #0267C1;
+    --acTxt: #A6E1FA;
+    --scTxt: #0267C1;
+    --bs: 1px solid color-mix(in srgb, var(--txt) 32%, transparent);
+    --bm: 2px solid color-mix(in srgb, var(--txt) 32%, transparent);
+}
+
+:root.aero{
+    --acTxt: #2A7221;
+    --scTxt: #a0e88e;
+}
+
+:root.electro{
+    --acTxt: #6457A6;
+    --scTxt: #ddc9ff;
+}
+
+:root.fusion{
+    --acTxt: #a44200;
+    --scTxt: #ffb775;
+}
+
+:root.glacio{
+    --acTxt: #00265a;
+    --scTxt: #4381c1;
+}
+
+:root.havoc{
+    --acTxt: #832161;
+    --scTxt: #ffacea;
+}
+
+:root.spectro{
+    --acTxt: #502100;
+    --scTxt: #eca72c;
 }
 
 *, *::before, *::after {
@@ -60,12 +83,13 @@
 }
 
 .btn:hover {
-    background-color: var(--ac);
+    background-color: var(--sc);
+    color: var(--bgc);
 }
 
 .btn:active {
-    background-color: var(--sc);
-    color: var(--bgc);
+    background-color: var(--ac);
+    color: var(--txt);
 }
 
 .noLst {
@@ -104,12 +128,12 @@
 }
 
 .slct:hover, .inp:hover {
-    border-color: color-mix(in srgb, var(--ac) 75%, var(--txt) 25%);
+    border-color: color-mix(in srgb, var(--sc) 75%, var(--txt) 25%);
 }
 
 .slct:focus, .inp:focus {
     outline: none;
-    border-color: var(--ac);
+    border-color: color-mix(in srgb, var(--ac) 75%, var(--txt) 25%);
 }
 
 .resultConsole {
@@ -143,7 +167,7 @@
     padding: var(--pdn);
     background-color: var(--b2);
     border-radius: var(--rn);
-    border: 2px solid var(--ac);
+    border: var(--bm);
 }
 
 .resultConsole dl > div dt {
