@@ -21,13 +21,13 @@ function renderEchoSubstats() {
     charData[state["selectedChar"]][0].forEach(function (relVal, ind) {
         if (!relVal) return;
         const statName=echoData[ind];
+        state["usefulStats"].push(statName);
         elms["allEchoNameSlct"].forEach(function (nameSlct) {
             const opt=document.createElement("option");
             opt.value=statName;
             opt.textContent=statName;
             nameSlct.appendChild(opt);
         });
-        state["usefulStats"].push(statName);
     });
 }
 
@@ -111,7 +111,11 @@ function handleEchoTeamChange(event) {
 }
 
 function updateEchoStateStats(prevStat, curStat) {
-    if (prevStat!=="noVal") {state["pickedStats"].splice(state["pickedStats"].indexOf(prevStat), 1);}
+    if (prevStat!=="noVal") {
+        state["pickedStats"].splice(state["pickedStats"].indexOf(prevStat), 1);
+        const prevStatInd=echoData.indexOf(prevStat);
+        state["echoData"][prevStatInd]=0;
+    }
     if (curStat!=="noVal") {state["pickedStats"].push(curStat);}
 }
 

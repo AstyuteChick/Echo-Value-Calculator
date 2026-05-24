@@ -62,10 +62,10 @@
     <header class="head mainHead">
       <h1>Echo Value Calculator 4.0</h1>
       <div class="profMenu">
-        <button type="button" class="btn setBtn">
+        <button type="button" class="btn setBtn" id="prof-btn">
           <img src="{{url_for('static', filename='images/Settings_Icon.png')}}" alt="">
         </button>
-        <div><ul class="noLst setOptsLst">
+        <div class="menuCont" hidden><ul class="noLst setOptsLst">
           <li><label>
             <span>Dark Mode</span>
             <input type="checkbox" id="dark-mode" name="darkMode" checked>

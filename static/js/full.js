@@ -29,13 +29,13 @@ function renderFullSubstats() {
     charData[state["selectedChar"]][0].forEach(function (relVal, ind) {
         if (!relVal) return;
         const statName=echoData[ind];
+        state["usefulStats"].push(statName);
         elms["allEchoesNameSlct"].forEach(function (nameSlct) {
             const opt=document.createElement("option");
             opt.value=statName;
             opt.textContent=statName;
             nameSlct.appendChild(opt);
         });
-        state["usefulStats"].push(statName);
     });
 }
 
@@ -93,7 +93,6 @@ function updateFullVals() {
         const curVal=valSlct.value;
         const nameSlct=document.getElementById(`stat-${valSlct.id.slice(-2)}`);
         const statName=nameSlct.value;
-        const echoInd=Number(valSlct.id[4])-1;
         valSlct.innerHTML=`<option value="noVal">Rolls</option>`;
         if (statName==="noVal") {
             valSlct.value="noVal";
@@ -123,7 +122,11 @@ function handleFullTeamChange(event) {
 }
 
 function updateFullStateStats(prevStat, curStat, echoInd) {
-    if (prevStat!=="noVal") {state["pickedStats"][echoInd].splice(state["pickedStats"][echoInd].indexOf(prevStat), 1);}
+    if (prevStat!=="noVal") {
+        state["pickedStats"][echoInd].splice(state["pickedStats"][echoInd].indexOf(prevStat), 1);
+        const prevStatInd=echoData.indexOf(prevStat);
+        state["fullData"][echoInd][prevStatInd]=0;
+    }
     if (curStat!=="noVal") {state["pickedStats"][echoInd].push(curStat);}
 }
 
