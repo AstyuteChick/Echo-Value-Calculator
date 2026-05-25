@@ -29,8 +29,7 @@
 }
 
 .fsEchoStatSlct.hasVal, .fsEchoValSlct.hasVal {
-    color: var(--scTxt);
-    font-weight: 600;
+    color: var(--acTxt);
 }
 
 .fullBtns {

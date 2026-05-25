@@ -21,6 +21,10 @@
     background-color: var(--bgc);
 }
 
+.costSlct.hasVal, .mainStatSlct.hasVal {
+    color: var(--acTxt);
+}
+
 .costAndMainStatCont {
     background-color: var(--b2);
     display: grid;
@@ -34,6 +38,10 @@
 
 .statInp {
     background-color: var(--bgc);
+}
+
+.statInp.hasVal {
+    color: var(--acTxt);
 }
 
 .statFlst {

@@ -34,8 +34,7 @@
 }
 
 .statNameSlct.hasVal, .statValueSlct.hasVal {
-    font-weight: 600;
-    color: var(--ac);
+    color: var(--acTxt);
 }
 
 .subBtn {
