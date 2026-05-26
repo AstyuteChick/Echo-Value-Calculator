@@ -94,3 +94,15 @@
     font-weight: 600;
     font-size: var(--fsl);
 }
+
+@media (max-width: 1800px) {
+  .echoesBlock {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 950px) {
+  .echoesBlock {
+    grid-template-columns: 1fr;
+  }
+}

@@ -5,7 +5,7 @@ const mainStatData=JSON.parse(mainStatDataEle.textContent);
 function resetBuildState() {
     state["buildData"]=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     state["costSetup"]=[];
-    state["mainStats"]=["noVal", "noVal", "noVal", "noVal", "noVal"];
+    state["mainStats"]=["", "", "", "", ""];
     elms["scoreVal"].innerHTML="[Your Build Score]";
     elms["tierVal"].innerHTML="[Your Build Tier]";
 }
@@ -68,6 +68,7 @@ function handleBuildCostChange(event) {
     const costSlct=event.currentTarget;
     const curCostSetup=costSlct.value;
     state["costSetup"]=[];
+    state["mainStatSlct"]=["", "", "", "", ""];
     if (curCostSetup!=="") {
         for (let char of curCostSetup) {state["costSetup"].push(Number(char));}
     }
@@ -101,7 +102,11 @@ function handleBuildMainStatChange(event) {
     state["mainStats"][echoNo-1]=curMainStatVal;
 }
 
-function handleBuildStatFocus(event) {event.currentTarget.value="";}
+function handleBuildStatFocus(event) {
+    const curInp=event.currentTarget;
+    state["buildData"][echoData.indexOf(curInp.id)]=0;
+    curInp.value="";
+}
 
 function handleBuildStatInp(event) {
     const curInp=event.currentTarget;
@@ -110,11 +115,12 @@ function handleBuildStatInp(event) {
 }
 
 function updateBuildResults(result) {
-    elms["scoreVal"].innerHTML=result.score;
-    elms["tierVal"].innerHTML=result.tier;
+    elms["scoreVal"].textContent=result.score;
+    elms["tierVal"].textContent=result.tier;
 }
 
 async function calcBuildResults() {
+    if (!elms["form"].reportValidity()) return;
     try {
         const response = await fetch("/calcBuild", {
             method: "POST", 

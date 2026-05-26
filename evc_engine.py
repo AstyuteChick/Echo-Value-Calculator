@@ -1,6 +1,11 @@
 
 import heapq
 
+def adjust_req_er(er_req, rc, buff_val) -> float: 
+    er_adj=er_req*(1-(buff_val/rc))
+    if er_adj<=100: er_adj=0.0
+    return er_adj
+
 class GameData:
 
     rel_val_stat_names=["Crit Rate(%)", "Crit Damage(%)", "Atk(%)", "Flat Atk", "HP(%)", "Flat HP", "Def(%)", "Flat Def", "Basic(%)", "Heavy(%)", "Skill(%)", "Liberation(%)"]
@@ -96,6 +101,21 @@ class Character:
         "Zhezhi":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.8, 0.0, 0.0, 0.0], [{"Empyrean Anthem (Default)": 133.1, "Moonlit Clouds": 118.1}, 1.0, 125.0], True]    
     }
 
+    for char_name in data:
+        for team in data[char_name][1][0]:
+            if "Default" in team:
+                try:
+                    def_er=data[char_name][1][0][team]
+                    zhe_er=adjust_req_er(def_er-3.1, data[char_name][1][2], 15)
+                    if zhe_er>100: data[char_name][1][0]["Zhezhi Outro"]=round(zhe_er+3.1, 1)
+                    else: data[char_name][1][0]["Zhezhi Outro"]=0.0
+                    yang_er=adjust_req_er(def_er-3.1, data[char_name][1][2], 20)
+                    if yang_er>100: data[char_name][1][0]["Yangyang Outro"]=round(yang_er+3.1, 1)
+                    else: data[char_name][1][0]["Yangyang Outro"]=0.0
+                except ZeroDivisionError: pass
+                print(char_name, data[char_name][1][0])
+                break
+
     def __init__(self, name: str, team: str)-> None:
         self.name=name
         self.rv=Character.data[self.name][0]
@@ -125,20 +145,6 @@ class Character:
             if team_in == team: 
                 team_stat=float(team_stats[team])
                 break
-        if team_stat==None:
-            if team_in=="Yangyang Outro":
-                for team in team_stats:
-                    if "Default" in team: 
-                        team_stat=team_stats[team]
-                        break
-                team_stat[0]=adjust_req_er(team_stat[0], team_stat[2], 20)
-            elif team_in=="Zhezhi Outro":
-                for team in team_stats:
-                    if "Default" in team: 
-                        team_stat=team_stats[team]
-                        break
-                team_stat[0]=adjust_req_er(team_stat[0], team_stat[2], 15)
-            else: raise ValueError("Team Didn't match any options")
         if team_stat==None: raise ValueError("Something went wrong")
         er_stat = [team_stat, Character.data[self.name][1][1], Character.data[self.name][1][2]]
         self._team=er_stat
@@ -269,8 +275,6 @@ def ep_stats_build(echo_ssr: dict, ssm: dict, char_player: Character, er_net_ep:
         index=index+1
         if index==12: break
     return sum(heapq.nlargest(5, rel_pot_vals)), er_net_ep
-
-def adjust_req_er(er_req, rc, buff_val) -> float: return er_req*(1-(buff_val/rc))
 
 def es_stats(av_total: float, ep_total: float)-> float: return (av_total/ep_total)*100
 

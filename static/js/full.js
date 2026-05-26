@@ -122,7 +122,7 @@ function handleFullTeamChange(event) {
 }
 
 function updateFullStateStats(prevStat, curStat, echoInd) {
-    if (prevStat!=="noVal") {
+    if (prevStat!=="noVal" && state["pickedStats"][echoInd].includes(prevStat)) {
         state["pickedStats"][echoInd].splice(state["pickedStats"][echoInd].indexOf(prevStat), 1);
         const prevStatInd=echoData.indexOf(prevStat);
         state["fullData"][echoInd][prevStatInd]=0;
@@ -167,11 +167,12 @@ function handleFullValChange(event) {
 }
 
 function updateFullResults(result) {
-    elms["scoreVal"].innerHTML=result.score;
-    elms["tierVal"].innerHTML=result.tier;
+    elms["scoreVal"].textContent=result.score;
+    elms["tierVal"].textContent=result.tier;
 }
 
 async function calcFullResults() {
+    if (!elms["form"].reportValidity()) return;
     try {
         const response = await fetch("/calcFull", {
             method: "POST", 

@@ -112,7 +112,7 @@ function handleEchoTeamChange(event) {
 }
 
 function updateEchoStateStats(prevStat, curStat) {
-    if (prevStat!=="noVal") {
+    if (prevStat!=="noVal" && state["pickedStats"].includes(prevStat)) {
         state["pickedStats"].splice(state["pickedStats"].indexOf(prevStat), 1);
         const prevStatInd=echoData.indexOf(prevStat);
         state["echoData"][prevStatInd]=0;
@@ -163,12 +163,13 @@ function triggerAni() {
 }
 
 function updateEchoResults(result) {
-    elms["scoreVal"].innerHTML=result.score;
-    elms["tierVal"].innerHTML=result.tier;
+    elms["scoreVal"].textContent=result.score;
+    elms["tierVal"].textContent=result.tier;
     triggerAni();
 }
 
 async function calcEchoResults() {
+    if (!elms["form"].reportValidity()) return;
     try {
         const response=await fetch("/calcEcho", {
             method: "POST", 

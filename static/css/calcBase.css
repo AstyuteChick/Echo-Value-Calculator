@@ -82,7 +82,6 @@ h2 {
     max-height: 32em;
     overflow-y: auto;
     overflow-x: hidden;
-    display: hidden;
 }
 
 .charOptsBtn {
