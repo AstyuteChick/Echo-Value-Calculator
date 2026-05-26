@@ -157,6 +157,8 @@
     margin: 1rem 0 0;
     display: grid;
     gap: 1rem;
+    position: relative;
+    overflow: hidden;
 }
 
 .resultConsole dl > div {
@@ -168,6 +170,24 @@
     background-color: var(--b2);
     border-radius: var(--rn);
     border: var(--bm);
+}
+
+.resultConsole dl > div::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+    background: linear-gradient(120deg, transparent 0%, transparent 35%, rgba(255, 255, 255, 0.25) 50%, transparent 65%, transparent 100%);
+    transform: translateX(-100%);
+    z-index: 0;
+}
+
+.resultDiv.otshine::before {
+    animation: result-shine 900ms ease-out;
+}
+
+.resultConsole dl > div > * {
+    position: relative;
+    z-index: 1;
 }
 
 .resultConsole dl > div dt {
@@ -183,5 +203,13 @@
 
 .textStuff {
     padding: var(--pdn);
-    
+}
+
+@keyframes result-shine {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
 }

@@ -10,6 +10,7 @@ function resetEchoState() {
 function setEchoElements() {
     elms["allEchoNameSlct"]=document.querySelectorAll(".statNameSlct");
     elms["allEchoValSlct"]=document.querySelectorAll(".statValueSlct");
+    elms["resultDivs"]=document.querySelectorAll(".resultDiv");
 }
 
 function renderEchoSubstats() {
@@ -153,9 +154,18 @@ function handleEchoValChange(event) {
     state["echoData"][statInd]=valSlct.value==="noVal"?0:valSlct.value;
 }
 
+function triggerAni() {
+    elms["resultDivs"].forEach(function (div) {
+        div.classList.remove("otshine");
+        void div.offsetWidth;
+        div.classList.add("otshine");
+    })
+}
+
 function updateEchoResults(result) {
     elms["scoreVal"].innerHTML=result.score;
     elms["tierVal"].innerHTML=result.tier;
+    triggerAni();
 }
 
 async function calcEchoResults() {
@@ -178,6 +188,12 @@ async function calcEchoResults() {
     }
 }
 
+function handleAniEnd(event) {
+    if (event.animationName==="result-shine") {
+        elms["resultDivs"].forEach(function (div) {div.classList.remove("otshine")});
+    }
+}
+
 function echoDebugger() {
     console.log(state["selectedChar"]);
     console.log(state["selectedTeam"]);
@@ -191,13 +207,16 @@ function setEchoEventListeners() {
     elms["allEchoNameSlct"].forEach(function (slct) {
         slct.dataset.prevVal=slct.value;
         slct.addEventListener("change", handleEchoSubstatChange);
-        slct.addEventListener("change", controlStyles)
+        slct.addEventListener("change", controlStyles);
     });
     elms["allEchoValSlct"].forEach(function (slct) {
         slct.addEventListener("change", handleEchoValChange);
-        slct.addEventListener("change", controlStyles)
+        slct.addEventListener("change", controlStyles);
     });
     elms["form"].addEventListener("submit", calcEchoResults);
+    elms["resultDivs"].forEach(function (div) {
+        div.addEventListener("animationend", handleAniEnd);
+    })
 
     document.addEventListener("click", echoDebugger);
 }
