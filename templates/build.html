@@ -8,16 +8,16 @@
 <div class = "costStatsAndResultBlock">
   <fieldset class = "flst costFlst">
     <legend class="lgd">Echo Cost Setup</legend>
-    <select id = "cost-slct" class="slct costSlct">
-      <option value="noVal">Select your Echo-Cost setup</option>
+    <select id = "cost-slct" class="slct costSlct" required>
+      <option value="">Select your Echo-Cost setup</option>
       <option value="43311">43311</option>
       <option value="44111">44111</option>
     </select>
     <div class="costAndMainStatCont">
       {% for echo_no in range(1, 6) %}
       <label for="echo-ms-{{echo_no}}">? - Cost Echo: </label>
-      <select id="echo-ms-{{echo_no}}" class="slct mainStatSlct">
-        <option value="noVal">Select your Echo's Main-Stat</option>
+      <select id="echo-ms-{{echo_no}}" class="slct mainStatSlct" required>
+        <option value="">Select your Echo's Main-Stat</option>
       </select>
       {% endfor %}
     </div>

@@ -4,7 +4,7 @@ const mainStatData=JSON.parse(mainStatDataEle.textContent);
 
 function resetBuildState() {
     state["buildData"]=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
-    state["costSetup"]=[0, 0, 0, 0, 0];
+    state["costSetup"]=[];
     state["mainStats"]=["noVal", "noVal", "noVal", "noVal", "noVal"];
     elms["scoreVal"].innerHTML="[Your Build Score]";
     elms["tierVal"].innerHTML="[Your Build Tier]";
@@ -18,9 +18,9 @@ function setBuildElements() {
 
 function handleBuildCharChange() {
     resetBuildState();
-    elms["costSetup"].value="noVal";
+    elms["costSetup"].value="";
     elms["mainStatSlct"].forEach(function (slct) {
-        slct.innerHTML="<option value='noVal'>Select your Echo's Main-Stat</option>";
+        slct.innerHTML="<option value=''>Select your Echo's Main-Stat</option>";
         slct.labels[0].textContent="? - Cost Echo: ";
         slct.classList.remove("hasVal");
         slct.labels[0].classList.remove("hasVal");
@@ -68,14 +68,16 @@ function handleBuildCostChange(event) {
     const costSlct=event.currentTarget;
     const curCostSetup=costSlct.value;
     state["costSetup"]=[];
-    for (let char of curCostSetup) {state["costSetup"].push(Number(char));}
+    if (curCostSetup!=="") {
+        for (let char of curCostSetup) {state["costSetup"].push(Number(char));}
+    }
     elms["mainStatSlct"].forEach(function (slct) {
-        slct.innerHTML="<option value='noVal'>Select your Echo's Main-Stat</option>";
+        slct.innerHTML="<option value=''>Select your Echo's Main-Stat</option>";
         slct.labels[0].textContent="? - Cost Echo: ";
         slct.classList.remove("hasVal");
         slct.labels[0].classList.remove("hasVal");
     });
-    if (curCostSetup==="noVal") {
+    if (curCostSetup==="") {
         costSlct.classList.remove("hasVal");
         return
     } else {costSlct.classList.add("hasVal");}
@@ -95,7 +97,7 @@ function handleBuildMainStatChange(event) {
     const curSlct=event.currentTarget;
     const curMainStatVal=curSlct.value;
     const echoNo=Number(curSlct.id.slice(-1));
-    if (curMainStatVal==="noVal") {curSlct.classList.remove("hasVal");} else {curSlct.classList.add("hasVal");}
+    if (curMainStatVal==="") {curSlct.classList.remove("hasVal");} else {curSlct.classList.add("hasVal");}
     state["mainStats"][echoNo-1]=curMainStatVal;
 }
 
@@ -104,12 +106,12 @@ function handleBuildStatFocus(event) {event.currentTarget.value="";}
 function handleBuildStatInp(event) {
     const curInp=event.currentTarget;
     if (Number(curInp.value)!==0) {curInp.classList.add("hasVal");} else {curInp.classList.remove("hasVal");}
-    state["buildData"][echoData.indexOf(curInp.id)]=curInp.value;
+    state["buildData"][echoData.indexOf(curInp.id)]=Number(curInp.value);
 }
 
 function updateBuildResults(result) {
-    elms["scoreVal"].innerHTML = result.score;
-    elms["tierVal"].innerHTML = result.tier;
+    elms["scoreVal"].innerHTML=result.score;
+    elms["tierVal"].innerHTML=result.tier;
 }
 
 async function calcBuildResults() {
