@@ -47,7 +47,7 @@ function handleBuildTeamChange(event) {
     const erInp=document.getElementById("ER(%)");
     const erVal=erInp.value;
     let erReqs=0;
-    if (teamName!=="noVal") {
+    if (teamName!=="") {
         erReqs=charData[state["selectedChar"]][1][0][teamName];
         teamSlct.classList.add("hasVal");
     } else {teamSlct.classList.remove("hasVal");}

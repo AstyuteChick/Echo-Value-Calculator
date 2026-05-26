@@ -105,7 +105,7 @@ function handleEchoTeamChange(event) {
     const teamSlct=event.currentTarget;
     const teamName=teamSlct.value;
     let erReq=0;
-    if (teamName!=="noVal"){erReq=charData[state["selectedChar"]][1][0][teamName];}
+    if (teamName!==""){erReq=charData[state["selectedChar"]][1][0][teamName];}
     updateEchoStateEr(erReq);
     updateEchoSubstats();
     updateEchoVals();

@@ -75,7 +75,7 @@ function closeCharMenu() {
 }
 
 function renderTeamOpts(charName) {
-    elms["teamSlct"].innerHTML=`<option value="noVal">Select your character's team</option>`;
+    elms["teamSlct"].innerHTML=`<option value="">Select your character's team</option>`;
     elms["teamSlct"].classList.remove("hasVal");
     const charTeams=Object.keys(charData[charName][1][0]);
     charTeams.forEach(function (team) {
@@ -85,7 +85,7 @@ function renderTeamOpts(charName) {
         elms.teamSlct.appendChild(opt);
     });
     state["selectedTeam"]=null;
-    elms["teamSlct"].value="noVal";
+    elms["teamSlct"].value="";
 }
 
 function selectChar(charName) {
@@ -122,12 +122,10 @@ function handleOutsideClick(event) {
 function handleTeamChange(event) {
     const teamSlct=event.currentTarget;
     const teamName=teamSlct.value;
-    if (teamName==="noVal") {
+    if (teamName==="") {
         state["selectedTeam"]=null;
-        teamSlct.setCustomValidity("Please select a team");
     } else {
         state["selectedTeam"]=teamName;
-        teamSlct.setCustomValidity("");
     }
 }
 

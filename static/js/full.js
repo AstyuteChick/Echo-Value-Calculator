@@ -115,7 +115,7 @@ function handleFullTeamChange(event) {
     const teamSlct=event.currentTarget;
     const teamName=teamSlct.value;
     let erReq=0;
-    if (teamName!=="noVal"){erReq=charData[state["selectedChar"]][1][0][teamName];}
+    if (teamName!==""){erReq=charData[state["selectedChar"]][1][0][teamName];}
     updateFullStateEr(erReq);
     updateFullSubstats();
     updateFullVals();
