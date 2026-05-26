@@ -113,7 +113,6 @@ class Character:
                     if yang_er>100: data[char_name][1][0]["Yangyang Outro"]=round(yang_er+3.1, 1)
                     else: data[char_name][1][0]["Yangyang Outro"]=0.0
                 except ZeroDivisionError: pass
-                print(char_name, data[char_name][1][0])
                 break
 
     def __init__(self, name: str, team: str)-> None:

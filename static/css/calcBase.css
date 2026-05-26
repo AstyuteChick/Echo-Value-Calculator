@@ -116,7 +116,13 @@ h2 {
     background-color: var(--sc);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1700px) {
+  .charDetailsFlst {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 1350px) {
   .charDetailsFlst {
     grid-template-columns: 1fr;
   }
@@ -128,9 +134,10 @@ h2 {
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 950px) {
   body {
     grid-template-columns: 1fr;
+    padding: var(--pdn) var(--pdl);
   }
 
   .mainNv {
