@@ -149,6 +149,20 @@ function controlStyles(event) {
     else {elem.classList.remove("hasVal");}
 }
 
+function triggerAni() {
+    elms["resultDivs"].forEach(function (div) {
+        div.classList.remove("otshine");
+        void div.offsetWidth;
+        div.classList.add("otshine");
+    })
+}
+
+function handleAniEnd(event) {
+    if (event.animationName==="result-shine") {
+        elms["resultDivs"].forEach(function (div) {div.classList.remove("otshine")});
+    }
+}
+
 function setEventListeners() {
     elms["form"].addEventListener("submit", handleSubmit);
     elms["searchChar"].addEventListener("focus", handleCharSearchFocus);

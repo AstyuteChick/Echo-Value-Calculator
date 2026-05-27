@@ -154,14 +154,6 @@ function handleEchoValChange(event) {
     state["echoData"][statInd]=valSlct.value==="noVal"?0:valSlct.value;
 }
 
-function triggerAni() {
-    elms["resultDivs"].forEach(function (div) {
-        div.classList.remove("otshine");
-        void div.offsetWidth;
-        div.classList.add("otshine");
-    })
-}
-
 function updateEchoResults(result) {
     elms["scoreVal"].textContent=result.score;
     elms["tierVal"].textContent=result.tier;
@@ -189,12 +181,6 @@ async function calcEchoResults() {
     }
 }
 
-function handleAniEnd(event) {
-    if (event.animationName==="result-shine") {
-        elms["resultDivs"].forEach(function (div) {div.classList.remove("otshine")});
-    }
-}
-
 function echoDebugger() {
     console.log(state["selectedChar"]);
     console.log(state["selectedTeam"]);
@@ -217,7 +203,7 @@ function setEchoEventListeners() {
     elms["form"].addEventListener("submit", calcEchoResults);
     elms["resultDivs"].forEach(function (div) {
         div.addEventListener("animationend", handleAniEnd);
-    })
+    });
 
     document.addEventListener("click", echoDebugger);
 }

@@ -72,6 +72,8 @@
     display: flex;
     justify-content: space-evenly;
     padding: var(--pds) var(--pdn);
+    position: relative;
+    overflow: hidden;
 }
 
 .horiResultCons > dl > div {
@@ -85,8 +87,22 @@
     border: 2px solid var(--sc);
 }
 
-.resultConsole > dl > div dt {
+.horiResultCons dl > div::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+    background: linear-gradient(120deg, transparent 0%, transparent 35%, rgba(255, 255, 255, 0.25) 50%, transparent 65%, transparent 100%);
+    transform: translateX(-100%);
+    z-index: 0;
+}
+
+.horiResultCons > dl > div dt {
     font-size: var(--fsb);
+}
+
+.horiResultCons dl > div > * {
+    position: relative;
+    z-index: 1;
 }
 
 .fullResultVal {

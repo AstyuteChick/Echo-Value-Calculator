@@ -18,6 +18,7 @@ function resetFullState() {
 function setFullElements() {
     elms["allEchoesNameSlct"]=document.querySelectorAll(".fsEchoStatSlct");
     elms["allEchoesValSlct"]=document.querySelectorAll(".fsEchoValSlct");
+    elms["resultDivs"]=document.querySelectorAll(".resultDiv");
 }
 
 function renderFullSubstats() {
@@ -205,6 +206,9 @@ function setFullEventListeners() {
         valSlct.addEventListener("change", controlStyles)
     });
     elms["form"].addEventListener("submit", calcFullResults);
+    elms["resultDivs"].forEach(function (div) {
+        div.addEventListener("animationend", handleAniEnd);
+    });
 }
 
 resetFullState();
