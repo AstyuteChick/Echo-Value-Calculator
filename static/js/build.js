@@ -165,7 +165,7 @@ async function calcBuildResults() {
     } catch (error) {
         console.error("Submit Failed: ", error)
         const result={score: `Submit Failed: ${error}`, tier: "Error"}
-        updateEchoResults(result);
+        updateBuildResults(result);
     }
 }
 

@@ -124,7 +124,6 @@ function renderTeamOpts(charName) {
 
 function selectChar(charName) {
     if (!charName) return;
-    console.log("we got to here");
     state["selectedChar"]=charName;
     elms["searchChar"].value=charName;
     const img=document.createElement("img");
@@ -232,6 +231,7 @@ function setConsColor(tier) {
                 div.style.backgroundColor="var(--error)";
                 div.style.color="hsl(0, 0%, 96%)";
             });
+            break;
         default: 
             elms["resultDivs"].forEach(function (div) {
                 div.style.backgroundColor="var(--b2)";

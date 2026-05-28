@@ -166,7 +166,7 @@ function handleFullValChange(event) {
     const statSlct=document.getElementById(`stat-${valSlct.id.slice(-2)}`);
     const statInd=echoData.indexOf(statSlct.value);
     if (statInd===-1) {
-        updateEchoResults({score: `001: Invalid Stat found - ${statSlct.value}`, tier: "Error"});
+        updateFullResults({score: `001: Invalid Stat found - ${statSlct.value}`, tier: "Error"});
         return;
     }
     state["fullData"][echoInd][statInd]=valSlct.value==="noVal"?0:valSlct.value;
@@ -211,7 +211,7 @@ async function calcFullResults() {
     } catch (error) {
         console.error("Submit Failed: ", error)
         const result={score: `Submit Failed: ${error}`, tier: "Error"}
-        updateEchoResults(result);
+        updateFullResults(result);
     }
 }
 

@@ -35,10 +35,10 @@
     --b1: hsl(0, 0%, 92%);
     --b2: hsl(0, 0%, 88%);
     --txt: hsl(0, 0%, 4%);
-    --ac: #A6E1FA;
-    --sc: #0267C1;
-    --acTxt: #A6E1FA;
-    --scTxt: #0267C1;
+    --ac: #0267C1;
+    --sc: #00b3ff;
+    --acTxt: #0267C1;
+    --scTxt: #00b3ff;
     --bs: 1px solid color-mix(in srgb, var(--txt) 32%, transparent);
     --bm: 2px solid color-mix(in srgb, var(--txt) 32%, transparent);
 }
@@ -230,6 +230,10 @@
 
 .textStuff {
     padding: var(--pdn);
+}
+
+.textStuff a {
+    color: var(--sc);
 }
 
 .textStuff table tbody tr td{
