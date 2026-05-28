@@ -161,7 +161,15 @@ function updateEchoResults(result) {
 }
 
 async function calcEchoResults() {
-    if (!elms["form"].reportValidity()) return;
+    if (
+        !elms["form"].reportValidity() || 
+        !validateBaseStateUI() || 
+        !validateEchoStateUI(state["echoData"], elms["allEchoNameSlct"], state["pickedStats"], -1, `stat-value-`)
+    ) {
+        const result={score: "Error", tier: "State-UI Mismatch"}
+        updateEchoResults(result);
+        return;
+    }
     try {
         const response=await fetch("/calcEcho", {
             method: "POST", 

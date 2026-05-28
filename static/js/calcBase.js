@@ -25,6 +25,38 @@ const elms={
     tierVal: document.querySelector(".tierVal")
 }
 
+function validateBaseStateUI() {
+    if (state["selectedChar"]!==elms["selectedChar"]) return false;
+    if (state["selectedTeam"]!==elms["teamSlct"]) return false;
+    if (state["totEr"]!==elms["totErIn"]) return false;
+    return true;
+}
+
+function validateEchoStateUI(echoState, echoElm, echoPickedStats, uidData, uidName) {
+    for (const [ind, statVal] of echoState.entries()) {
+        const statName=echoData[ind];
+        if (!statVal) {
+            for (const nameSlct of echoElm) {
+                if (nameSlct.value===statName) return false;
+            }
+        } else {
+            if (!echoPickedStats.includes(statName)) return false;
+            let matchesFound=0;
+            let uid="";
+            for (const nameSlct of echoElm) {
+                if (nameSlct.value===statName) {
+                    matchesFound++;
+                    uid=nameSlct.id.splice(uidData);
+                }
+            }
+            if (matchesFound!==1 || uid==="") return false;
+            const valSlct=document.getElementById(`${uidName}${uid}`);
+            if (valSlct.value!==statVal) return false;
+        }
+    }
+    return true;
+}
+
 function handleSubmit(event) {event.preventDefault();}
 
 function renderCharOpts(searchInp="") {

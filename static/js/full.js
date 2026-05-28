@@ -167,13 +167,26 @@ function handleFullValChange(event) {
     state["fullData"][echoInd][statInd]=valSlct.value==="noVal"?0:valSlct.value;
 }
 
+function validateFullStateUI() {
+    if (!validateEchoStateUI(state["fullData"][0], Array.from(elms["allEchoesNameSlct"]).slice(0, 5), state["pickedStats"][0], -2, `val-`)) return false;
+    if (!validateEchoStateUI(state["fullData"][1], Array.from(elms["allEchoesNameSlct"]).slice(5, 10), state["pickedStats"][1], -2, `val-`)) return false;
+    if (!validateEchoStateUI(state["fullData"][2], Array.from(elms["allEchoesNameSlct"]).slice(10, 15), state["pickedStats"][2], -2, `val-`)) return false;
+    if (!validateEchoStateUI(state["fullData"][3], Array.from(elms["allEchoesNameSlct"]).slice(15, 20), state["pickedStats"][3], -2, `val-`)) return false;
+    if (!validateEchoStateUI(state["fullData"][4], Array.from(elms["allEchoesNameSlct"]).slice(20, 25), state["pickedStats"][4], -2, `val-`)) return false;
+    return true;
+}
+
 function updateFullResults(result) {
     elms["scoreVal"].textContent=result.score;
     elms["tierVal"].textContent=result.tier;
 }
 
 async function calcFullResults() {
-    if (!elms["form"].reportValidity()) return;
+    if (!elms["form"].reportValidity() || !validateBaseStateUI() || !validateFullStateUI()) {
+        const result={score: "Error", tier: "State-UI Mismatch"}
+        updateFullResults(result);
+        return;
+    }
     try {
         const response = await fetch("/calcFull", {
             method: "POST", 

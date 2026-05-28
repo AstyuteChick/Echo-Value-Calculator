@@ -5,7 +5,7 @@ const mainStatData=JSON.parse(mainStatDataEle.textContent);
 function resetBuildState() {
     state["buildData"]=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     state["costSetup"]=[];
-    state["mainStats"]=["", "", "", "", ""];
+    state["mainStats"]=["", "", "", "", "", ""];
     elms["scoreVal"].innerHTML="[Your Build Score]";
     elms["tierVal"].innerHTML="[Your Build Tier]";
 }
@@ -114,13 +114,36 @@ function handleBuildStatInp(event) {
     state["buildData"][echoData.indexOf(curInp.id)]=Number(curInp.value);
 }
 
+function validateBuildStateUI() {
+    for (const [ind, statVal] of state["buildData"].entries()) {
+        const statName=echoData[ind];
+        const valInp=document.getElementById(statName);
+        if (!statVal) {
+            if (Number(valInp.value)) return false;
+        } else {
+            if (Number(valInp.value)!==statVal) return false;
+        }
+    }
+    for (const [ind, echoCost] of state["costSetup"].entries()) {
+        if (echoCost!==Number(elms["costSetup"].value[ind])) return false;
+    }
+    for (const [ind, mainStat] of state["mainStats"].entries()) {
+        if (mainStat!==elms["mainStatSlct"][ind].value) return false;
+    }
+    return true;
+}
+
 function updateBuildResults(result) {
     elms["scoreVal"].textContent=result.score;
     elms["tierVal"].textContent=result.tier;
 }
 
 async function calcBuildResults() {
-    if (!elms["form"].reportValidity()) return;
+    if (!elms["form"].reportValidity() || !validateBaseStateUI() || !validateBuildStateUI()) {
+        const result={score: "Error", tier: "State-UI Mismatch"}
+        updateBuildResults(result);
+        return;
+    }
     try {
         const response = await fetch("/calcBuild", {
             method: "POST", 
