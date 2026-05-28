@@ -179,6 +179,8 @@ function validateFullStateUI() {
 function updateFullResults(result) {
     elms["scoreVal"].textContent=result.score;
     elms["tierVal"].textContent=result.tier;
+    setConsColor(result.tier.split(":")[0]);
+    triggerAni();
 }
 
 async function calcFullResults() {

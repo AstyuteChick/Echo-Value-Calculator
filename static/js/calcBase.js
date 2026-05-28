@@ -22,17 +22,19 @@ const elms={
     teamSlct: document.querySelector("#team-select"),
     totErIn: document.querySelector("#tot-er"), 
     scoreVal: document.querySelector(".scoreVal"), 
-    tierVal: document.querySelector(".tierVal")
+    tierVal: document.querySelector(".tierVal"), 
+    resultDivs: document.querySelectorAll(".resultDiv")
 }
 
 function validateBaseStateUI() {
-    if (state["selectedChar"]!==elms["selectedChar"]) return false;
-    if (state["selectedTeam"]!==elms["teamSlct"]) return false;
-    if (state["totEr"]!==elms["totErIn"]) return false;
+    if (state["selectedChar"]!==elms["selectedChar"].children[1].textContent) return false;
+    if (state["selectedTeam"]!==elms["teamSlct"].value) return false;
+    if (state["totEr"]!==Number(elms["totErIn"].value)) return false;
     return true;
 }
 
 function validateEchoStateUI(echoState, echoElm, echoPickedStats, uidData, uidName) {
+    console.log("validateEchoStateUI");
     for (const [ind, statVal] of echoState.entries()) {
         const statName=echoData[ind];
         if (!statVal) {
@@ -46,7 +48,7 @@ function validateEchoStateUI(echoState, echoElm, echoPickedStats, uidData, uidNa
             for (const nameSlct of echoElm) {
                 if (nameSlct.value===statName) {
                     matchesFound++;
-                    uid=nameSlct.id.splice(uidData);
+                    uid=nameSlct.id.slice(uidData);
                 }
             }
             if (matchesFound!==1 || uid==="") return false;
@@ -165,7 +167,7 @@ function handleTotErFocus() {
     if (elms["totErIn"].value) {elms["totErIn"].value="";}
 }
 
-function handleTotErType() {state["totEr"]=elms["totErIn"].value;}
+function handleTotErType() {state["totEr"]=Number(elms["totErIn"].value);}
 
 function controlStyles(event) {
     const elem=event.currentTarget;
@@ -179,6 +181,52 @@ function controlStyles(event) {
     }
     if (hasVal===true) {elem.classList.add("hasVal");}
     else {elem.classList.remove("hasVal");}
+}
+
+function setConsColor(tier) {
+    switch (tier) {
+        case "Godly": 
+            elms["resultDivs"].forEach(function (div) {
+                div.style.backgroundColor="var(--godly)";
+                div.style.color="hsl(0, 0%, 4%)";
+            });
+            break;
+        case "Extreme": 
+            elms["resultDivs"].forEach(function (div) {
+                div.style.backgroundColor="var(--extreme)";
+                div.style.color="hsl(0, 0%, 4%)";
+            });
+            break;
+        case "High Investment": 
+            elms["resultDivs"].forEach(function (div) {
+                div.style.backgroundColor="var(--high)";
+                div.style.color="hsl(0, 0%, 96%)";
+            });
+            break;
+        case "Well Built": 
+            elms["resultDivs"].forEach(function (div) {
+                div.style.backgroundColor="var(--well)";
+                div.style.color="hsl(0, 0%, 96%)";
+            });
+            break;
+        case "Decent": 
+            elms["resultDivs"].forEach(function (div) {
+                div.style.backgroundColor="var(--decent)";
+                div.style.color="hsl(0, 0%, 4%)";
+            });
+            break;
+        case "Base Level": 
+            elms["resultDivs"].forEach(function (div) {
+                div.style.backgroundColor="var(--base)";
+                div.style.color="hsl(0, 0%, 96%)";
+            });
+            break;
+        default: 
+            elms["resultDivs"].forEach(function (div) {
+                div.style.backgroundColor="var(--b2)";
+                div.style.color="var(--txt)";
+            });
+    }
 }
 
 function triggerAni() {
@@ -206,6 +254,9 @@ function setEventListeners() {
     elms["totErIn"].addEventListener("input", handleTotErType);
     elms["teamSlct"].addEventListener("change", controlStyles);
     elms["totErIn"].addEventListener("input", controlStyles);
+    elms["resultDivs"].forEach(function (div) {
+        div.addEventListener("animationend", handleAniEnd);
+    });
 }
 
 function setup() {selectChar(state["selectedChar"]);}

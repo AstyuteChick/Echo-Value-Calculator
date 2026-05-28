@@ -5,7 +5,7 @@ const mainStatData=JSON.parse(mainStatDataEle.textContent);
 function resetBuildState() {
     state["buildData"]=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     state["costSetup"]=[];
-    state["mainStats"]=["", "", "", "", "", ""];
+    state["mainStats"]=["", "", "", "", ""];
     elms["scoreVal"].innerHTML="[Your Build Score]";
     elms["tierVal"].innerHTML="[Your Build Tier]";
 }
@@ -136,6 +136,8 @@ function validateBuildStateUI() {
 function updateBuildResults(result) {
     elms["scoreVal"].textContent=result.score;
     elms["tierVal"].textContent=result.tier;
+    setConsColor(result.tier);
+    triggerAni();
 }
 
 async function calcBuildResults() {
@@ -180,6 +182,9 @@ function setBuildEventListeners() {
     });
     elms["form"].addEventListener("submit", calcBuildResults);
     elms["costSetup"].addEventListener("change", controlStyles);
+    elms["resultDivs"].forEach(function (div) {
+        div.addEventListener("animationend", handleAniEnd);
+    });
 }
 
 resetBuildState();

@@ -10,7 +10,6 @@ function resetEchoState() {
 function setEchoElements() {
     elms["allEchoNameSlct"]=document.querySelectorAll(".statNameSlct");
     elms["allEchoValSlct"]=document.querySelectorAll(".statValueSlct");
-    elms["resultDivs"]=document.querySelectorAll(".resultDiv");
 }
 
 function renderEchoSubstats() {
@@ -157,6 +156,7 @@ function handleEchoValChange(event) {
 function updateEchoResults(result) {
     elms["scoreVal"].textContent=result.score;
     elms["tierVal"].textContent=result.tier;
+    setConsColor(result.tier);
     triggerAni();
 }
 
@@ -209,11 +209,8 @@ function setEchoEventListeners() {
         slct.addEventListener("change", controlStyles);
     });
     elms["form"].addEventListener("submit", calcEchoResults);
-    elms["resultDivs"].forEach(function (div) {
-        div.addEventListener("animationend", handleAniEnd);
-    });
 
-    document.addEventListener("click", echoDebugger);
+    // document.addEventListener("click", echoDebugger);
 }
 
 resetEchoState();

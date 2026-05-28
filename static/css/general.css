@@ -21,6 +21,12 @@
     --bm: 2px solid color-mix(in srgb, var(--txt) 16%, transparent);
     --fsl: 1.5rem;
     --fsb: 1.125rem;
+    --godly: #efbf04;
+    --extreme: #ffbf00;
+    --high: #e40078;
+    --well: #9d00ff;
+    --decent: #305cde;
+    --base: #008000;
 }
 
 :root.lightMode {
@@ -161,7 +167,7 @@
     overflow: hidden;
 }
 
-.resultConsole dl > div {
+.resultDiv {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -172,7 +178,7 @@
     border: var(--bm);
 }
 
-.resultConsole dl > div::before {
+.resultDiv::before {
     position: absolute;
     content: "";
     inset: 0;
@@ -185,12 +191,12 @@
     animation: result-shine 900ms ease-out;
 }
 
-.resultConsole dl > div > * {
+.resultDiv > * {
     position: relative;
     z-index: 1;
 }
 
-.resultConsole dl > div dt {
+.resultDiv dt {
     font-size: var(--fsb);
 }
 
