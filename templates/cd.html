@@ -117,9 +117,9 @@ results (for more details on why this is the case, check out the
 <tbody>
 {% for char in char_data %}
 {% for team in char_data[char][1][0] %}
-<tr>
+<tr {% if loop.last %}class="tblSep"{% endif %}>
 <td><strong>{{char}} ({{team}}): </strong></td>
-<td>{{char_data[char][1][0][team]}}</td>
+<td>{% if (char_data[char][1][0][team]-3.1)<=100 %} - {% else %} {{(char_data[char][1][0][team]-3.1)|round(1)}} {% endif %}</td>
 <td>
 {% if char_data[char][1][1] < 0.3 %} Min
 {% elif char_data[char][1][1] < 0.6 %} Norm
@@ -128,10 +128,10 @@ results (for more details on why this is the case, check out the
 {% endif %}
 </td>
 {% if char == "Brant (sub DPS, ER/ER 3 cost setup)" %}
-<td> - </td>
-<td> - </td>
-<td> - </td>
-<td> - </td>
+<td> NA </td>
+<td> NA </td>
+<td> NA </td>
+<td> NA </td>
 {% else %}
 <td>{{char_data[char][0][8]*2}}</td>
 <td>{{char_data[char][0][9]*2}}</td>

@@ -73,6 +73,7 @@ function updateEchoSubstats() {
             nameSlct.value="noVal";
             nameSlct.classList.remove("hasVal");
         }
+        nameSlct.dataset.prevVal=nameSlct.value;
     });
 }
 
@@ -150,6 +151,10 @@ function handleEchoValChange(event) {
     const valSlct=event.currentTarget;
     const statSlct=document.getElementById(`stat-name-${valSlct.id.slice(-1)}`);
     const statInd=echoData.indexOf(statSlct.value);
+    if (statInd===-1) {
+        updateEchoResults({score: `001: Invalid Stat found - ${statSlct.value}`, tier: "Error"});
+        return;
+    }
     state["echoData"][statInd]=valSlct.value==="noVal"?0:valSlct.value;
 }
 
@@ -166,7 +171,7 @@ async function calcEchoResults() {
         !validateBaseStateUI() || 
         !validateEchoStateUI(state["echoData"], elms["allEchoNameSlct"], state["pickedStats"], -1, `stat-value-`)
     ) {
-        const result={score: "Error", tier: "State-UI Mismatch"}
+        const result={score: "State-UI Mismatch", tier: "Error"}
         updateEchoResults(result);
         return;
     }
@@ -185,7 +190,9 @@ async function calcEchoResults() {
         const result = await response.json();
         updateEchoResults(result);
     } catch (error) {
-        console.error("Submit Failed: ", error)
+        console.error("Submit Failed: ", error);
+        const result={score: `Submit Failed: ${error}`, tier: "Error"}
+        updateEchoResults(result);
     }
 }
 
@@ -209,6 +216,7 @@ function setEchoEventListeners() {
         slct.addEventListener("change", controlStyles);
     });
     elms["form"].addEventListener("submit", calcEchoResults);
+    elms["resetBtn"].addEventListener("click", handleEchoCharClick);
 
     // document.addEventListener("click", echoDebugger);
 }

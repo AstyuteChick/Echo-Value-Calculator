@@ -85,6 +85,7 @@ function updateFullSubstats() {
             nameSlct.value="noVal";
             nameSlct.classList.remove("hasVal");
         }
+        nameSlct.dataset.prevVal=nameSlct.value;
     });
 }
 
@@ -164,6 +165,10 @@ function handleFullValChange(event) {
     const echoInd=Number(valSlct.id[4])-1;
     const statSlct=document.getElementById(`stat-${valSlct.id.slice(-2)}`);
     const statInd=echoData.indexOf(statSlct.value);
+    if (statInd===-1) {
+        updateEchoResults({score: `001: Invalid Stat found - ${statSlct.value}`, tier: "Error"});
+        return;
+    }
     state["fullData"][echoInd][statInd]=valSlct.value==="noVal"?0:valSlct.value;
 }
 
@@ -185,7 +190,7 @@ function updateFullResults(result) {
 
 async function calcFullResults() {
     if (!elms["form"].reportValidity() || !validateBaseStateUI() || !validateFullStateUI()) {
-        const result={score: "Error", tier: "State-UI Mismatch"}
+        const result={score: "State-UI Mismatch", tier: "Error"}
         updateFullResults(result);
         return;
     }
@@ -205,6 +210,8 @@ async function calcFullResults() {
         updateFullResults(result);
     } catch (error) {
         console.error("Submit Failed: ", error)
+        const result={score: `Submit Failed: ${error}`, tier: "Error"}
+        updateEchoResults(result);
     }
 }
 
@@ -221,9 +228,7 @@ function setFullEventListeners() {
         valSlct.addEventListener("change", controlStyles)
     });
     elms["form"].addEventListener("submit", calcFullResults);
-    elms["resultDivs"].forEach(function (div) {
-        div.addEventListener("animationend", handleAniEnd);
-    });
+    elms["resetBtn"].addEventListener("click", handleFullCharClick);
 }
 
 resetFullState();

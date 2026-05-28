@@ -32,25 +32,6 @@
     color: var(--acTxt);
 }
 
-.fullBtns {
-    display: flex;
-    justify-content: space-evenly;
-    padding: var(--pds) var(--pdn);
-    align-items: center;
-}
-
-.fullResetBtn {
-    padding: var(--pds) var(--pdn);
-    border: 1px solid var(--txt);
-    font-size: var(--fsb);
-}
-
-.fullSubBtn {
-    padding: var(--pds) var(--pdn);
-    border: 3px solid var(--txt);
-    font-size: var(--fsb);
-}
-
 .horiResultCons {
     display: grid;
     grid-template-columns: 8rem 1fr;

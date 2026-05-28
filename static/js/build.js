@@ -55,7 +55,7 @@ function handleBuildTeamChange(event) {
         erInp.hidden=false;
         erInp.labels[0].hidden=false;
         erInp.value=erVal;
-        state["buildData"][12]=erVal;
+        state["buildData"][12]=Number(erVal);
     } else {
         erInp.hidden=true;
         erInp.labels[0].hidden=true;
@@ -68,7 +68,7 @@ function handleBuildCostChange(event) {
     const costSlct=event.currentTarget;
     const curCostSetup=costSlct.value;
     state["costSetup"]=[];
-    state["mainStatSlct"]=["", "", "", "", ""];
+    state["mainStats"]=["", "", "", "", ""];
     if (curCostSetup!=="") {
         for (let char of curCostSetup) {state["costSetup"].push(Number(char));}
     }
@@ -142,7 +142,7 @@ function updateBuildResults(result) {
 
 async function calcBuildResults() {
     if (!elms["form"].reportValidity() || !validateBaseStateUI() || !validateBuildStateUI()) {
-        const result={score: "Error", tier: "State-UI Mismatch"}
+        const result={score: "State-UI Mismatch", tier: "Error"}
         updateBuildResults(result);
         return;
     }
@@ -164,6 +164,8 @@ async function calcBuildResults() {
         updateBuildResults(result);
     } catch (error) {
         console.error("Submit Failed: ", error)
+        const result={score: `Submit Failed: ${error}`, tier: "Error"}
+        updateEchoResults(result);
     }
 }
 
@@ -182,9 +184,7 @@ function setBuildEventListeners() {
     });
     elms["form"].addEventListener("submit", calcBuildResults);
     elms["costSetup"].addEventListener("change", controlStyles);
-    elms["resultDivs"].forEach(function (div) {
-        div.addEventListener("animationend", handleAniEnd);
-    });
+    elms["resetBtn"].addEventListener("click", handleBuildCharChange);
 }
 
 resetBuildState();

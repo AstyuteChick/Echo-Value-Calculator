@@ -27,6 +27,7 @@
     --well: #9d00ff;
     --decent: #305cde;
     --base: #008000;
+    --error: #780606;
 }
 
 :root.lightMode {
@@ -142,6 +143,26 @@
     border-color: color-mix(in srgb, var(--ac) 75%, var(--txt) 25%);
 }
 
+.allBtns {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    padding: var(--pds) var(--pdn);
+    align-items: center;
+}
+
+.allResetBtn {
+    padding: var(--pds) var(--pdn);
+    border: 1px solid var(--txt);
+    font-size: var(--fsb);
+}
+
+.allSubBtn {
+    padding: var(--pds) var(--pdn);
+    border: 3px solid var(--txt);
+    font-size: var(--fsb);
+}
+
 .resultConsole {
     align-self: start;
     justify-self: center;
@@ -209,6 +230,15 @@
 
 .textStuff {
     padding: var(--pdn);
+}
+
+.textStuff table tbody tr td{
+    padding: var(--pdn) var(--pdn);
+    text-align: center;
+}
+
+.tblSep td {
+    border-bottom: 2px solid var(--txt);
 }
 
 @keyframes result-shine {

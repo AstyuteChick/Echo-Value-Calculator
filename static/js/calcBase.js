@@ -11,7 +11,7 @@ const state={
     selectedChar: `Aemeath`, 
     isCharMenuOpen: false, 
     selectedTeam: null, 
-    totEr: 100.0
+    totEr: null
 }
 
 const elms={
@@ -21,6 +21,7 @@ const elms={
     charOptsLst: document.querySelector(".charOptsLst"), 
     teamSlct: document.querySelector("#team-select"),
     totErIn: document.querySelector("#tot-er"), 
+    resetBtn: document.querySelector(".allResetBtn"), 
     scoreVal: document.querySelector(".scoreVal"), 
     tierVal: document.querySelector(".tierVal"), 
     resultDivs: document.querySelectorAll(".resultDiv")
@@ -123,6 +124,7 @@ function renderTeamOpts(charName) {
 
 function selectChar(charName) {
     if (!charName) return;
+    console.log("we got to here");
     state["selectedChar"]=charName;
     elms["searchChar"].value=charName;
     const img=document.createElement("img");
@@ -136,8 +138,10 @@ function selectChar(charName) {
     elms["selectedChar"].appendChild(spn);
     closeCharMenu();
     renderTeamOpts(charName);
-    state["totEr"]=100.0;
+    state["totEr"]=null;
     elms["totErIn"].value="";
+    setConsColor("");
+    triggerAni();
 }
 
 function handleCharSearchClick(event) {
@@ -163,7 +167,10 @@ function handleTeamChange(event) {
 }
 
 function handleTotErFocus() {
-    if (elms["totErIn"].value) {elms["totErIn"].value="";}
+    if (elms["totErIn"].value) {
+        state["totEr"]=null;
+        elms["totErIn"].value="";
+    }
 }
 
 function handleTotErType() {state["totEr"]=Number(elms["totErIn"].value);}
@@ -220,6 +227,11 @@ function setConsColor(tier) {
                 div.style.color="hsl(0, 0%, 96%)";
             });
             break;
+        case "Error": 
+            elms["resultDivs"].forEach(function (div) {
+                div.style.backgroundColor="var(--error)";
+                div.style.color="hsl(0, 0%, 96%)";
+            });
         default: 
             elms["resultDivs"].forEach(function (div) {
                 div.style.backgroundColor="var(--b2)";
@@ -256,6 +268,7 @@ function setEventListeners() {
     elms["resultDivs"].forEach(function (div) {
         div.addEventListener("animationend", handleAniEnd);
     });
+    elms["resetBtn"].addEventListener("click", function () {selectChar(state["selectedChar"]);});
 }
 
 function setup() {selectChar(state["selectedChar"]);}
