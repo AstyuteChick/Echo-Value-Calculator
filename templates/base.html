@@ -84,5 +84,14 @@
   <script src="{{url_for('static', filename='js/base.js')}}"></script>
   {% block scripts %}
   {% endblock %}
+  <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+  <script>
+    kofiWidgetOverlay.draw('astyutechick', {
+      'type': 'floating-chat',
+      'floating-chat.donateButton.text': 'Support me',
+      'floating-chat.donateButton.background-color': '#0267C1',
+      'floating-chat.donateButton.text-color': '#f5f5f5'
+    });
+  </script>
 </body>
 </html>
