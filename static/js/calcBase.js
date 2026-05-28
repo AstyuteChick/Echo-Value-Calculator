@@ -34,7 +34,6 @@ function validateBaseStateUI() {
 }
 
 function validateEchoStateUI(echoState, echoElm, echoPickedStats, uidData, uidName) {
-    console.log("validateEchoStateUI");
     for (const [ind, statVal] of echoState.entries()) {
         const statName=echoData[ind];
         if (!statVal) {
