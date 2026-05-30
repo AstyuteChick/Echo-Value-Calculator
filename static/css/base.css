@@ -166,3 +166,17 @@ h1 {
     background-color: var(--sc);
     color: var(--bgc);
 }
+
+footer {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+footer p {
+    padding: var(--pds) var(--pdn);
+    margin-right: 2rem;
+}
+
+footer p a {
+    color: var(--sc);
+}
