@@ -186,7 +186,7 @@ async function calcEchoResults() {
                 ssr: state.echoData
             })
         });
-        if (!response.ok) {throw new Error("Server Error");}
+        if (!response.ok) {throw new Error("Server Error: \nPlease refresh the page and try again. \nIf Error persists, please report the conditions that caused this error at: echovaluecalc@gmail.com");}
         const result = await response.json();
         updateEchoResults(result);
     } catch (error) {

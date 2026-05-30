@@ -18,7 +18,7 @@ def calc_echo():
     try: 
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "echo")
         return jsonify({"score": es, "tier": et})
-    except Exception as msg: return jsonify({"score": msg, "tier": "NA"})
+    except Exception as msg: return jsonify({"score": str(msg), "tier": "Error"})
 
 @evc_app.route("/build", methods=["GET"])
 def build(): return render_template("build.html", active_page="build", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls, 
@@ -32,7 +32,7 @@ def calc_build():
         echo_mainstats=data.get("echoMainStats")
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "build", {"echo_cost": echo_cost, "echo_mainstat": echo_mainstats})
         return jsonify({"score": es, "tier": et})
-    except Exception as msg: return jsonify({"score": msg, "tier": "NA"})
+    except Exception as msg: return jsonify({"score": str(msg), "tier": "Error"})
 
 @evc_app.route("/full", methods=["GET"])
 def full(): return render_template("full.html", active_page="full", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls)
@@ -43,7 +43,7 @@ def calc_full():
     try: 
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "full")
         return jsonify({"score": es, "tier": et})
-    except Exception as msg: return jsonify({"score": msg, "tier": "NA"})
+    except Exception as msg: return jsonify({"score": str(msg), "tier": "Error"})
 
 @evc_app.route("/instruct")
 def instruct():
