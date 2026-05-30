@@ -12,7 +12,7 @@ def echo(): return render_template("echo.html", active_page="echo", char_data=Ch
 
 @evc_app.route("/calcEcho", methods=["POST"])
 def calc_echo():
-    data=request.get_json()    
+    data=request.get_json()
     for x in range (len(data["ssr"])): data["ssr"][x]=float(data["ssr"][x])
     
     try: 
