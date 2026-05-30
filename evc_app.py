@@ -8,7 +8,7 @@ evc_app=Flask(__name__, template_folder="templates", static_folder="static", sta
 def home(): return redirect(url_for("echo"))
 
 @evc_app.route("/echo", methods=["GET"])
-def echo(): return render_template("echo.html", active_page="echo", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls, 
+def echo(): return render_template("echo.html", active_page="echo", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls,
                                    canon_ulr="https://www.echovaluecalc.com/echo")
 
 @evc_app.route("/calcEcho", methods=["POST"])
@@ -16,19 +16,19 @@ def calc_echo():
     data=request.get_json()
     for x in range (len(data["ssr"])): data["ssr"][x]=float(data["ssr"][x])
     
-    try: 
+    try:
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "echo")
         return jsonify({"score": es, "tier": et})
     except Exception as msg: return jsonify({"score": str(msg), "tier": "Error"})
 
 @evc_app.route("/build", methods=["GET"])
-def build(): return render_template("build.html", active_page="build", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls, 
+def build(): return render_template("build.html", active_page="build", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls,
                                     main_stat_data=GameData.mainstat_vals, canon_ulr="https://www.echovaluecalc.com/build")
 
 @evc_app.route("/calcBuild", methods=["POST"])
 def calc_build():
     data=request.get_json()
-    try: 
+    try:
         echo_cost=data.get("echoCost")
         echo_mainstats=data.get("echoMainStats")
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "build", {"echo_cost": echo_cost, "echo_mainstat": echo_mainstats})
@@ -36,13 +36,13 @@ def calc_build():
     except Exception as msg: return jsonify({"score": str(msg), "tier": "Error"})
 
 @evc_app.route("/full", methods=["GET"])
-def full(): return render_template("full.html", active_page="full", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls, 
+def full(): return render_template("full.html", active_page="full", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls,
                                    canon_ulr="https://www.echovaluecalc.com/full")
 
 @evc_app.route("/calcFull", methods=["POST"])
 def calc_full():
     data=request.get_json()
-    try: 
+    try:
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "full")
         return jsonify({"score": es, "tier": et})
     except Exception as msg: return jsonify({"score": str(msg), "tier": "Error"})
@@ -131,4 +131,4 @@ def ads_txt():
 def sitemap():
     return send_file("sitemap.xml")
 
-if __name__ == "__main__": evc_app.run(debug=True)
+if __name__ == "__main__": evc_app.run(debug=False)
