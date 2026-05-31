@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, url_for, redirect, send_file, jsonify
+from flask import Flask, render_template, request, url_for, redirect, send_file, jsonify, send_from_directory
 from evc_engine import *
 
 evc_app=Flask(__name__, template_folder="templates", static_folder="static", static_url_path="/")
@@ -130,5 +130,9 @@ def ads_txt():
 @evc_app.route("/sitemap.xml")
 def sitemap():
     return send_file("sitemap.xml")
+
+@evc_app.route("/robots.txt")
+def robots(): 
+    return send_from_directory(evc_app.static_folder, "robots.txt", mimetype="text/plain")
 
 if __name__ == "__main__": evc_app.run(debug=False)
