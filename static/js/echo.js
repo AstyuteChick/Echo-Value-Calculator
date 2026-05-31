@@ -152,10 +152,25 @@ function handleEchoValChange(event) {
     const statSlct=document.getElementById(`stat-name-${valSlct.id.slice(-1)}`);
     const statInd=echoData.indexOf(statSlct.value);
     if (statInd===-1) {
-        updateEchoResults({score: `001: Invalid Stat found - ${statSlct.value}`, tier: "Error"});
+        const result={score: `001: Invalid Stat found - ${statSlct.value}`, tier: "Error"};
+        updateEchoResults(result);
+        tagEchoResult(result);
         return;
     }
     state["echoData"][statInd]=valSlct.value==="noVal"?0:valSlct.value;
+}
+
+function tagEchoResult(result) {
+    if (typeof gtag !== "function") return;
+    const tagData={
+        result_source: "echo",
+        character_name: state.selectedChar,
+        team_name: state.selectedTeam,
+        result_tier: result.tier
+    }
+    const validResult=Number.isFinite(Number(result.score));
+    if (validResult) {tagData["result_score"]=Number(result.score);}
+    gtag("event", "echo_result", tagData);
 }
 
 function updateEchoResults(result) {
@@ -173,6 +188,7 @@ async function calcEchoResults() {
     ) {
         const result={score: "State-UI Mismatch", tier: "Error"}
         updateEchoResults(result);
+        tagEchoResult(result);
         return;
     }
     try {
@@ -189,10 +205,12 @@ async function calcEchoResults() {
         if (!response.ok) {throw new Error("Server Error: \nPlease refresh the page and try again. \nIf Error persists, please report the conditions that caused this error at: echovaluecalc@gmail.com");}
         const result = await response.json();
         updateEchoResults(result);
+        tagEchoResult(result);
     } catch (error) {
         console.error("Submit Failed: ", error);
         const result={score: `Submit Failed: ${error}`, tier: "Error"}
         updateEchoResults(result);
+        tagEchoResult(result);
     }
 }
 

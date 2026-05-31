@@ -133,6 +133,19 @@ function validateBuildStateUI() {
     return true;
 }
 
+function tagBuildResult(result) {
+    if (typeof gtag !== "function") return;
+    const tagData={
+        result_source: "build",
+        character_name: state.selectedChar,
+        team_name: state.selectedTeam,
+        result_tier: result.tier
+    }
+    const validResult=Number.isFinite(Number(result.score));
+    if (validResult) {tagData["result_score"]=Number(result.score);}
+    gtag("event", "build_result", tagData);
+}
+
 function updateBuildResults(result) {
     elms["scoreVal"].textContent=result.score;
     elms["tierVal"].textContent=result.tier;
@@ -144,6 +157,7 @@ async function calcBuildResults() {
     if (!elms["form"].reportValidity() || !validateBaseStateUI() || !validateBuildStateUI()) {
         const result={score: "State-UI Mismatch", tier: "Error"}
         updateBuildResults(result);
+        tagBuildResult(result);
         return;
     }
     try {
@@ -162,10 +176,12 @@ async function calcBuildResults() {
         if (!response.ok) {throw new Error("Server Error: \nPlease refresh the page and try again. \nIf Error persists, please report the conditions that caused this error at: echovaluecalc@gmail.com");}
         const result = await response.json();
         updateBuildResults(result);
+        tagBuildResult(result);
     } catch (error) {
         console.error("Submit Failed: ", error)
         const result={score: `Submit Failed: ${error}`, tier: "Error"}
         updateBuildResults(result);
+        tagBuildResult(result);
     }
 }
 

@@ -166,7 +166,9 @@ function handleFullValChange(event) {
     const statSlct=document.getElementById(`stat-${valSlct.id.slice(-2)}`);
     const statInd=echoData.indexOf(statSlct.value);
     if (statInd===-1) {
-        updateFullResults({score: `001: Invalid Stat found - ${statSlct.value}`, tier: "Error"});
+        const result={score: `001: Invalid Stat found - ${statSlct.value}`, tier: "Error"}
+        updateFullResults(result);
+        tagFullResult(result);
         return;
     }
     state["fullData"][echoInd][statInd]=valSlct.value==="noVal"?0:valSlct.value;
@@ -181,6 +183,43 @@ function validateFullStateUI() {
     return true;
 }
 
+function parseFullResults(result) {
+    const [fullBuildScore, fullEchoScores]=result.score.split(":");
+    const [fullBuildTier, fullEchoTiers]=result.tier.split(":");
+    const parsedBuildScore=Number(fullBuildScore.trim());
+    const parsedBuildTier=fullBuildTier.trim();
+    const parsedEchoScores=fullEchoScores.replace("[", "").replace("]", "").split(",").map(function (score) {return Number(score.trim());});
+    const parsedEchoTiers=fullEchoTiers.replace("[", "").replace("]", "").split(",").map(function (score) {return score.trim();});
+    return {parsedBuildScore, parsedBuildTier, parsedEchoScores, parsedEchoTiers}
+}
+
+function tagFullResult(result) {
+    if (typeof gtag !== "function") return;
+    const parsedResults=parseFullResults(result);
+
+    const buildTagData={
+        result_source: "full", 
+        character_name: state.selectedChar, 
+        team_name: state.selectedTeam, 
+        result_tier: parsedResults.parsedBuildTier
+    }
+    const validBuildResult=Number.isFinite(parsedResults.parsedBuildScore);
+    if (validBuildResult) {buildTagData["result_score"]=parsedResults.parsedBuildScore;}
+    gtag("event", "build_result", buildTagData);
+
+    parsedResults.parsedEchoScores.forEach(function (score, ind) {
+        const echoTagData={
+            result_source: "full", 
+            character_name: state.selectedChar, 
+            team_name: state.selectedTeam, 
+            result_tier: parsedResults.parsedEchoTiers[ind]
+        }
+        const validEchoResult=Number.isFinite(score);
+        if (validEchoResult) {echoTagData["result_score"]=score;}
+        gtag("event", "echo_result", echoTagData);
+    })
+}
+
 function updateFullResults(result) {
     elms["scoreVal"].textContent=result.score;
     elms["tierVal"].textContent=result.tier;
@@ -192,6 +231,7 @@ async function calcFullResults() {
     if (!elms["form"].reportValidity() || !validateBaseStateUI() || !validateFullStateUI()) {
         const result={score: "State-UI Mismatch", tier: "Error"}
         updateFullResults(result);
+        tagFullResult(result);
         return;
     }
     try {
@@ -208,10 +248,12 @@ async function calcFullResults() {
         if (!response.ok) {throw new Error("Server Error: \nPlease refresh the page and try again. \nIf Error persists, please report the conditions that caused this error at: echovaluecalc@gmail.com");}
         const result = await response.json();
         updateFullResults(result);
+        tagFullResult(result);
     } catch (error) {
         console.error("Submit Failed: ", error)
         const result={score: `Submit Failed: ${error}`, tier: "Error"}
         updateFullResults(result);
+        tagFullResult(result);
     }
 }
 
