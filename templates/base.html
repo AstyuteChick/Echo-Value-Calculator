@@ -4,8 +4,7 @@
 <head>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-
+    function gtag() { dataLayer.push(arguments); }
     gtag("consent", "default", {
       analytics_storage: "denied",
       ad_storage: "denied",
@@ -19,14 +18,13 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MHS3RZ9B8V"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() {dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-MHS3RZ9B8V');
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}EVC 4.0{% endblock %}</title>
+  <title>EVC 4.0{% block title %}{% endblock %}</title>
   <link rel="canonical" href="{{canon_url}}">
   <link rel="stylesheet" type="text/css" href="/css/general.css">
   <link rel="stylesheet" type="text/css" href="/css/base.css">
