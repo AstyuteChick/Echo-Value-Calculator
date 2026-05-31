@@ -101,6 +101,8 @@ a {
 main {
     min-height: 100vh;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .mainHead {
@@ -169,14 +171,33 @@ h1 {
 
 footer {
     display: flex;
-    flex-direction: row-reverse;
+    margin-top: auto;
 }
 
 footer p {
     padding: var(--pds) var(--pdn);
-    margin-right: 2rem;
 }
 
 footer p a {
+    color: var(--sc);
+}
+
+footer p a:hover {
+    color: var(--ac);
+}
+
+.cookieBtn {
+    color: var(--sc);
+    padding: 0px var(--pdn);
+    text-decoration: underline;
+}
+
+.cookieBtn:hover {
+    background-color: transparent;
+    color: var(--ac);
+}
+
+.cookieBtn:active {
+    background-color: transparent;
     color: var(--sc);
 }

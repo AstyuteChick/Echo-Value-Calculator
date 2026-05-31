@@ -135,4 +135,4 @@ def sitemap():
 def robots(): 
     return send_from_directory(evc_app.static_folder, "robots.txt", mimetype="text/plain")
 
-if __name__ == "__main__": evc_app.run(debug=False)
+if __name__ == "__main__": evc_app.run(debug=True)
