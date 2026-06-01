@@ -366,7 +366,7 @@ def main(char: str, team: str, tot_er: str, ssr: list, type_in: str,
             if main_stats["echo_cost"][1]==4: build_player.build_stats["Flat Atk"]=150*2+1
             else: build_player.build_stats["Flat Atk"]=150+200
         elif char_player.rv["Flat HP"]==0.0 and char_player.rv["Flat Atk"]==0.0:
-            if main_stats["echo_costs"][1]==4:
+            if main_stats["echo_cost"][1]==4:
                 build_player.build_stats["Flat HP"]=2280*3+1
                 build_player.build_stats["Flat Atk"]=150*2+1
             else:

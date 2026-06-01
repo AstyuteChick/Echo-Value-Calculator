@@ -13,10 +13,9 @@ def echo(): return render_template("echo.html", active_page="echo", char_data=Ch
 
 @evc_app.route("/calcEcho", methods=["POST"])
 def calc_echo():
-    data=request.get_json()
-    for x in range (len(data["ssr"])): data["ssr"][x]=float(data["ssr"][x])
-    
     try:
+        data=request.get_json()
+        for x in range (len(data["ssr"])): data["ssr"][x]=float(data["ssr"][x])
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "echo")
         return jsonify({"score": es, "tier": et})
     except Exception as msg: return jsonify({"score": str(msg), "tier": "Error"})
@@ -27,8 +26,8 @@ def build(): return render_template("build.html", active_page="build", char_data
 
 @evc_app.route("/calcBuild", methods=["POST"])
 def calc_build():
-    data=request.get_json()
     try:
+        data=request.get_json()
         echo_cost=data.get("echoCost")
         echo_mainstats=data.get("echoMainStats")
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "build", {"echo_cost": echo_cost, "echo_mainstat": echo_mainstats})
@@ -41,8 +40,8 @@ def full(): return render_template("full.html", active_page="full", char_data=Ch
 
 @evc_app.route("/calcFull", methods=["POST"])
 def calc_full():
-    data=request.get_json()
     try:
+        data=request.get_json()
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "full")
         return jsonify({"score": es, "tier": et})
     except Exception as msg: return jsonify({"score": str(msg), "tier": "Error"})
