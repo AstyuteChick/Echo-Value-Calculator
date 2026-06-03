@@ -143,6 +143,32 @@
     border-color: color-mix(in srgb, var(--ac) 75%, var(--txt) 25%);
 }
 
+.helpSpan {
+    display: inline-block;
+    position: relative;
+}
+
+.helpBtn {
+    border: var(--bm);
+    border-radius: 999px;
+    background-color: var(--b2);
+}
+
+.helpPara {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 1rem);
+    right: 0;
+    width: max-content;
+    max-width: 24rem;
+    margin: 0;
+    padding: var(--pds);
+    background-color: var(--b2);
+    border: var(--bs);
+    border-radius: var(--rn);
+    line-height: 1.5;
+}
+
 .allBtns {
     display: flex;
     width: 100%;

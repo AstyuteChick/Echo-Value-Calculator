@@ -30,15 +30,31 @@
       <section class="teamSelect">
         <label for="team-select">Team: </label>
         <select id="team-select" name="teamSelect" required class="slct teamSelectSlct">
-          <option value="">Select your character's team</option>
+          <option value="">(Character's team)</option>
           {% for team in teams %}
           <option value="{{team}}">{{team}}</option>
           {% endfor %}
         </select>
+        <span class="helpSpan">
+          <button class="btn helpBtn" type="button">?</button>
+          <p class="helpPara" hidden>
+            If you don't see your team, or in case of doubt, please select the option with "<strong>Default</strong>"!<br>
+            The option containing "Default" sets the <strong>widely accepted ER-target</strong> for the character.<br>
+            For more details, check out <strong>Articles -> Character Data</strong>.
+          </p>
+        </span>
       </section>
       <section class="totEr">
         <label for="tot-er">Total ER: </label>
-        <input id="tot-er" name="totEr" type="number" inputmode="decimal" step="0.1" required class="inp totErInp">
+        <input id="tot-er" name="totEr" type="number" inputmode="decimal" placeholder="(Total ER from stat page)" step="0.1" required class="inp totErInp">
+        <span class="helpSpan">
+          <button class="btn helpBtn" type="button">?</button>
+          <p class="helpPara" hidden>
+            Make sure your character is "<strong>battle-ready</strong>" (they have the correct weapon and echoes equipped) before entering this number.<br>
+            The weapon and echoes equipped should match the echo/build you're testing.<br>
+            <strong>Beware: </strong>some regions in Lahai-Roi randomly give your characters additional ER, which may produce incorrect/unexpected results.
+          </p>
+        </span>
       </section>
     </fieldset>
     {% block calcSection %}

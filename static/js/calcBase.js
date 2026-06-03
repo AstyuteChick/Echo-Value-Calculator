@@ -19,7 +19,9 @@ const elms={
     selectedChar: document.querySelector(".selectedChar"), 
     searchChar: document.querySelector("#char-search"), 
     charOptsLst: document.querySelector(".charOptsLst"), 
-    teamSlct: document.querySelector("#team-select"),
+    teamSlct: document.querySelector("#team-select"), 
+    helpBtns: document.querySelectorAll(".helpBtn"), 
+    helpParas: document.querySelectorAll(".helpPara"), 
     totErIn: document.querySelector("#tot-er"), 
     resetBtn: document.querySelector(".allResetBtn"), 
     scoreVal: document.querySelector(".scoreVal"), 
@@ -109,7 +111,7 @@ function closeCharMenu() {
 }
 
 function renderTeamOpts(charName) {
-    elms["teamSlct"].innerHTML=`<option value="">Select your character's team</option>`;
+    elms["teamSlct"].innerHTML=`<option value="">(Character's team)</option>`;
     elms["teamSlct"].classList.remove("hasVal");
     const charTeams=Object.keys(charData[charName][1][0]);
     charTeams.forEach(function (team) {
@@ -152,7 +154,10 @@ function handleCharSearchClick(event) {
 function handleOutsideClick(event) {
     const clickInCharOpts=event.target.closest(".charOptsLst");
     const clickInCharInp=event.target.closest(".charSearchInp");
+    const clickOnHelpBtn=event.target.closest(".helpBtn");
+    const clickOnHelpPara=event.target.closest(".helpPara");
     if (!clickInCharOpts && !clickInCharInp) {closeCharMenu();}
+    if (!clickOnHelpBtn && !clickOnHelpPara) {elms["helpParas"].forEach(function (para) {para.hidden=true;});}
 }
 
 function handleTeamChange(event) {
@@ -163,6 +168,16 @@ function handleTeamChange(event) {
     } else {
         state["selectedTeam"]=teamName;
     }
+}
+
+function handleHelpBtnClick(event) {
+    const helpBtn=event.currentTarget;
+    const helpPara=helpBtn.nextElementSibling;
+    elms["helpParas"].forEach(function (para) {
+        if (para===helpPara) return;
+        para.hidden=true;
+    });
+    helpPara.hidden=!helpPara.hidden;
 }
 
 function handleTotErFocus() {
@@ -260,6 +275,9 @@ function setEventListeners() {
     elms["charOptsLst"].addEventListener("click", handleCharSearchClick);
     document.addEventListener("click", handleOutsideClick);
     elms["teamSlct"].addEventListener("change", handleTeamChange);
+    elms["helpBtns"].forEach(function (btn) {
+        btn.addEventListener("click", handleHelpBtnClick);
+    });
     elms["totErIn"].addEventListener("focus", handleTotErFocus);
     elms["totErIn"].addEventListener("input", handleTotErType);
     elms["teamSlct"].addEventListener("change", controlStyles);
