@@ -104,8 +104,7 @@ function handleBuildMainStatChange(event) {
 
 function handleBuildStatFocus(event) {
     const curInp=event.currentTarget;
-    state["buildData"][echoData.indexOf(curInp.id)]=0;
-    curInp.value="";
+    curInp.select();
 }
 
 function handleBuildStatInp(event) {

@@ -167,8 +167,7 @@ function handleTeamChange(event) {
 
 function handleTotErFocus() {
     if (elms["totErIn"].value) {
-        state["totEr"]=null;
-        elms["totErIn"].value="";
+        elms["totErIn"].select();
     }
 }
 
