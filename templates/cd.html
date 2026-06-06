@@ -120,7 +120,7 @@ results (for more details on why this is the case, check out the
 {% for team in char_data[char][1][0] %}
 <tr {% if loop.last %}class="tblSep"{% endif %}>
 <td><strong>{{char}} ({{team}}): </strong></td>
-<td>{% if (char_data[char][1][0][team]-3.1)<=100 %} - {% else %} {{(char_data[char][1][0][team])|round(1)}} {% endif %}</td>
+<td>{% if (char_data[char][1][0][team])<=100 %} - {% else %} {{(char_data[char][1][0][team])|round(1)}} - {{(char_data[char][1][0][team]+3.1)|round(1)}} {% endif %}</td>
 <td>
 {% if char_data[char][1][1] < 0.3 %} Min
 {% elif char_data[char][1][1] < 0.6 %} Norm
