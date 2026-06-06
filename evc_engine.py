@@ -55,17 +55,17 @@ class Character:
         "Baizhi":                                   [[0.0, 0.0, 0.0, 0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Default": 230.0}, 1.0, 175.0], False],
         "Brant (sub DPS, ER/ER 3 cost setup)" :     [[1.0, 1.0, 0.3, 0.2, 0.0, 0.0, 0.0, 0.0, 0.55, 0.0, 0.0, 0.05], [{"Default": 280.0}, 0.8, 175.0], True],
         "Buling":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Carlotta": 125.0, "Phrolova": 135.0, "Default": 135.0}, 1.0, 150.0], False],
-        "Calcharo" :                                [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.25, 0.0, 0.0, 0.5*0.6], [{"Default": 125.0}, 0.6, 125.0], True],
+        "Calcharo":                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.25, 0.0, 0.0, 0.5*0.6], [{"Default": 125.0}, 0.6, 125.0], True],
         "Camellya":                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.7, 0.0, 0.0, 0.5*0.15], [{"Lynae + Shorekeeper": 115.0, "Default": 115.0, "Roccia + Shorekeeper": 125.0}, 0.2, 125.0], True],
         "Cantarella":                               [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.7, 0.0, 0.5*0.1, 0.0], [{"Midnight Veil (Phrolova + Roccia)": 120.0, "Moonlit Clouds (Carlotta + Shorekeeper)": 140.0, "Default": 135.0}, 0.8, 125.0], True],
         "Carlotta":                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.85, 0.0], [{"Default": 125.0}, 0.6, 125.0], True],
         "Cartethyia":                               [[1.0, 1.0, 0.0, 0.0, 0.5, 0.25, 0.0, 0.0, 0.5*0.55, 0.0, 0.5*0.1, 0.5*0.25], [{"Default": 110.0}, 0.6, 125.0], True],
-        "Changli" :                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.6, 0.5*0.25], [{"Mono Fusion": 105.0, "Default": 120.0}, 0.35, 125.0], True],
+        "Changli":                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.6, 0.5*0.25], [{"Mono Fusion": 105.0, "Default": 120.0}, 0.35, 125.0], True],
         "Chisa":                                    [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.8], [{"With Cartethyia/Hiyuki/Zani": 115.0, "Aemeath + Denia": 110.0, "Default": 125.0}, 0.7, 125.0], True],
-        "Chixia" :                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.5, 0.5*0.3], [{"Default": 140.0}, 0.3, 150.0], True],
+        "Chixia":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.5, 0.5*0.3], [{"Default": 140.0}, 0.3, 150.0], True],
         "Ciaccona":                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.2, 0.5*0.15, 0.0, 0.5*0.3], [{"Default": 125.0}, 1.0, 125.0], True],
-        "Danjin" :                                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.25, 0.5*0.25, 0.5*0.3], [{"Default": 0.0}, 0.0, 100.0], True],
-        "Denia" :                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.85], [{"Aemeath + Lupa/Chisa": 110.0, "Luuk Herssen + Mornye": 115.0, "Default": 115.0}, 1.0, 125.0], True],
+        "Danjin":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.25, 0.5*0.25, 0.5*0.3], [{"Default": 0.0}, 0.0, 100.0], True],
+        "Denia":                                    [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.85], [{"Aemeath + Lupa/Chisa": 110.0, "Luuk Herssen + Mornye": 115.0, "Default": 115.0}, 1.0, 125.0], True],
         "Encore (Hypercarry)":                      [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.5, 0.0, 0.5*0.15, 0.5*0.15], [{"Easy Rotation": 130.0, "Advanced Rotation": 105.0, "Default": 125.0}, 1.0, 125.0], True],
         "Galbrena":                                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.35, 0.0, 0.0], [{"Mono Fusion": 110.0, "Default": 125.0}, 0.6, 125.0], True],
         "Hiyuki":                                   [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.1, 0.5*0.85], [{"Lynae + Chisa": 115.0, "Lynae + Shorekeeper": 125.0, "Default": 120.0}, 0.8, 125.0], True],
@@ -105,16 +105,14 @@ class Character:
     }
 
     for char_name in data:
+        if char_name not in ["Carlotta", "Jinhsi", "Hiyuki", "Lingyang"]: continue
         for team in data[char_name][1][0]:
             if "Default" in team:
                 try:
                     def_er=data[char_name][1][0][team]
-                    zhe_er=adjust_req_er(def_er-3.1, data[char_name][1][2], 15)
-                    if zhe_er>100: data[char_name][1][0]["Zhezhi Outro"]=round(zhe_er+3.1, 1)
+                    zhe_er=adjust_req_er(def_er, data[char_name][1][2], 15)
+                    if zhe_er>100: data[char_name][1][0]["Zhezhi Outro"]=round(zhe_er, 1)
                     else: data[char_name][1][0]["Zhezhi Outro"]=0.0
-                    yang_er=adjust_req_er(def_er-3.1, data[char_name][1][2], 20)
-                    if yang_er>100: data[char_name][1][0]["Yangyang Outro"]=round(yang_er+3.1, 1)
-                    else: data[char_name][1][0]["Yangyang Outro"]=0.0
                 except ZeroDivisionError: pass
                 break
 
