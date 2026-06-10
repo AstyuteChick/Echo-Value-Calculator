@@ -36,12 +36,10 @@
 <h2 id="character-data">Character Data</h2>
 <h4 id="er-target"><strong>ER Target</strong></h4>
 <ul>
-<li><p>The character needs <strong>roughly</strong> amount of ER
-<strong>without</strong> being buffed by Zhezhi or Yangyang's outros.</p></li>
-<li><p>This represents a <strong>comfortable</strong> ER amount, which
-may be around 3 to 5% ER more than their actual high-estimate ER requirements.
-This is to account for ability misses and the value of having smooth
-rotations.</p></li>
+<li><p>The character needs <strong>roughly</strong> this amount of ER in the given team.</p></li>
+<li><p>This represents an ER range, lower-bound of which is the minimum required to consider ER requirements as met, 
+while anything above this amount till the upper-bound (+3.1%) will not be discarded as it still contributes for comfortable and smooth rotations.
+</p></li>
 <li><p>Deviations (from the actual values in practice) in range of 5,
 10, 15 and more are acceptable for characters with ER importance of Max,
 Vital, Norm etc. <strong>respectively</strong>, as these have minimal affect
@@ -53,7 +51,7 @@ affects the EVC, check out the section on Energy Regen.</p></li>
 <ul>
 <li><p>This represents the “importance” of <strong>pressing the
 Liberation button</strong> for a character. While it is a quantitative
-data type, to avoid confusion a tier system has been used.</p></li>
+data type, to avoid confusion a tier system has been used. (So, characters within the same tier may actually have different values in the range represented by the tier) (Now has a mathematical model to wrap cases where previously a linear relationship was used). </p></li>
 <li><p>“ER importance” can specifically represent, based on the context
 of the character, one or multiple of the following:</p>
 <ul>
