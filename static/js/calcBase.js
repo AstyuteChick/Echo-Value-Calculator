@@ -8,7 +8,7 @@ const substatRollsEle=document.querySelector("#substat-rolls-data");
 const substatRollsData=JSON.parse(substatRollsEle.textContent); //GameData.substat_rolls (dict -> statName: list of rolls)
 
 const state={
-    selectedChar: `Aemeath`, 
+    selectedChar: `Aemeath (Rupture)`, 
     isCharMenuOpen: false, 
     selectedTeam: null, 
     totEr: null
