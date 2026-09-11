@@ -144,7 +144,7 @@ class Character:
             if char_name==name:
                 char_found=True
                 break
-        if char_found!=True: raise DataMismatchError("Unexpected Error - Character not found")
+        if char_found!=True: raise DataMismatchError("Something unexpected weng wrong: \n'\nCharacter not found\n'\n")
         self._name=name
 
     @property
@@ -157,7 +157,7 @@ class Character:
             if team_in == team: 
                 team_stat=float(team_stats[team])
                 break
-        if team_stat==None: raise DataMismatchError("Unexpected Error - Team not found")
+        if team_stat==None: raise DataMismatchError("Something unexpected weng wrong: \n'\nTeam not found\n'\n")
         er_stat = [team_stat, Character.data[self.name][1][1], Character.data[self.name][1][2]]
         self._team=er_stat
 
@@ -190,11 +190,11 @@ class Echo:
         for stat_name in GameData.substat_names:
             ssr_data[stat_name]=float(ssr_in[index])
             index=index+1
-        if len(ssr_data)!=13: raise DataMismatchError("Unexpected Error - Corrupted Echo Substat Data: "+str(len(ssr_data)))
+        if len(ssr_data)!=13: raise DataMismatchError("Something unexpected weng wrong: \n'\nCorrupted Echo Substat Data: "+str(len(ssr_data))+"\n'\n")
         stat_count=0
         for substat in ssr_data:
             if ssr_data[substat]!=0.0: stat_count=stat_count+1
-        if stat_count>5: raise DataMismatchError("Unexpected Error - Too many sub stats: "+str(stat_count))
+        if stat_count>5: raise DataMismatchError("Something unexpected weng wrong: \n'\nToo many sub stats: "+str(stat_count)+"\n'\n")
         self._ssr=ssr_data
 
 class Build:
@@ -210,7 +210,7 @@ class Build:
         for stat_name in GameData.substat_names:
             bs_data[stat_name]=float(bs_in[index])
             index=index+1
-        if len(bs_data)!=13: raise DataMismatchError("Unexpected Error - Corrupted Build Substat Data: "+str(len(bs_data)))
+        if len(bs_data)!=13: raise DataMismatchError("Something unexpected weng wrong: \n'\nCorrupted Build Substat Data: "+str(len(bs_data))+"\n'\n")
         self._build_stats=bs_data
 
 def av_er(er_net_av: float, er_ssr: float, er_med: float, er_imp: float)-> tuple[float, float]:
@@ -340,11 +340,11 @@ def main(char: str, team: str, tot_er: str, ssr: list, type_in: str,
         for index in range(5):
             if float(ssr[index][12])!=0.0: echo_order.append(index)
             else: sanity_check+=1
-        if len(echo_order)+sanity_check!=5: raise ValueError("Unexpted Error - Sanity Check Failed: "+str(echo_order)+str(sanity_check))
+        if len(echo_order)+sanity_check!=5: raise DataMismatchError("Something unexpected weng wrong: \n'\nSanity Check Failed: "+str(echo_order)+str(sanity_check)+"\n'\n")
         for index in range(5):
             if index in echo_order: continue
             else: echo_order.append(index)
-        if len(echo_order)!=5: raise DataMismatchError("Impossible Error - ???")
+        if len(echo_order)!=5: raise DataMismatchError("Something unexpected weng wrong: \n'\nImpossible Error\n'\n")
 
         es_total=[0.0, 0.0, 0.0, 0.0, 0.0]
         es_tier=["Unknown", "Unknown", "Unknown", "Unknown", "Unknown"]
@@ -393,9 +393,9 @@ def main(char: str, team: str, tot_er: str, ssr: list, type_in: str,
             cur_secstat_val=GameData.sec_stats[cur_echo_cost][1]
             if cur_echo_stat!="Element(%)" and cur_echo_stat!="Heal(%)":
                 build_player.build_stats[cur_echo_stat]=build_player.build_stats[cur_echo_stat]-cur_mainstat_val
-                if build_player.build_stats[cur_echo_stat]<-0.00000001: raise InvalidInputError("Data Error - Character stats were entered incorrectly. Remember that stats from Echo PRESETS are expected. Please try again. ")
+                if build_player.build_stats[cur_echo_stat]<-0.00000001: raise InvalidInputError("Character stats were entered incorrectly. Remember that stats from Echo PRESETS are expected. Please try again. ")
             build_player.build_stats[cur_secstat]=build_player.build_stats[cur_secstat]-cur_secstat_val
-            if build_player.build_stats[cur_secstat]<-0.00000001: raise InvalidInputError("Data Error - Character stats were entered incorrectly - Remember that stats from Echo PRESETS are expected. Please try again. ")
+            if build_player.build_stats[cur_secstat]<-0.00000001: raise InvalidInputError("Character stats were entered incorrectly. Remember that stats from Echo PRESETS are expected. Please try again. ")
 
         av_total, er_net_av=av_stats(build_player.build_stats, ssgd.ssm, char_player, er_net_av)
         ep_total_list=[0.0, 0.0, 0.0, 0.0, 0.0]
@@ -414,5 +414,5 @@ if __name__=="__main__":
         def_found=False
         for team in Character.data[char][1][0]:
             if "Default" in team: def_found=True
-        if def_found==False: raise DataMismatchError(f"Unexpected Error - Default not found for {char}")
+        if def_found==False: raise DataMismatchError(f"Something unexpected weng wrong: \n'\nDefault not found for {char}\n'\n")
         

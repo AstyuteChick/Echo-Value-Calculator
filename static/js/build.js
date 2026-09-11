@@ -154,7 +154,7 @@ function updateBuildResults(result) {
 
 async function calcBuildResults() {
     if (!elms["form"].reportValidity() || !validateBaseStateUI() || !validateBuildStateUI()) {
-        const result={score: "State-UI Mismatch", tier: "Error"}
+        const result={score: "Internal Server Error: \n'\nState-UI Mismatch\n'\n", tier: "Error 500"}
         updateBuildResults(result);
         tagBuildResult(result);
         return;
@@ -172,13 +172,15 @@ async function calcBuildResults() {
                 echoMainStats: state.mainStats
             })
         });
-        if (!response.ok) {throw new Error("Server Error: \nPlease refresh the page and try again. \nIf Error persists, please report the conditions that caused this error at: echovaluecalc@gmail.com");}
         const result = await response.json();
+        if (!response.ok) {
+            if (response.status!==400) {throw new Error(`${result["score"]}`);}
+        }
         updateBuildResults(result);
         tagBuildResult(result);
     } catch (error) {
         console.error("Submit Failed: ", error)
-        const result={score: `Submit Failed: ${error}`, tier: "Error"}
+        const result={score: `${error}`, tier: "Error 500: "}
         updateBuildResults(result);
         tagBuildResult(result);
     }
