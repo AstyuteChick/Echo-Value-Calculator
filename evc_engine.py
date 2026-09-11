@@ -1,5 +1,6 @@
 
 import heapq
+from evc_errors import DataMismatchError, InvalidInputError
 
 def adjust_req_er(er_req, rc, buff_val) -> float: 
     er_adj=er_req*(1-(buff_val/rc))
@@ -143,7 +144,7 @@ class Character:
             if char_name==name:
                 char_found=True
                 break
-        if char_found!=True: raise ValueError("Unexpected Error - Character not found")
+        if char_found!=True: raise DataMismatchError("Unexpected Error - Character not found")
         self._name=name
 
     @property
@@ -156,7 +157,7 @@ class Character:
             if team_in == team: 
                 team_stat=float(team_stats[team])
                 break
-        if team_stat==None: raise ValueError("Unexpected Error - Team not found")
+        if team_stat==None: raise DataMismatchError("Unexpected Error - Team not found")
         er_stat = [team_stat, Character.data[self.name][1][1], Character.data[self.name][1][2]]
         self._team=er_stat
 
@@ -189,11 +190,11 @@ class Echo:
         for stat_name in GameData.substat_names:
             ssr_data[stat_name]=float(ssr_in[index])
             index=index+1
-        if len(ssr_data)!=13: raise ValueError("Unexpected Error - Corrupted Echo Substat Data: "+str(len(ssr_data)))
+        if len(ssr_data)!=13: raise DataMismatchError("Unexpected Error - Corrupted Echo Substat Data: "+str(len(ssr_data)))
         stat_count=0
         for substat in ssr_data:
             if ssr_data[substat]!=0.0: stat_count=stat_count+1
-        if stat_count>5: raise ValueError("Unexpected Error - Too many sub stats: "+str(stat_count))
+        if stat_count>5: raise DataMismatchError("Unexpected Error - Too many sub stats: "+str(stat_count))
         self._ssr=ssr_data
 
 class Build:
@@ -209,7 +210,7 @@ class Build:
         for stat_name in GameData.substat_names:
             bs_data[stat_name]=float(bs_in[index])
             index=index+1
-        if len(bs_data)!=13: raise ValueError("Unexpected Error - Corrupted Build Substat Data: "+str(len(bs_data)))
+        if len(bs_data)!=13: raise DataMismatchError("Unexpected Error - Corrupted Build Substat Data: "+str(len(bs_data)))
         self._build_stats=bs_data
 
 def av_er(er_net_av: float, er_ssr: float, er_med: float, er_imp: float)-> tuple[float, float]:
@@ -343,7 +344,7 @@ def main(char: str, team: str, tot_er: str, ssr: list, type_in: str,
         for index in range(5):
             if index in echo_order: continue
             else: echo_order.append(index)
-        if len(echo_order)!=5: raise ValueError("Impossible Error - What The Fuk???")
+        if len(echo_order)!=5: raise DataMismatchError("Impossible Error - ???")
 
         es_total=[0.0, 0.0, 0.0, 0.0, 0.0]
         es_tier=["Unknown", "Unknown", "Unknown", "Unknown", "Unknown"]
@@ -392,9 +393,9 @@ def main(char: str, team: str, tot_er: str, ssr: list, type_in: str,
             cur_secstat_val=GameData.sec_stats[cur_echo_cost][1]
             if cur_echo_stat!="Element(%)" and cur_echo_stat!="Heal(%)":
                 build_player.build_stats[cur_echo_stat]=build_player.build_stats[cur_echo_stat]-cur_mainstat_val
-                if build_player.build_stats[cur_echo_stat]<-0.00000001: raise ValueError("Data Error - Character stats were entered incorrectly. Remember that stats from Echo PRESETS are expected. Please try again. ")
+                if build_player.build_stats[cur_echo_stat]<-0.00000001: raise InvalidInputError("Data Error - Character stats were entered incorrectly. Remember that stats from Echo PRESETS are expected. Please try again. ")
             build_player.build_stats[cur_secstat]=build_player.build_stats[cur_secstat]-cur_secstat_val
-            if build_player.build_stats[cur_secstat]<-0.00000001: raise ValueError("Data Error - Character stats were entered incorrectly - Remember that stats from Echo PRESETS are expected. Please try again. ")
+            if build_player.build_stats[cur_secstat]<-0.00000001: raise InvalidInputError("Data Error - Character stats were entered incorrectly - Remember that stats from Echo PRESETS are expected. Please try again. ")
 
         av_total, er_net_av=av_stats(build_player.build_stats, ssgd.ssm, char_player, er_net_av)
         ep_total_list=[0.0, 0.0, 0.0, 0.0, 0.0]
@@ -413,5 +414,5 @@ if __name__=="__main__":
         def_found=False
         for team in Character.data[char][1][0]:
             if "Default" in team: def_found=True
-        if def_found==False: raise ValueError(f"Unexpected Error - Default not found for {char}")
+        if def_found==False: raise DataMismatchError(f"Unexpected Error - Default not found for {char}")
         
