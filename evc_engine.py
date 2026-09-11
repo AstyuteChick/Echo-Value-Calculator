@@ -185,12 +185,12 @@ class Echo:
     def ssr(self)-> dict: return self._ssr
     @ssr.setter
     def ssr(self, ssr_in: list) -> None:
+        if len(ssr_in)!=13: raise DataMismatchError("Something unexpected weng wrong: \n'\nCorrupted Echo Substat Data: "+str(len(ssr_data))+"\n'\n")
         ssr_data={}
         index=0
         for stat_name in GameData.substat_names:
             ssr_data[stat_name]=float(ssr_in[index])
             index=index+1
-        if len(ssr_data)!=13: raise DataMismatchError("Something unexpected weng wrong: \n'\nCorrupted Echo Substat Data: "+str(len(ssr_data))+"\n'\n")
         stat_count=0
         for substat in ssr_data:
             if ssr_data[substat]!=0.0: stat_count=stat_count+1
@@ -205,12 +205,12 @@ class Build:
     def build_stats(self)-> dict: return self._build_stats
     @build_stats.setter
     def build_stats(self, bs_in: list)-> None:
+        if len(bs_in)!=13: raise DataMismatchError("Something unexpected weng wrong: \n'\nCorrupted Build Substat Data: "+str(len(bs_data))+"\n'\n")
         bs_data={}
         index=0
         for stat_name in GameData.substat_names:
             bs_data[stat_name]=float(bs_in[index])
             index=index+1
-        if len(bs_data)!=13: raise DataMismatchError("Something unexpected weng wrong: \n'\nCorrupted Build Substat Data: "+str(len(bs_data))+"\n'\n")
         self._build_stats=bs_data
 
 def av_er(er_net_av: float, er_ssr: float, er_med: float, er_imp: float)-> tuple[float, float]:
