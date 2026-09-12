@@ -234,8 +234,10 @@ async function calcFullResults() {
         tagFullResult(result);
         return;
     }
+    let response;
+    let result;
     try {
-        const response = await fetch("/calcFull", {
+        response = await fetch("/calcFull", {
             method: "POST", 
             headers: {"Content-Type": "application/json"}, 
             body: JSON.stringify({
@@ -245,16 +247,30 @@ async function calcFullResults() {
                 ssr: state.fullData
             })
         });
-        if (!response.ok) {throw new Error("Server Error: \nPlease refresh the page and try again. \nIf Error persists, please report the conditions that caused this error at: echovaluecalc@gmail.com");}
-        const result = await response.json();
-        updateFullResults(result);
-        tagFullResult(result);
     } catch (error) {
         console.error("Submit Failed: ", error)
-        const result={score: `Submit Failed: ${error}`, tier: "Error"}
+        result={score: `Submit Failed: ${error}`, tier: "Error"}
         updateFullResults(result);
         tagFullResult(result);
     }
+    try {
+        result = await response.json();
+    } catch (error) {
+        console.error(`Couldn't parse server response: ${response.status}, ${error}`);
+        result={score: "Please refresh the page and try again", tier: "Unexpected server response"}
+        updateFullResults(result);
+        tagFullResult(result);
+        return;
+    }
+    if (!response.ok) {
+        if (result.code === "Data was entered incorrectly") {result={score: result.error, tier: result.code}} 
+        else {
+            console.log(`Error: ${response.status}, ${result.code}: ${result.error}`);
+            result={score: "Please refresh the page and try again", tier: result.code}
+        }
+    }
+    updateFullResults(result);
+    tagFullResult(result);
 }
 
 function setFullEventListeners() {

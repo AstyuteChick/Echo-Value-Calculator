@@ -21,7 +21,7 @@ def calc_echo():
         return jsonify({"score": es, "tier": et}), 200
     except InvalidInputError as msg: return jsonify({"error": str(msg), "code": "Data was entered incorrectly"}), 400
     except DataMismatchError as msg: 
-        evc_app.logger.exception(str(msg))
+        evc_app.logger.warning(str(msg))
         return (jsonify({"error": "Data doesn't match the contract", "code": "Invalid Request"})), 400
     except Exception as msg: 
         evc_app.logger.exception(str(msg))
@@ -41,7 +41,7 @@ def calc_build():
         return jsonify({"score": es, "tier": et}), 200
     except InvalidInputError as msg: return jsonify({"error": str(msg), "code": "Data was entered incorrectly"}), 400
     except DataMismatchError as msg: 
-        evc_app.logger.exception(str(msg))
+        evc_app.logger.warning(str(msg))
         return (jsonify({"error": "Data doesn't match the contract", "code": "Invalid Request"})), 400
     except Exception as msg: 
         evc_app.logger.exception(str(msg))
@@ -59,7 +59,7 @@ def calc_full():
         return jsonify({"score": es, "tier": et}), 200
     except InvalidInputError as msg: return jsonify({"error": str(msg), "code": "Data was entered incorrectly"}), 400
     except DataMismatchError as msg: 
-        evc_app.logger.exception(str(msg))
+        evc_app.logger.warning(str(msg))
         return (jsonify({"error": "Data doesn't match the contract", "code": "Invalid Request"})), 400
     except Exception as msg: 
         evc_app.logger.exception(str(msg))

@@ -186,13 +186,15 @@ async function calcEchoResults() {
         !validateBaseStateUI() || 
         !validateEchoStateUI(state["echoData"], elms["allEchoNameSlct"], state["pickedStats"], -1, `stat-value-`)
     ) {
-        const result={score: "State-UI Mismatch", tier: "Error"}
+        result={score: "State-UI Mismatch", tier: "Error"}
         updateEchoResults(result);
         tagEchoResult(result);
         return;
     }
+    let response;
+    let result;
     try {
-        const response=await fetch("/calcEcho", {
+        response=await fetch("/calcEcho", {
             method: "POST", 
             headers: {"Content-Type": "application/json"}, 
             body: JSON.stringify({
@@ -202,16 +204,31 @@ async function calcEchoResults() {
                 ssr: state.echoData
             })
         });
-        if (!response.ok) {throw new Error("Server Error: \nPlease refresh the page and try again. \nIf Error persists, please report the conditions that caused this error at: echovaluecalc@gmail.com");}
-        const result = await response.json();
-        updateEchoResults(result);
-        tagEchoResult(result);
     } catch (error) {
         console.error("Submit Failed: ", error);
-        const result={score: `Submit Failed: ${error}`, tier: "Error"}
+        result={score: "Please check your connection and try again", tier: "Could not reach server"}
         updateEchoResults(result);
         tagEchoResult(result);
+        return;
     }
+    try {
+        result = await response.json();
+    } catch (error) {
+        console.error(`Couldn't parse server response: ${response.status}, ${error}`);
+        result={score: "Please refresh the page and try again", tier: "Unexpected server response"}
+        updateEchoResults(result);
+        tagEchoResult(result);
+        return;
+    }
+    if (!response.ok) {
+        if (result.code === "Data was entered incorrectly") {result={score: result.error, tier: result.code}} 
+        else {
+            console.log(`Error: ${response.status}, ${result.code}: ${result.error}`);
+            result={score: "Please refresh the page and try again", tier: result.code}
+        }
+    }
+    updateEchoResults(result);
+    tagEchoResult(result);
 }
 
 function echoDebugger() {

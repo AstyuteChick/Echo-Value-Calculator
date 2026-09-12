@@ -191,10 +191,11 @@ async function calcBuildResults() {
         return;
     }
     if (!response.ok) {
-        if (result.code === "Invalid Request" || result.code === "Unknown Error") {
+        if (result.code === "Data was entered incorrectly") {result={score: result.error, tier: result.code}} 
+        else {
             console.log(`Error: ${response.status}, ${result.code}: ${result.error}`);
             result={score: "Please refresh the page and try again", tier: result.code}
-        } else {result={score: result.error, tier: result.code}}
+        }
     }
     updateBuildResults(result);
     tagBuildResult(result);
