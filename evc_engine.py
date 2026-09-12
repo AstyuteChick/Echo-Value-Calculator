@@ -408,7 +408,7 @@ def main(char: str, team: str, tot_er: str, ssr: list, type_in: str, main_stats:
 
         return str(es_total), es_tier
 
-    else: return "Error: ", "Type not specified"
+    else: InternalLogicError(f"Invalid calculation path: {type_in}")
 
 if __name__=="__main__":
     for char in Character.data:
