@@ -304,9 +304,10 @@ def analysis(score: float, na: bool) -> str:
 
     return score_tier
 
-def main(char: str, team: str, tot_er: str, ssr: list, type_in: str,
-         main_stats: dict={"echo_cost": [0, 0, 0, 0, 0], "echo_mainstat": ["", "", "", "", ""]}) -> tuple[str, str]:
+def main(char: str, team: str, tot_er: str, ssr: list, type_in: str, main_stats: dict|None=None) -> tuple[str, str]:
 
+    if main_stats==None: main_stats={"echo_cost": [0, 0, 0, 0, 0], "echo_mainstat": ["", "", "", "", ""]}
+    
     char_player=Character(char, team)
 
     if char_player.er["Required ER"]!=0 and char_player.er["Required ER"]>100:
