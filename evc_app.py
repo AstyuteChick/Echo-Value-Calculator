@@ -57,13 +57,13 @@ def calc_full():
         data=request.get_json()
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "full")
         return jsonify({"score": es, "tier": et}), 200
-    except InvalidInputError as msg: return jsonify({"score": str(msg), "tier": "Data was entered incorrectly"}), 400
+    except InvalidInputError as msg: return jsonify({"error": str(msg), "code": "Data was entered incorrectly"}), 400
     except DataMismatchError as msg: 
         evc_app.logger.exception(str(msg))
-        return (jsonify({"error": "Data doesn't match the contract"})), 400
+        return (jsonify({"error": "Data doesn't match the contract", "code": "Invalid Request"})), 400
     except Exception as msg: 
         evc_app.logger.exception(str(msg))
-        return jsonify({"error": "Something went wrong"}), 500
+        return jsonify({"error": "Something went wrong", "code": "Unknown Error"}), 500
 
 @evc_app.route("/instruct")
 def instruct():
@@ -151,6 +151,8 @@ def sitemap():
 
 @evc_app.route("/robots.txt")
 def robots(): 
-    return send_from_directory(evc_app.static_folder, "robots.txt", mimetype="text/plain")
+    static_folder=evc_app.static_folder
+    assert static_folder is not None
+    return send_from_directory(static_folder, "robots.txt", mimetype="text/plain")
 
 if __name__ == "__main__": evc_app.run(debug=True)

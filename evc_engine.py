@@ -118,10 +118,10 @@ class Character:
 
     for char_name in data:
         if char_name not in ["Carlotta", "Jinhsi", "Hiyuki", "Lingyang"]: continue
-        for team in data[char_name][1][0]:
-            if "Default" in team:
+        for team_name in data[char_name][1][0]:
+            if "Default" in team_name:
                 try:
-                    def_er=data[char_name][1][0][team]
+                    def_er=data[char_name][1][0][team_name]
                     zhe_er=adjust_req_er(def_er, data[char_name][1][2], 15)
                     if zhe_er>100: data[char_name][1][0]["Zhezhi Outro"]=round(zhe_er, 1)
                     else: data[char_name][1][0]["Zhezhi Outro"]=0.0

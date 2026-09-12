@@ -181,16 +181,20 @@ async function calcBuildResults() {
         tagBuildResult(result);
         return;
     }
-    result = await response.json();
-    if (!response.ok && response.status!==400) {
-        console.error(`Error: ${result.error}`);
-        result={score: "If this issue persists, please report the bug at echovaluecalc@gmail.com, with details of how it was caused", tier: "Something went wrong"}
-    } else if (response.status===400 && result.tier!=="Data was entered incorrectly") {
-        console.error(`Error: ${result.error}`)
-        result={score: "Please refresh the browser and try again", tier: "Something went wrong"}
-    } else if (response.status!==200 || !(response.status===400 && result.tier==="Data was entered incorrectly")) {
-        console.error(`Unknown Error: ${response.status}, ${result}`)
-        result={score: "If this issue persists, please report the bug at echovaluecalc@gmail.com, with details of how it was caused", tier: "Fatal Error"}
+    try {
+        result = await response.json();
+    } catch (error) {
+        console.error(`Couldn't parse server response: ${response.status}, ${error}`);
+        result={score: "Please refresh the page and try again", tier: "Unexpected server response"}
+        updateBuildResults(result);
+        tagBuildResult(result);
+        return;
+    }
+    if (!response.ok) {
+        if (result.code === "Invalid Request" || result.code === "Unknown Error") {
+            console.log(`Error: ${response.status}, ${result.code}: ${result.error}`);
+            result={score: "Please refresh the page and try again", tier: result.code}
+        } else {result={score: result.error, tier: result.code}}
     }
     updateBuildResults(result);
     tagBuildResult(result);
