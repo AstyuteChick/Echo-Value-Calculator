@@ -19,9 +19,13 @@ def calc_echo():
         for x in range (len(data["ssr"])): data["ssr"][x]=float(data["ssr"][x])
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "echo")
         return jsonify({"score": es, "tier": et}), 200
-    except InvalidInputError as msg: return jsonify({"score": str(msg), "tier": "Error 400"}), 400
-    except DataMismatchError as msg: return jsonify({"score": str(msg), "tier": "Error 500"}), 500
-    except Exception as msg: return jsonify({"score": "Internal Server Error: \n'\n"+str(msg)+"\n'\n", "tier": "Error 500"}), 500
+    except InvalidInputError as msg: return jsonify({"score": str(msg), "tier": "Data was entered incorrectly"}), 400
+    except DataMismatchError as msg: 
+        evc_app.logger.exception(str(msg))
+        return (jsonify({"error": "Data doesn't match the contract"})), 400
+    except Exception as msg: 
+        evc_app.logger.exception(str(msg))
+        return jsonify({"error": "Something went wrong"}), 500
 
 @evc_app.route("/build", methods=["GET"])
 def build(): return render_template("build.html", active_page="build", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls,
@@ -35,9 +39,13 @@ def calc_build():
         echo_mainstats=data.get("echoMainStats")
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "build", {"echo_cost": echo_cost, "echo_mainstat": echo_mainstats})
         return jsonify({"score": es, "tier": et}), 200
-    except InvalidInputError as msg: return jsonify({"score": str(msg), "tier": "Error 400"}), 400
-    except DataMismatchError as msg: return jsonify({"score": str(msg), "tier": "Error 500"}), 500
-    except Exception as msg: return jsonify({"score": "Internal Server Error: \n'\n"+str(msg)+"\n'\n", "tier": "Error 500"}), 500
+    except InvalidInputError as msg: return jsonify({"score": str(msg), "tier": "Data was entered incorrectly"}), 400
+    except DataMismatchError as msg: 
+        evc_app.logger.exception(str(msg))
+        return (jsonify({"error": "Data doesn't match the contract"})), 400
+    except Exception as msg: 
+        evc_app.logger.exception(str(msg))
+        return jsonify({"error": "Something went wrong"}), 500
 
 @evc_app.route("/full", methods=["GET"])
 def full(): return render_template("full.html", active_page="full", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls,
@@ -49,9 +57,13 @@ def calc_full():
         data=request.get_json()
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "full")
         return jsonify({"score": es, "tier": et}), 200
-    except InvalidInputError as msg: return jsonify({"score": str(msg), "tier": "Error 400"}), 400
-    except DataMismatchError as msg: return jsonify({"score": str(msg), "tier": "Error 500"}), 500
-    except Exception as msg: return jsonify({"score": "Internal Server Error: \n'\n"+str(msg)+"\n'\n", "tier": "Error 500"}), 500
+    except InvalidInputError as msg: return jsonify({"score": str(msg), "tier": "Data was entered incorrectly"}), 400
+    except DataMismatchError as msg: 
+        evc_app.logger.exception(str(msg))
+        return (jsonify({"error": "Data doesn't match the contract"})), 400
+    except Exception as msg: 
+        evc_app.logger.exception(str(msg))
+        return jsonify({"error": "Something went wrong"}), 500
 
 @evc_app.route("/instruct")
 def instruct():

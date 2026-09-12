@@ -154,13 +154,15 @@ function updateBuildResults(result) {
 
 async function calcBuildResults() {
     if (!elms["form"].reportValidity() || !validateBaseStateUI() || !validateBuildStateUI()) {
-        const result={score: "Internal Server Error: \n'\nState-UI Mismatch\n'\n", tier: "Error 500"}
+        const result={score: "Please refresh the page and try again", tier: "Error: Invalid Form"}
         updateBuildResults(result);
         tagBuildResult(result);
         return;
     }
+    let response;
+    let result;
     try {
-        const response = await fetch("/calcBuild", {
+        response = await fetch("/calcBuild", {
             method: "POST", 
             headers: {"Content-Type": "application/json"}, 
             body: JSON.stringify({
@@ -172,18 +174,26 @@ async function calcBuildResults() {
                 echoMainStats: state.mainStats
             })
         });
-        const result = await response.json();
-        if (!response.ok) {
-            if (response.status!==400) {throw new Error(`${result["score"]}`);}
-        }
-        updateBuildResults(result);
-        tagBuildResult(result);
     } catch (error) {
-        console.error("Submit Failed: ", error)
-        const result={score: `${error}`, tier: "Error 500: "}
+        console.error("Submit Failed: ", error);
+        result={score: "Please check your connection and try again", tier: "Could not reach server"}
         updateBuildResults(result);
         tagBuildResult(result);
+        return;
     }
+    result = await response.json();
+    if (!response.ok && response.status!==400) {
+        console.error(`Error: ${result.error}`);
+        result={score: "If this issue persists, please report the bug at echovaluecalc@gmail.com, with details of how it was caused", tier: "Something went wrong"}
+    } else if (response.status===400 && result.tier!=="Data was entered incorrectly") {
+        console.error(`Error: ${result.error}`)
+        result={score: "Please refresh the browser and try again", tier: "Something went wrong"}
+    } else if (response.status!==200 || !(response.status===400 && result.tier==="Data was entered incorrectly")) {
+        console.error(`Unknown Error: ${response.status}, ${result}`)
+        result={score: "If this issue persists, please report the bug at echovaluecalc@gmail.com, with details of how it was caused", tier: "Fatal Error"}
+    }
+    updateBuildResults(result);
+    tagBuildResult(result);
 }
 
 function setBuildEventListeners() {
