@@ -185,7 +185,7 @@ class Echo:
     def ssr(self)-> dict: return self._ssr
     @ssr.setter
     def ssr(self, ssr_in: list) -> None:
-        if len(ssr_in)!=13: raise DataMismatchError(f"Echo Substat Length: {len(ssr_in)}")
+        if not (isinstance(ssr_in, list)) or len(ssr_in)!=13: raise DataMismatchError(f"Corrupted echo format/data")
         ssr_data={}
         index=0
         for stat_name in GameData.substat_names:
@@ -205,7 +205,7 @@ class Build:
     def build_stats(self)-> dict: return self._build_stats
     @build_stats.setter
     def build_stats(self, bs_in: list)-> None:
-        if len(bs_in)!=13: raise DataMismatchError(f"Corrupted Build Substat Data: {len(bs_in)}")
+        if not (isinstance(bs_in, list)) or len(bs_in)!=13: raise DataMismatchError(f"Corrupted build format/data")
         bs_data={}
         index=0
         for stat_name in GameData.substat_names:
