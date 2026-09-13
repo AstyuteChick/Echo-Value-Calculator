@@ -24,7 +24,7 @@ def validate_echo_data(echo):
     for i, ssr in enumerate(echo): 
         if isinstance(ssr, bool): raise DataMismatchError("substat roll cannot be a bool (please stop messing around!)")
         try: ssr_val=float(ssr)
-        except (TypeError, ValueError): raise DataMismatchError(f"couldn't covert substat roll to float: {ssr}")
+        except (TypeError, ValueError, OverflowError): raise DataMismatchError(f"couldn't covert substat roll to float: {ssr}")
         if ssr_val!=0 and ssr_val not in GameData.substat_rolls[GameData.substat_names[i]]: raise DataMismatchError(f"invalid roll value for {GameData.substat_names[i]}: {ssr_val}")
         echo[i]=ssr_val
     ssr_counter=0
@@ -41,8 +41,8 @@ def validate_build_data(data):
     for i, ssr in enumerate(data["ssr"]):
         if isinstance(ssr, bool): raise DataMismatchError("preset values cannot be bools (ha you think you got me)")
         try: ssr_val=float(ssr)
-        except (TypeError, ValueError): raise DataMismatchError(f"coudln't covert substat roll to float: {ssr}")
-        if not math.isfinite(ssr_val): InvalidInputError(f"substat value must be fininte: {i}: {ssr}")
+        except (TypeError, ValueError, OverflowError): raise DataMismatchError(f"coudln't covert substat roll to float: {ssr}")
+        if not math.isfinite(ssr_val): raise InvalidInputError(f"substat value must be fininte: {i}: {ssr}")
         data["ssr"][i]=ssr_val
     for echoCost in data["echoCost"]: 
         if isinstance(echoCost, bool) or not isinstance(echoCost, int): raise DataMismatchError("echo cost has to be an integer")
@@ -50,7 +50,6 @@ def validate_build_data(data):
     for i, main_stat in enumerate(data["echoMainStats"]):
         if not isinstance(main_stat, str): raise DataMismatchError("main stat is not a string")
         if main_stat not in GameData.mainstat_vals[data["echoCost"][i]]: raise DataMismatchError(f"Main Stats don't match the cost: {data["echoCost"][i]}: {main_stat}")
-
 
 def validate_full_data(full_build):
     if len(full_build)!=5: raise DataMismatchError(f"Build must have 5 Echoes, not {len(full_build)}")
