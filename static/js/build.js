@@ -191,10 +191,10 @@ async function calcBuildResults() {
         return;
     }
     if (!response.ok) {
-        if (result.code === "Data was entered incorrectly") {result={score: result.error, tier: result.code}} 
+        if (result.code === "invalid_input") {result={score: result.error, tier: "Invalid Input"}} 
         else {
             console.log(`Error: ${response.status}, ${result.code}: ${result.error}`);
-            result={score: "Please refresh the page and try again", tier: result.code}
+            result={score: "Please refresh the page and try again", tier: "Request Error"}
         }
     }
     updateBuildResults(result);

@@ -1,9 +1,49 @@
 
 from flask import Flask, render_template, request, url_for, redirect, send_file, jsonify, send_from_directory
+from werkzeug.exceptions import BadRequest
 from evc_engine import GameData, Character, main
 from evc_errors import InvalidInputError, DataMismatchError
 
 evc_app=Flask(__name__, template_folder="templates", static_folder="static", static_url_path="/")
+
+def validate_common_data(data): 
+    if not isinstance(data, dict) or len(data)!=4: raise DataMismatchError("request is not a valid data dictionary")
+    try: 
+        if not isinstance(data["char"], str): raise DataMismatchError("character name must be a string")
+        if not isinstance(data["team"], str): raise DataMismatchError("team name must be a string")
+        if not isinstance(data["totEr"], (int, float)) or isinstance(data["totEr"], bool): raise DataMismatchError("total er must be a number")
+        if not isinstance(echo, list): raise DataMismatchError("ssr data must be a valid list")
+    except KeyError as msg: raise DataMismatchError(f"key not found: {msg}")
+    if data["char"] not in Character.data: raise DataMismatchError("character name not recognized")
+    if data["team"] not in Character.data[data["char"]][1][0]: raise DataMismatchError("character team not recognized")
+    if data["totEr"]<100 and Character.data[data["char"]][1][0][data["team"]]>100 and Character.data[data["char"]][1][1]!=0: raise InvalidInputError("please enter character's total ER")
+
+def validate_echo_data(echo):
+    if len(echo)!=13: raise DataMismatchError(f"echo must have 13 fields, not {len(echo)}")
+    for i, ssr in enumerate(echo): 
+        if isinstance(ssr, bool): raise DataMismatchError("substat roll cannot be a bool (please stop messing around!)")
+        try: ssr_val=float(ssr)
+        except (TypeError, ValueError): raise DataMismatchError(f"couldn't covert substat roll to float: {ssr}")
+        if ssr_val!=0 and ssr_val not in GameData.substat_rolls[GameData.substat_names[i]]: raise DataMismatchError(f"invalid roll value for {GameData.substat_names[i]}: {ssr_val}")
+        echo[i]=ssr_val
+    ssr_counter=0
+    for ssr in echo: 
+        if ssr!=0: ssr_counter+=1
+    if ssr_counter>5: raise DataMismatchError(f"too many substats: {ssr_counter}")
+
+def validate_build_data(preset_vals): 
+    if len(preset_vals)!=13: raise DataMismatchError(f"build must have 13 fields, not {len(preset_vals)}")
+    for i, ssr in enumerate(preset_vals):
+        if isinstance(ssr, bool): raise DataMismatchError("preset values cannot be bools (ha you think you got me)")
+        try: ssr_val=float(ssr)
+        except (TypeError, ValueError): raise DataMismatchError(f"coudln't covert substat roll to float: {ssr}")
+    preset_vals[i]=ssr_val
+
+def validate_full_data(full_build):
+    if len(full_build)!=5: raise DataMismatchError(f"Build must have 5 Echoes, not {len(full_build)}")
+    for echo in full_build: 
+        if not isinstance(echo, list): raise DataMismatchError("substat rolls must be a valid list")
+        validate_echo_data(echo)
 
 @evc_app.route("/")
 def home(): return redirect(url_for("echo"))
@@ -15,17 +55,22 @@ def echo(): return render_template("echo.html", active_page="echo", char_data=Ch
 @evc_app.route("/calcEcho", methods=["POST"])
 def calc_echo():
     try:
+        if not request.is_json: return jsonify({"error": "Request didn't send json", "code": "unsupported_media"}), 415
         data=request.get_json()
-        for x in range (len(data["ssr"])): data["ssr"][x]=float(data["ssr"][x])
-        es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "echo")
+        validate_common_data(data)
+        validate_echo_data(data["ssr"])
+        es, et=main(data["char"], data["team"], data["totEr"], data["ssr"], "echo")
         return jsonify({"score": es, "tier": et}), 200
-    except InvalidInputError as msg: return jsonify({"error": str(msg), "code": "Data was entered incorrectly"}), 400
+    except BadRequest as msg: 
+        evc_app.logger.warning(str(msg))
+        return jsonify({"error": "Request body contains invalid json", "code": "invalid_json"}), 400
+    except InvalidInputError as msg: return jsonify({"error": str(msg), "code": "invalid_input"}), 400
     except DataMismatchError as msg: 
         evc_app.logger.warning(str(msg))
-        return (jsonify({"error": "Data doesn't match the contract", "code": "Invalid Request"})), 400
+        return (jsonify({"error": "Data doesn't match the contract", "code": "invalid_request"})), 400
     except Exception as msg: 
         evc_app.logger.exception(str(msg))
-        return jsonify({"error": "Something went wrong", "code": "Unknown Error"}), 500
+        return jsonify({"error": "Something went wrong", "code": "internal_error"}), 500
 
 @evc_app.route("/build", methods=["GET"])
 def build(): return render_template("build.html", active_page="build", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls,
@@ -34,18 +79,24 @@ def build(): return render_template("build.html", active_page="build", char_data
 @evc_app.route("/calcBuild", methods=["POST"])
 def calc_build():
     try:
+        if not request.is_json: return jsonify({"error": "Request didn't send json", "code": "unsupported_media"}), 415
         data=request.get_json()
+        validate_common_data(data)
+        validate_build_data(data["ssr"])
         echo_cost=data.get("echoCost")
         echo_mainstats=data.get("echoMainStats")
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "build", {"echo_cost": echo_cost, "echo_mainstat": echo_mainstats})
         return jsonify({"score": es, "tier": et}), 200
-    except InvalidInputError as msg: return jsonify({"error": str(msg), "code": "Data was entered incorrectly"}), 400
+    except BadRequest as msg: 
+        evc_app.logger.warning(str(msg))
+        return jsonify({"error": "Request body contains invalid json", "code": "invalid_json"}), 400
+    except InvalidInputError as msg: return jsonify({"error": str(msg), "code": "invalid_input"}), 400
     except DataMismatchError as msg: 
         evc_app.logger.warning(str(msg))
-        return (jsonify({"error": "Data doesn't match the contract", "code": "Invalid Request"})), 400
+        return (jsonify({"error": "Data doesn't match the contract", "code": "invalid_request"})), 400
     except Exception as msg: 
         evc_app.logger.exception(str(msg))
-        return jsonify({"error": "Something went wrong", "code": "Unknown Error"}), 500
+        return jsonify({"error": "Something went wrong", "code": "internal_error"}), 500
 
 @evc_app.route("/full", methods=["GET"])
 def full(): return render_template("full.html", active_page="full", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls,
@@ -54,16 +105,22 @@ def full(): return render_template("full.html", active_page="full", char_data=Ch
 @evc_app.route("/calcFull", methods=["POST"])
 def calc_full():
     try:
+        if not request.is_json: return jsonify({"error": "Request didn't send json", "code": "unsupported_media"}), 415
         data=request.get_json()
+        validate_common_data(data)
+        validate_full_data(data["ssr"])
         es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "full")
         return jsonify({"score": es, "tier": et}), 200
-    except InvalidInputError as msg: return jsonify({"error": str(msg), "code": "Data was entered incorrectly"}), 400
+    except BadRequest as msg: 
+        evc_app.logger.warning(str(msg))
+        return jsonify({"error": "Request body contains invalid json", "code": "invalid_json"}), 400
+    except InvalidInputError as msg: return jsonify({"error": str(msg), "code": "invalid_input"}), 400
     except DataMismatchError as msg: 
         evc_app.logger.warning(str(msg))
-        return (jsonify({"error": "Data doesn't match the contract", "code": "Invalid Request"})), 400
+        return (jsonify({"error": "Data doesn't match the contract", "code": "invalid_request"})), 400
     except Exception as msg: 
         evc_app.logger.exception(str(msg))
-        return jsonify({"error": "Something went wrong", "code": "Unknown Error"}), 500
+        return jsonify({"error": "Something went wrong", "code": "internal_error"}), 500
 
 @evc_app.route("/instruct")
 def instruct():

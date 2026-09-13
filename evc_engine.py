@@ -30,7 +30,7 @@ class GameData:
     mainstat_vals={4: {"Crit Rate(%)": 22.0, "Crit Damage(%)": 44.0, "Atk(%)": 33.0, "HP(%)": 33.0, "Def(%)": 41.5, "Heal(%)": 0.0},
                    3: {"Atk(%)": 30.0, "Element(%)": 0.0, "HP(%)": 30.0, "Def(%)": 38.0, "ER(%)": 32.0},
                    1: {"Atk(%)": 18.0, "HP(%)": 22.8, "Def(%)": 18.0}}
-    sec_stats={4: ["Flat Atk", 150], 3: ["Flat Atk", 100], 1: ["Flat HP", 2280]}
+    secstat_vals={4: ["Flat Atk", 150], 3: ["Flat Atk", 100], 1: ["Flat HP", 2280]}
 
     def __init__(self, mode: str): self.ssm=mode
 
@@ -48,7 +48,7 @@ class GameData:
 class Character:
 
     data: dict[str, list]={
-        #Name:                              [[cr%, cd%, atk%, fatk, hp%, fhp, def%, fdef, ba%, ha%, skill%, liberation%], [{name: req_er}, imp_er, rc], analysis]
+        #Name:                              [[cr%, cd%, atk%, fatk, hp%, fhp, def%, fdef, ba%, ha%, skill%, liberation%], [{name: req_er}, er_imp, rc], analysis]
         "Aalto (Main-DPS)":                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.70, 0.0, 0.5*0.15, 0.5*0.10], [{"Default": 125.0}, 0.4, 150.0], True],
         "Aalto (Sub-DPS)":                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.45, 0.0, 0.5*0.25, 0.5*0.15], [{"Default": 125.0}, 0.9, 150.0], True],
         "Aemeath (Rupture)":                [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.1, 0.0, 0.0, 0.5*0.85], [{"Lynae/Lupa + Mornye": 115.0, "Lynae + Shorekeeper": 120.0, "Default": 125.0}, 0.7, 125.0], True],
@@ -390,8 +390,8 @@ def main(char: str, team: str, tot_er: str, ssr: list, type_in: str, main_stats:
             cur_echo_cost=main_stats["echo_cost"][echo_num]
             cur_echo_stat=main_stats["echo_mainstat"][echo_num]
             cur_mainstat_val=GameData.mainstat_vals[cur_echo_cost][cur_echo_stat]
-            cur_secstat=GameData.sec_stats[cur_echo_cost][0]
-            cur_secstat_val=GameData.sec_stats[cur_echo_cost][1]
+            cur_secstat=GameData.secstat_vals[cur_echo_cost][0]
+            cur_secstat_val=GameData.secstat_vals[cur_echo_cost][1]
             if cur_echo_stat!="Element(%)" and cur_echo_stat!="Heal(%)":
                 build_player.build_stats[cur_echo_stat]=build_player.build_stats[cur_echo_stat]-cur_mainstat_val
                 if build_player.build_stats[cur_echo_stat]<-0.00000001: raise InvalidInputError("Remember that stats from Echo PRESETS are expected. Please try again. ")
