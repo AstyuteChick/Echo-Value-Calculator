@@ -288,7 +288,9 @@ def ep_stats_build(echo_ssr: dict, ssm: dict, char_player: Character, er_net_ep:
         if index==12: break
     return sum(heapq.nlargest(5, rel_pot_vals)), er_net_ep
 
-def es_stats(av_total: float, ep_total: float)-> float: return (av_total/ep_total)*100
+def es_stats(av_total: float, ep_total: float)-> float: 
+    if ep_total==0.0: return 0.0
+    else: return (av_total/ep_total)*100
 
 def analysis(score: float, na: bool) -> str:
 
