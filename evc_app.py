@@ -114,9 +114,10 @@ def calc_full():
     try:
         if not request.is_json: return jsonify({"error": "Request didn't send json", "code": "unsupported_media"}), 415
         data=request.get_json()
+        if not isinstance(data, dict) or len(data)!=4: raise DataMismatchError("request is not a valid data dictionary")
         validate_common_data(data)
         validate_full_data(data["ssr"])
-        es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "full")
+        es, et=main(data["char"], data["team"], data["totEr"], data["ssr"], "full")
         return jsonify({"score": es, "tier": et}), 200
     except BadRequest as msg: 
         evc_app.logger.warning(str(msg))
