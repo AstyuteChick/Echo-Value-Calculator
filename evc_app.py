@@ -1,6 +1,7 @@
 
 from flask import Flask, render_template, request, url_for, redirect, send_file, jsonify, send_from_directory
 from werkzeug.exceptions import BadRequest
+import math
 from evc_engine import GameData, Character, main
 from evc_errors import InvalidInputError, DataMismatchError
 
@@ -16,6 +17,7 @@ def validate_common_data(data):
     if data["char"] not in Character.data: raise DataMismatchError("character name not recognized")
     if data["team"] not in Character.data[data["char"]][1][0]: raise DataMismatchError("character team not recognized")
     if data["totEr"]<100 and Character.data[data["char"]][1][0][data["team"]]>100 and Character.data[data["char"]][1][1]!=0: raise InvalidInputError("please enter character's total ER")
+    if not math.isfinite(data["totEr"]): raise InvalidInputError("er amount must be a finite number")
 
 def validate_echo_data(echo):
     if len(echo)!=13: raise DataMismatchError(f"echo must have 13 fields, not {len(echo)}")
@@ -40,9 +42,13 @@ def validate_build_data(data):
         if isinstance(ssr, bool): raise DataMismatchError("preset values cannot be bools (ha you think you got me)")
         try: ssr_val=float(ssr)
         except (TypeError, ValueError): raise DataMismatchError(f"coudln't covert substat roll to float: {ssr}")
+        if not math.isfinite(ssr_val): InvalidInputError(f"substat value must be fininte: {i}: {ssr}")
         data["ssr"][i]=ssr_val
+    for echoCost in data["echoCost"]: 
+        if isinstance(echoCost, bool) or not isinstance(echoCost, int): raise DataMismatchError("echo cost has to be an integer")
     if data["echoCost"] not in [[4, 3, 3, 1, 1], [4, 4, 1, 1, 1]]: raise DataMismatchError(f"Unoptimal echo setup: {data["echoCost"]}")
-    for i, main_stat in data["echoMainStats"]:
+    for i, main_stat in enumerate(data["echoMainStats"]):
+        if not isinstance(main_stat, str): raise DataMismatchError("main stat is not a string")
         if main_stat not in GameData.mainstat_vals[data["echoCost"][i]]: raise DataMismatchError(f"Main Stats don't match the cost: {data["echoCost"][i]}: {main_stat}")
 
 
