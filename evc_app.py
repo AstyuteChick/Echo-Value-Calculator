@@ -7,12 +7,11 @@ from evc_errors import InvalidInputError, DataMismatchError
 evc_app=Flask(__name__, template_folder="templates", static_folder="static", static_url_path="/")
 
 def validate_common_data(data): 
-    if not isinstance(data, dict) or len(data)!=4: raise DataMismatchError("request is not a valid data dictionary")
     try: 
         if not isinstance(data["char"], str): raise DataMismatchError("character name must be a string")
         if not isinstance(data["team"], str): raise DataMismatchError("team name must be a string")
         if not isinstance(data["totEr"], (int, float)) or isinstance(data["totEr"], bool): raise DataMismatchError("total er must be a number")
-        if not isinstance(echo, list): raise DataMismatchError("ssr data must be a valid list")
+        if not isinstance(data["ssr"], list): raise DataMismatchError("ssr data must be a valid list")
     except KeyError as msg: raise DataMismatchError(f"key not found: {msg}")
     if data["char"] not in Character.data: raise DataMismatchError("character name not recognized")
     if data["team"] not in Character.data[data["char"]][1][0]: raise DataMismatchError("character team not recognized")
@@ -31,13 +30,21 @@ def validate_echo_data(echo):
         if ssr!=0: ssr_counter+=1
     if ssr_counter>5: raise DataMismatchError(f"too many substats: {ssr_counter}")
 
-def validate_build_data(preset_vals): 
-    if len(preset_vals)!=13: raise DataMismatchError(f"build must have 13 fields, not {len(preset_vals)}")
-    for i, ssr in enumerate(preset_vals):
+def validate_build_data(data): 
+    try: 
+        if not isinstance(data["echoCost"], list) or len(data["echoCost"])!=5: raise DataMismatchError("echo cost must be a valid list")
+        if not isinstance(data["echoMainStats"], list) or len(data["echoMainStats"])!=5: raise DataMismatchError("echo mainstats must be a valid list")
+    except KeyError as msg: raise DataMismatchError(f"key not found: {str(msg)}")
+    if len(data["ssr"])!=13: raise DataMismatchError(f"build must have 13 fields, not {len(data["ssr"])}")
+    for i, ssr in enumerate(data["ssr"]):
         if isinstance(ssr, bool): raise DataMismatchError("preset values cannot be bools (ha you think you got me)")
         try: ssr_val=float(ssr)
         except (TypeError, ValueError): raise DataMismatchError(f"coudln't covert substat roll to float: {ssr}")
-    preset_vals[i]=ssr_val
+        data["ssr"][i]=ssr_val
+    if data["echoCost"] not in [[4, 3, 3, 1, 1], [4, 4, 1, 1, 1]]: raise DataMismatchError(f"Unoptimal echo setup: {data["echoCost"]}")
+    for i, main_stat in data["echoMainStats"]:
+        if main_stat not in GameData.mainstat_vals[data["echoCost"][i]]: raise DataMismatchError(f"Main Stats don't match the cost: {data["echoCost"][i]}: {main_stat}")
+
 
 def validate_full_data(full_build):
     if len(full_build)!=5: raise DataMismatchError(f"Build must have 5 Echoes, not {len(full_build)}")
@@ -57,6 +64,7 @@ def calc_echo():
     try:
         if not request.is_json: return jsonify({"error": "Request didn't send json", "code": "unsupported_media"}), 415
         data=request.get_json()
+        if not isinstance(data, dict) or len(data)!=4: raise DataMismatchError("request is not a valid data dictionary")
         validate_common_data(data)
         validate_echo_data(data["ssr"])
         es, et=main(data["char"], data["team"], data["totEr"], data["ssr"], "echo")
@@ -81,11 +89,10 @@ def calc_build():
     try:
         if not request.is_json: return jsonify({"error": "Request didn't send json", "code": "unsupported_media"}), 415
         data=request.get_json()
+        if not isinstance(data, dict) or len(data)!=6: raise DataMismatchError("request is not a valid data dictionary")
         validate_common_data(data)
-        validate_build_data(data["ssr"])
-        echo_cost=data.get("echoCost")
-        echo_mainstats=data.get("echoMainStats")
-        es, et=main(data.get("char"), data.get("team"), data.get("totEr"), data.get("ssr"), "build", {"echo_cost": echo_cost, "echo_mainstat": echo_mainstats})
+        validate_build_data(data)
+        es, et=main(data["char"], data["team"], data["totEr"], data["ssr"], "build", {"echo_cost": data["echoCost"], "echo_mainstat": data["echoMainStats"]})
         return jsonify({"score": es, "tier": et}), 200
     except BadRequest as msg: 
         evc_app.logger.warning(str(msg))
