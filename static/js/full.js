@@ -236,41 +236,46 @@ async function calcFullResults() {
     }
     let response;
     let result;
+    setSubmitting(true);
     try {
-        response = await fetch("/calcFull", {
-            method: "POST", 
-            headers: {"Content-Type": "application/json"}, 
-            body: JSON.stringify({
-                char: state.selectedChar, 
-                team: state.selectedTeam, 
-                totEr: state.totEr, 
-                ssr: state.fullData
-            })
-        });
-    } catch (error) {
-        console.error("Submit Failed: ", error)
-        result={score: `Submit Failed: ${error}`, tier: "Error"}
-        updateFullResults(result);
-        tagFullResult(result);
-    }
-    try {
-        result = await response.json();
-    } catch (error) {
-        console.error(`Couldn't parse server response: ${response.status}, ${error}`);
-        result={score: "Please refresh the page and try again", tier: "Unexpected server response"}
-        updateFullResults(result);
-        tagFullResult(result);
-        return;
-    }
-    if (!response.ok) {
-        if (result.code === "invalid_input") {result={score: result.error, tier: "Invalid Input"}} 
-        else {
-            console.log(`Error: ${response.status}, ${result.code}: ${result.error}`);
-            result={score: "Please refresh the page and try again", tier: "Request Error"}
+        try {
+            response = await fetch("/calcFull", {
+                method: "POST", 
+                headers: {"Content-Type": "application/json"}, 
+                body: JSON.stringify({
+                    char: state.selectedChar, 
+                    team: state.selectedTeam, 
+                    totEr: state.totEr, 
+                    ssr: state.fullData
+                })
+            });
+        } catch (error) {
+            console.error("Submit Failed: ", error)
+            result={score: `Submit Failed: ${error}`, tier: "Error"}
+            updateFullResults(result);
+            tagFullResult(result);
         }
+        try {
+            result = await response.json();
+        } catch (error) {
+            console.error(`Couldn't parse server response: ${response.status}, ${error}`);
+            result={score: "Please refresh the page and try again", tier: "Unexpected server response"}
+            updateFullResults(result);
+            tagFullResult(result);
+            return;
+        }
+        if (!response.ok) {
+            if (result.code === "invalid_input") {result={score: result.error, tier: "Invalid Input"}} 
+            else {
+                console.log(`Error: ${response.status}, ${result.code}: ${result.error}`);
+                result={score: "Please refresh the page and try again", tier: "Request Error"}
+            }
+        }
+        updateFullResults(result);
+        tagFullResult(result);
+    } finally {
+        setSubmitting(false);
     }
-    updateFullResults(result);
-    tagFullResult(result);
 }
 
 function setFullEventListeners() {
