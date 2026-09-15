@@ -26,7 +26,8 @@ const elms={
     resetBtn: document.querySelector(".allResetBtn"), 
     scoreVal: document.querySelector(".scoreVal"), 
     tierVal: document.querySelector(".tierVal"), 
-    resultDivs: document.querySelectorAll(".resultDiv")
+    resultDivs: document.querySelectorAll(".resultDiv"), 
+    allSubBtn: document.querySelector(".allSubBtn")
 }
 
 function validateBaseStateUI() {
@@ -265,6 +266,16 @@ function triggerAni() {
 function handleAniEnd(event) {
     if (event.animationName==="result-shine") {
         elms["resultDivs"].forEach(function (div) {div.classList.remove("otshine")});
+    }
+}
+
+function setSubmitting(isSubmitting) {
+    if (isSubmitting) {
+        elms["allSubBtn"].disabled=isSubmitting;
+        elms["allSubBtn"].textContent="Calculating...";
+    } else {
+        elms["allSubBtn"].disabled=isSubmitting;
+        elms["allSubBtn"].textContent="Submit";
     }
 }
 
