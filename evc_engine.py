@@ -2,7 +2,7 @@
 import heapq
 from evc_errors import DataMismatchError, InvalidInputError, InternalLogicError
 
-def adjust_req_er(er_req, rc, buff_val) -> float: 
+def adjust_req_er(er_req: float, rc: float, buff_val: float)-> float: 
     er_adj=er_req*(1-(buff_val/rc))
     if er_adj<=100: er_adj=0.0
     return er_adj
@@ -11,38 +11,39 @@ class GameData:
 
     rel_val_stat_names=["Crit Rate(%)", "Crit Damage(%)", "Atk(%)", "Flat Atk", "HP(%)", "Flat HP", "Def(%)", "Flat Def", "Basic(%)", "Heavy(%)", "Skill(%)", "Liberation(%)"]
     er_stat_names=["Required ER", "ER Importance", "Resonance Cost"]
-    substat_names=["Crit Rate(%)", "Crit Damage(%)", "Atk(%)", "Flat Atk", "HP(%)", "Flat HP", "Def(%)", "Flat Def", "Basic(%)", "Heavy(%)", "Skill(%)", "Liberation(%)", "ER(%)"]
-    substat_medians=[8.4, 16.8, 9.0, 45.0, 9.0, 450.0, 11.35, 55.0, 9.0, 9.0, 9.0, 9.0, 9.6]
+    substat_names=rel_val_stat_names+["ER(%)"]
+    substat_avg=[8.4, 16.8, 9.0, 45.0, 9.0, 450.0, 11.35, 55.0, 9.0, 9.0, 9.0, 9.0, 9.6]
     substat_max=[10.5, 21.0, 11.6, 60.0, 11.6, 580.0, 14.7, 70.0, 11.6, 11.6, 11.6, 11.6, 12.4]
-    substat_rolls={"Crit Rate(%)": [6.3, 6.9, 7.5, 8.1, 8.7, 9.3, 9.9, 10.5],
-                   "Crit Damage(%)": [12.6, 13.8, 15.0, 16.2, 17.4, 18.6, 19.8, 21.0],
-                   "Atk(%)": [6.4, 7.1, 7.9, 8.6, 9.4, 10.1, 10.9, 11.6],
-                   "Flat Atk": [30.0, 40.0, 50.0, 60.0],
-                   "HP(%)": [6.4, 7.1, 7.9, 8.6, 9.4, 10.1, 10.9, 11.6],
-                   "Flat HP": [320.0, 360.0, 390.0, 430.0, 470.0, 510.0, 540.0, 580.0],
-                   "Def(%)": [8.1, 9.0, 10.0, 10.9, 11.8, 12.8, 13.8, 14.7],
-                   "Flat Def": [40.0, 50.0, 60.0, 70.0],
-                   "Basic(%)": [6.4, 7.1, 7.9, 8.6, 9.4, 10.1, 10.9, 11.6],
-                   "Heavy(%)": [6.4, 7.1, 7.9, 8.6, 9.4, 10.1, 10.9, 11.6],
-                   "Skill(%)": [6.4, 7.1, 7.9, 8.6, 9.4, 10.1, 10.9, 11.6],
-                   "Liberation(%)": [6.4, 7.1, 7.9, 8.6, 9.4, 10.1, 10.9, 11.6],
-                   "ER(%)": [6.8, 7.6, 8.4, 9.2, 10.0, 10.8, 11.6, 12.4]}
+    substat_rolls={"Crit Rate(%)":      [6.3, 6.9, 7.5, 8.1, 8.7, 9.3, 9.9, 10.5],
+                   "Crit Damage(%)":    [12.6, 13.8, 15.0, 16.2, 17.4, 18.6, 19.8, 21.0],
+                   "Atk(%)":            [6.4, 7.1, 7.9, 8.6, 9.4, 10.1, 10.9, 11.6],
+                   "Flat Atk":          [30.0, 40.0, 50.0, 60.0],
+                   "HP(%)":             [6.4, 7.1, 7.9, 8.6, 9.4, 10.1, 10.9, 11.6],
+                   "Flat HP":           [320.0, 360.0, 390.0, 430.0, 470.0, 510.0, 540.0, 580.0],
+                   "Def(%)":            [8.1, 9.0, 10.0, 10.9, 11.8, 12.8, 13.8, 14.7],
+                   "Flat Def":          [40.0, 50.0, 60.0, 70.0],
+                   "Basic(%)":          [6.4, 7.1, 7.9, 8.6, 9.4, 10.1, 10.9, 11.6],
+                   "Heavy(%)":          [6.4, 7.1, 7.9, 8.6, 9.4, 10.1, 10.9, 11.6],
+                   "Skill(%)":          [6.4, 7.1, 7.9, 8.6, 9.4, 10.1, 10.9, 11.6],
+                   "Liberation(%)":     [6.4, 7.1, 7.9, 8.6, 9.4, 10.1, 10.9, 11.6],
+                   "ER(%)":             [6.8, 7.6, 8.4, 9.2, 10.0, 10.8, 11.6, 12.4]}
     mainstat_vals={4: {"Crit Rate(%)": 22.0, "Crit Damage(%)": 44.0, "Atk(%)": 33.0, "HP(%)": 33.0, "Def(%)": 41.5, "Heal(%)": 0.0},
                    3: {"Atk(%)": 30.0, "Element(%)": 0.0, "HP(%)": 30.0, "Def(%)": 38.0, "ER(%)": 32.0},
                    1: {"Atk(%)": 18.0, "HP(%)": 22.8, "Def(%)": 18.0}}
     secstat_vals={4: ["Flat Atk", 150], 3: ["Flat Atk", 100], 1: ["Flat HP", 2280]}
 
-    def __init__(self, mode: str): self.ssm=mode
+    def __init__(self, mode: str)-> None: self.ssm=mode
 
     @property
     def ssm(self)-> dict: return self._ssm
     @ssm.setter
     def ssm(self, mode: str)-> None:
+        if not isinstance(mode, str): raise DataMismatchError(f"invalid calculation mode type: {type(mode)}")
         ssm_dict={}
         if mode=="O":
-            for i in range(13): ssm_dict[GameData.substat_names[i]]=GameData.substat_max[i]
+            for i in range(len(GameData.substat_names)): ssm_dict[GameData.substat_names[i]]=GameData.substat_max[i]
         else:
-            for i in range(13): ssm_dict[GameData.substat_names[i]]=GameData.substat_medians[i]
+            for i in range(len(GameData.substat_names)): ssm_dict[GameData.substat_names[i]]=GameData.substat_avg[i]
         self._ssm=ssm_dict
 
 class Character:
@@ -116,8 +117,10 @@ class Character:
         "Zhezhi":                           [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.8, 0.0, 0.0, 0.0], [{"Empyrean Anthem": 130.0, "Default": 130.0, "Moonlit Clouds": 115.0}, 0.9, 125.0], True]
     }
 
+    zhezhi_users=["Carlotta", "Jinhsi", "Hiyuki", "Lingyang"]
+
     for char_name in data:
-        if char_name not in ["Carlotta", "Jinhsi", "Hiyuki", "Lingyang"]: continue
+        if char_name not in zhezhi_users: continue
         for team_name in data[char_name][1][0]:
             if "Default" in team_name:
                 try:
@@ -130,67 +133,59 @@ class Character:
 
     def __init__(self, name: str, team: str)-> None:
         self.name=name
-        self.rv=Character.data[self.name][0]
-        self.team=team
-        self.er=self.team
+        self.rel_val=Character.data[self.name][0]
+        self.er=team
         self.anal=Character.data[self.name][2]
+        self.teams=Character.data[self.name][1][0]
 
     @property
     def name(self)-> str: return self._name
     @name.setter
     def name(self, name: str)-> None:
-        char_found=False
-        for char_name in Character.data:
-            if char_name==name:
-                char_found=True
-                break
-        if char_found!=True: raise DataMismatchError(f"Character not found:{name}")
+        if not isinstance(name, str): raise DataMismatchError(f"invalid character name type: {type(name)}")
+        if name not in Character.data: raise DataMismatchError(f"invalid character name: {name}")
         self._name=name
 
     @property
-    def team(self)->list: return self._team
-    @team.setter
-    def team(self, team_in:str)->None:
-        team_stat=None
-        team_stats=Character.data[self.name][1][0]
-        for team in team_stats:
-            if team_in == team: 
-                team_stat=float(team_stats[team])
-                break
-        if team_stat==None: raise DataMismatchError(f"Team not found for {self.name}: {team_in}")
-        er_stat = [team_stat, Character.data[self.name][1][1], Character.data[self.name][1][2]]
-        self._team=er_stat
-
-    @property
-    def rv(self)-> dict: return self._rv
-    @rv.setter
-    def rv(self, rv_list: list)-> None:
-        rv_dict={}
-        for index in range(12): rv_dict[GameData.rel_val_stat_names[index]]=rv_list[index]
-        self._rv=rv_dict
+    def rel_val(self)-> dict: return self._rel_val
+    @rel_val.setter
+    def rel_val(self, rel_val: list)-> None:
+        if len(rel_val)!=len(GameData.rel_val_stat_names): raise InternalLogicError(f"invalid relative value list: Expected length {len(GameData.rel_val_stat_names)}, got instead {len(rel_val)}")
+        rel_val_dict={}
+        for i in range(len(rel_val)): rel_val_dict[GameData.rel_val_stat_names[i]]=rel_val[i]
+        self._rel_val=rel_val_dict
 
     @property
     def er(self)-> dict: return self._er
     @er.setter
-    def er(self, er_list: list)-> None:
+    def er(self, team: str)-> None:
+        if team not in Character.data[self.name][1][0]: raise DataMismatchError(f"team not found for {self.name}: {team}")
         er_dict={}
-        for index in range(3): er_dict[GameData.er_stat_names[index]]=er_list[index]
+        er_dict[GameData.er_stat_names[0]]=Character.data[self.name][1][0][team]
+        er_dict[GameData.er_stat_names[1]]=Character.data[self.name][1][1]
+        er_dict[GameData.er_stat_names[2]]=Character.data[self.name][1][2]
         self._er=er_dict
+
+    @property
+    def teams(self)-> list: return self._teams
+    @teams.setter
+    def teams(self, teams: dict)-> None:
+        if not isinstance(teams, dict): raise InternalLogicError(f"teams type is not dict: {type(teams)}")
+        team_list=[]
+        for team in teams: team_list.append(team)
+        self._teams=team_list
 
 class Echo:
 
-    def __init__(self, ssr_in: list)-> None: self.ssr=ssr_in
+    def __init__(self, ssr: list)-> None: self.ssr=ssr
 
     @property
     def ssr(self)-> dict: return self._ssr
     @ssr.setter
-    def ssr(self, ssr_in: list) -> None:
-        if not (isinstance(ssr_in, list)) or len(ssr_in)!=13: raise DataMismatchError(f"Corrupted echo format/data")
+    def ssr(self, ssr: list) -> None:
+        if not (isinstance(ssr, list)) or len(ssr)!=13: raise DataMismatchError(f"Corrupted echo format/data")
         ssr_data={}
-        index=0
-        for stat_name in GameData.substat_names:
-            ssr_data[stat_name]=float(ssr_in[index])
-            index=index+1
+        for i, stat_name in enumerate(GameData.substat_names): ssr_data[stat_name]=float(ssr[i])
         stat_count=0
         for substat in ssr_data:
             if ssr_data[substat]!=0.0: stat_count=stat_count+1
@@ -207,10 +202,7 @@ class Build:
     def build_stats(self, bs_in: list)-> None:
         if not (isinstance(bs_in, list)) or len(bs_in)!=13: raise DataMismatchError(f"Corrupted build format/data")
         bs_data={}
-        index=0
-        for stat_name in GameData.substat_names:
-            bs_data[stat_name]=float(bs_in[index])
-            index=index+1
+        for i, stat_name in enumerate(GameData.substat_names): bs_data[stat_name]=float(bs_in[i])
         self._build_stats=bs_data
 
 def av_er(er_net_av: float, er_ssr: float, er_med: float, er_imp: float)-> tuple[float, float]:
@@ -240,15 +232,15 @@ def ep_er(er_net_ep: float, er_ssr: float, er_med: float, er_imp: float)-> tuple
 def av_stats(echo_ssr: dict, ssm: dict, char_player: Character, er_net_av: float)-> tuple[float, float]:
     er_net_av, total_av=av_er(er_net_av, echo_ssr["ER(%)"], ssm["ER(%)"], char_player.er["ER Importance"])
     for substat in echo_ssr:
-        if substat!="ER(%)": total_av=total_av+((echo_ssr[substat]/ssm[substat])*char_player.rv[substat])
+        if substat!="ER(%)": total_av=total_av+((echo_ssr[substat]/ssm[substat])*char_player.rel_val[substat])
     return total_av, er_net_av
 
 def ep_stats(echo_ssr: dict, ssm: dict, char_player: Character, er_net_ep: float)-> tuple[float, float]:
     rel_pot_vals=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     er_net_ep, rel_pot_vals[12]=ep_er(er_net_ep, echo_ssr["ER(%)"], ssm["ER(%)"], char_player.er["ER Importance"])
     index=0
-    for substat in char_player.rv:
-        rel_pot_vals[index]=char_player.rv[substat]
+    for substat in char_player.rel_val:
+        rel_pot_vals[index]=char_player.rel_val[substat]
         index=index+1
         if index==12: break
     return sum(heapq.nlargest(5, rel_pot_vals)), er_net_ep
@@ -282,8 +274,8 @@ def ep_stats_build(echo_ssr: dict, ssm: dict, char_player: Character, er_net_ep:
         else: er_ep=0
     rel_pot_vals[12]=er_ep
     index=0
-    for substat in char_player.rv:
-        rel_pot_vals[index]=char_player.rv[substat]
+    for substat in char_player.rel_val:
+        rel_pot_vals[index]=char_player.rel_val[substat]
         index=index+1
         if index==12: break
     return sum(heapq.nlargest(5, rel_pot_vals)), er_net_ep
@@ -372,15 +364,15 @@ def main(char: str, team: str, tot_er: str, ssr: list, type_in: str, main_stats:
         build_player=Build(ssr)
         if char_player.er["Required ER"]<100: build_player.build_stats["ER(%)"]=0.0
 
-        for substat in char_player.rv:
-            if char_player.rv[substat]==0.0: build_player.build_stats[substat]=0.0
-        if char_player.rv["Atk(%)"]!=0.0 and char_player.rv["Flat HP"]==0.0:
+        for substat in char_player.rel_val:
+            if char_player.rel_val[substat]==0.0: build_player.build_stats[substat]=0.0
+        if char_player.rel_val["Atk(%)"]!=0.0 and char_player.rel_val["Flat HP"]==0.0:
             if main_stats["echo_cost"][1]==4: build_player.build_stats["Flat HP"]=2280*3+1
             else: build_player.build_stats["Flat HP"]=2280*2+1
-        elif char_player.rv["HP(%)"]!=0.0 and char_player.rv["Flat Atk"]==0.0:
+        elif char_player.rel_val["HP(%)"]!=0.0 and char_player.rel_val["Flat Atk"]==0.0:
             if main_stats["echo_cost"][1]==4: build_player.build_stats["Flat Atk"]=150*2+1
             else: build_player.build_stats["Flat Atk"]=150+200
-        elif char_player.rv["Flat HP"]==0.0 and char_player.rv["Flat Atk"]==0.0:
+        elif char_player.rel_val["Flat HP"]==0.0 and char_player.rel_val["Flat Atk"]==0.0:
             if main_stats["echo_cost"][1]==4:
                 build_player.build_stats["Flat HP"]=2280*3+1
                 build_player.build_stats["Flat Atk"]=150*2+1
