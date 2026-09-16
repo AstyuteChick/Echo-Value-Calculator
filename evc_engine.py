@@ -159,6 +159,7 @@ class Character:
     def er(self)-> dict: return self._er
     @er.setter
     def er(self, team: str)-> None:
+        if not isinstance(team, str): raise DataMismatchError(f"team is not a string: {type(team)}")
         if team not in Character.data[self.name][1][0]: raise DataMismatchError(f"team not found for {self.name}: {team}")
         er_dict={}
         er_dict[GameData.er_stat_names[0]]=Character.data[self.name][1][0][team]
@@ -185,7 +186,9 @@ class Echo:
     def ssr(self, ssr: list) -> None:
         if not (isinstance(ssr, list)) or len(ssr)!=13: raise DataMismatchError(f"Corrupted echo format/data")
         ssr_data={}
-        for i, stat_name in enumerate(GameData.substat_names): ssr_data[stat_name]=float(ssr[i])
+        for i, stat_name in enumerate(GameData.substat_names): 
+            try: ssr_data[stat_name]=float(ssr[i])
+            except (ValueError, TypeError): raise DataMismatchError(f"couldn't convert {type(ssr[i])} to float")
         stat_count=0
         for substat in ssr_data:
             if ssr_data[substat]!=0.0: stat_count=stat_count+1
@@ -202,7 +205,9 @@ class Build:
     def build_stats(self, bs_in: list)-> None:
         if not (isinstance(bs_in, list)) or len(bs_in)!=13: raise DataMismatchError(f"Corrupted build format/data")
         bs_data={}
-        for i, stat_name in enumerate(GameData.substat_names): bs_data[stat_name]=float(bs_in[i])
+        for i, stat_name in enumerate(GameData.substat_names): 
+            try: bs_data[stat_name]=float(bs_in[i])
+            except (ValueError, TypeError): raise DataMismatchError(f"couldn't convert {type(bs_in[i])} to float")
         self._build_stats=bs_data
 
 def av_er(er_net_av: float, er_ssr: float, er_med: float, er_imp: float)-> tuple[float, float]:
