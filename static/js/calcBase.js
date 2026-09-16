@@ -269,6 +269,25 @@ function handleAniEnd(event) {
     }
 }
 
+function getSubmittedData() {
+    return {
+        "char": state["selectedChar"], 
+        "team": state["selectedTeam"], 
+        "totEr": state["totEr"], 
+        "ssr": [...state["echoData"]]
+    }
+}
+
+function verifyRequestIsCurrent(submittedData) {
+    if (submittedData["char"]!==state["selectedChar"] || submittedData["team"]!==state["selectedTeam"] ||
+        submittedData["totEr"]!==state["totEr"] ||
+        submittedData["ssr"].length!==state["echoData"].length
+    ) {return false;}
+    return submittedData["ssr"].every(
+        (roll, i) => roll===state["echoData"][i]
+    );
+}
+
 function setSubmitting(isSubmitting) {
     if (isSubmitting) {
         elms["allSubBtn"].disabled=isSubmitting;

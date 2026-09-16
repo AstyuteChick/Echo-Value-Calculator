@@ -181,6 +181,8 @@ function updateEchoResults(result) {
 }
 
 async function calcEchoResults() {
+    let response;
+    let result;
     if (
         !elms["form"].reportValidity() || 
         !validateBaseStateUI() || 
@@ -191,22 +193,17 @@ async function calcEchoResults() {
         tagEchoResult(result);
         return;
     }
-    let response;
-    let result;
+    const submittedData=getSubmittedData();
     setSubmitting(true);
     try {
         try {
             response=await fetch("/calcEcho", {
                 method: "POST", 
                 headers: {"Content-Type": "application/json"}, 
-                body: JSON.stringify({
-                    char: state.selectedChar, 
-                    team: state.selectedTeam, 
-                    totEr: state.totEr, 
-                    ssr: state.echoData
-                })
+                body: JSON.stringify(submittedData)
             });
         } catch (error) {
+            if (!verifyRequestIsCurrent(submittedData)) {return;}
             console.error("Submit Failed: ", error);
             result={score: "Please check your connection and try again", tier: "Could not reach server"}
             updateEchoResults(result);
@@ -216,12 +213,14 @@ async function calcEchoResults() {
         try {
             result = await response.json();
         } catch (error) {
+            if (!verifyRequestIsCurrent(submittedData)) {return;}
             console.error(`Couldn't parse server response: ${response.status}, ${error}`);
             result={score: "Please refresh the page and try again", tier: "Unexpected server response"}
             updateEchoResults(result);
             tagEchoResult(result);
             return;
         }
+        if (!verifyRequestIsCurrent(submittedData)) {return;}
         if (!response.ok) {
             if (result.code === "invalid_input") {result={score: result.error, tier: "Invalid Input"}} 
             else {
