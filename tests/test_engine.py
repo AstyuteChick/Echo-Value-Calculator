@@ -1,10 +1,10 @@
 
 import pytest
-from evc_engine import adjust_req_er, GameData, Character, analysis, Echo, main
+from evc_engine import adjust_req_er, GameData, Character, Echo, Build, av_er, ep_er, av_stats, analysis, main
 from evc_errors import DataMismatchError, InternalLogicError
 
 @pytest.fixture
-def valid_avg_dict(): return {
+def valid_avg_ssr_dict(): return {
     "Crit Rate(%)": 8.4, 
     "Crit Damage(%)": 16.8, 
     "Atk(%)": 9.0, 
@@ -21,7 +21,7 @@ def valid_avg_dict(): return {
 }
 
 @pytest.fixture
-def valid_max_dict(): return {
+def valid_max_ssr_dict(): return {
     "Crit Rate(%)": 10.5, 
     "Crit Damage(%)": 21.0, 
     "Atk(%)": 11.6, 
@@ -32,13 +32,16 @@ def valid_max_dict(): return {
     "Flat Def": 70.0, 
     "Basic(%)": 11.6, 
     "Heavy(%)": 11.6, 
-    "Skill(%)": 11.5, 
+    "Skill(%)": 11.6, 
     "Liberation(%)": 11.6, 
     "ER(%)": 12.4, 
 }
 
 @pytest.fixture
-def valid_echo_ssr_list(): return [8.1, 16.2, 0.0, 0.0, 9.6, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+def valid_echo_ssr(): return [8.1, 16.2, 0.0, 0.0, 9.6, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+@pytest.fixture
+def valid_build_ssr(): return [50, 100, 30, 450, 0, 0, 0, 0, 30, 0, 0, 10, 10]
 
 @pytest.mark.parametrize("er_req, rc, buff_val, expected_result", [
     (200, 150, 75, 0.0), 
@@ -48,12 +51,12 @@ def valid_echo_ssr_list(): return [8.1, 16.2, 0.0, 0.0, 9.6, 0.0, 0.0, 0.0, 0.0,
 def test_adjust_req_er(er_req, rc, buff_val, expected_result): assert adjust_req_er(er_req, rc, buff_val)==expected_result
 
 @pytest.mark.parametrize("mode, ex_pot_list", [
-    ("o", valid_avg_dict), 
-    ("O", valid_max_dict), 
-    ("a", valid_avg_dict), 
-    ("", valid_avg_dict)
+    ("o", "valid_avg_ssr_dict"), 
+    ("O", "valid_max_ssr_dict"), 
+    ("a", "valid_avg_ssr_dict"), 
+    ("", "valid_avg_ssr_dict")
 ])
-def test_game_data_substat_pot(mode, ex_pot_list): assert GameData(mode).ssm==ex_pot_list
+def test_game_data_substat_pot(mode, ex_pot_list, request): assert GameData(mode).ssm==request.getfixturevalue(ex_pot_list)
 
 @pytest.mark.parametrize("mode", [[], None, True, 0, 1, {}])
 def test_invalid_game_mode(mode): 
@@ -66,31 +69,75 @@ def test_char_rel_val(char, team, rel_val):
     rel_val_dict=Character(char, team).rel_val
     for ind, name in enumerate(rel_val_dict): assert rel_val_dict[name]==rel_val[ind]
 
-@pytest.mark.parametrize("rel_val", [[0.0]*12, [0.0]*14])
+@pytest.mark.parametrize("rel_val", [[0.0]*11, [0.0]*13])
 def test_invalid_rel_val(rel_val):
     with pytest.raises(InternalLogicError): Character("Carlotta","Default").rel_val=rel_val
 
 @pytest.mark.parametrize("char, team_in", [
     ("Carlotta", "Zhezhi Outro"), 
-    ("Aemeath", "Default")
+    ("Aemeath (Rupture)", "Default")
 ])
 def test_char_teams(char, team_in): assert team_in in Character(char, "Default").teams
 
 @pytest.mark.parametrize("ssr", [[0.0]*12, [0.0]*14])
-def test_echo_rejects_wrong_length(ssr):
+def test_echo_wrong_length(ssr):
     with pytest.raises(DataMismatchError): Echo(ssr)
 
-def test_echo_accepts_correct_length(valid_echo_ssr_list):
-    result=Echo(valid_echo_ssr_list)
+def test_echo_correct_length(valid_echo_ssr):
+    result=Echo(valid_echo_ssr)
     assert result.ssr=={"Crit Rate(%)": 8.1, "Crit Damage(%)": 16.2, "Atk(%)": 0.0, "Flat Atk": 0.0, "HP(%)": 9.6, "Flat HP": 0.0, "Def(%)": 0.0, "Flat Def": 0.0, 
                         "Basic(%)": 0.0, "Heavy(%)": 0.0, "Skill(%)": 0.0, "Liberation(%)": 0.0, "ER(%)": 0.0}
 
 def test_echo_six_stats():
     with pytest.raises(DataMismatchError): Echo([8.1, 16.2, 0.0, 0.0, 9.6, 0.0, 0.0, 0.0, 9.6, 0.0, 0.0, 9.6, 10.0])
 
-def test_echo_invalid_substat(valid_echo_ssr_list):
-    valid_echo_ssr_list[0]="aa"
-    with pytest.raises(DataMismatchError): Echo(valid_echo_ssr_list)
+def test_echo_invalid_substat(valid_echo_ssr):
+    valid_echo_ssr[0]="aa"
+    with pytest.raises(DataMismatchError): Echo(valid_echo_ssr)
+
+def test_build_stats(valid_build_ssr): 
+    build_stats_dict=Build(valid_build_ssr).build_stats
+    for ind, name in enumerate(build_stats_dict): assert name==GameData.substat_names[ind]
+
+@pytest.mark.parametrize("invalid_list", [[0.0]*12, [0.0]*14])
+def test_build_invalid_list(invalid_list): 
+    with pytest.raises(DataMismatchError): Build(invalid_list)
+
+def test_build_invalid_stats(valid_build_ssr):
+    valid_build_ssr[0]="aa"
+    with pytest.raises(DataMismatchError): Build(valid_build_ssr)
+
+@pytest.mark.parametrize("er_net, er_ssr, er_med, er_imp, ex_er_net, ex_er_av", [
+    (-5, 10, 10, 1, -5, 1), 
+    (0, 10, 10, 1, 0, 1), 
+    (5, 10, 10, 1, 0, 0.5), 
+    (10, 10, 10, 1, 0, 0), 
+    (15, 10, 10, 1, 5, 0), 
+    (0, 20, 10, 0.5, 0, 1)
+])
+def test_av_er(er_net, er_ssr, er_med, er_imp, ex_er_net, ex_er_av): assert av_er(er_net, er_ssr, er_med, er_imp)==(ex_er_net, ex_er_av)
+
+@pytest.mark.parametrize("net, ssr, med, imp, ex_net, ex_pot", [
+    (-15, 0, 10, 1, -15, 1), 
+    (-15, 0, 10, 0.75, -15, 0.75), 
+    (-15, 10, 10, 1, -15, 1), 
+    (-15, 10, 10, 0.75, -15, 0.75), 
+    (-10, 0, 10, 1, -10, 1),
+    (-5, 0, 10, 1, -5, 0.5), 
+    (-5, 10, 10, 1, -5, 1), 
+    (-5, 10, 10, 0.5, -5, 0.5), 
+    (-5, 0, 10, 0.5, -5, 0.25), 
+    (0, 0, 10, 1, 0, 0), 
+    (0, 5, 10, 1, 0, 0.5), 
+    (0, 10, 10, 1, 0, 1), 
+    (0, 10, 10, 0.5, 0, 0.5), 
+    (5, 10, 10, 1, 0, 0.5), 
+    (5, 0, 10, 1, 5, 0), 
+    (10, 0, 10, 1, 10, 0), 
+    (10, 5, 10, 1, 5, 0), 
+    (10, 10, 10, 1, 0, 0)
+])
+def test_ep_er(net, ssr, med, imp, ex_net, ex_pot): assert ep_er(net, ssr, med, imp)==(ex_net, ex_pot)
 
 def test_analysis_at_false(): assert analysis(66.000, False)=="Not Applicable"
 
