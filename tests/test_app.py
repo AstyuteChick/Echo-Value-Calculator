@@ -39,3 +39,4 @@ def test_main_internal_error(client, valid_request_payload, monkeypatch):
     assert response.status_code==500
     assert response.get_json()["code"]=="internal_error"
     
+

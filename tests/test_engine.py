@@ -17,6 +17,12 @@ def valid_echo_ssr(): return [8.1, 16.2, 0.0, 0.0, 9.6, 0.0, 0.0, 0.0, 0.0, 0.0,
 @pytest.fixture
 def valid_build_ssr(): return [50, 100, 30, 450, 0, 0, 0, 0, 30, 0, 0, 10, 10]
 
+@pytest.fixture
+def echo_for_calcs(): return Echo([5, 10, 15, 20]+[0]*9).ssr
+
+@pytest.fixture
+def ssr_avg_for_calcs(): return GameData("n").ssm
+
 # ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 @pytest.mark.parametrize("er_req, rc, buff_val, expected_result", [
@@ -142,10 +148,11 @@ def test_ep_er(net, ssr, med, imp, ex_net, ex_pot): assert ep_er(net, ssr, med, 
 # ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 @pytest.mark.parametrize("echo_ssr, ssm, char", [
-    (Echo([5, 10, 15, 20]+[0]*9).ssr, GameData("n").ssm, Character("Phrolova", "Default"))
+    ("echo_for_calcs", "ssr_avg_for_calcs", Character("Phrolova", "Default"))
 ])
-def test_av_stats(echo_ssr, ssm, char): 
+def test_av_stats(echo_ssr, ssm, char, request): 
     ssm_new={}
+    ssm=request.getfixturevalue(ssm)
     for stat in ssm: ssm_new[stat]=ssm[stat]
     ssm_new["Crit Rate(%)"]=5
     ssm_new["Crit Damage(%)"]=10
@@ -154,7 +161,24 @@ def test_av_stats(echo_ssr, ssm, char):
     ex_tot=char.rel_val["Crit Rate(%)"] + char.rel_val["Crit Damage(%)"] + char.rel_val["Atk(%)"]*3 + char.rel_val["Flat Atk"]*0.5
     net=0
     ex_net=0
-    assert av_stats(echo_ssr, ssm_new, char, net)==(ex_tot, ex_net)
+    assert av_stats(request.getfixturevalue(echo_ssr), ssm_new, char, net)==(ex_tot, ex_net)
+
+@pytest.mark.parametrize("echo_ssr, ssm, char", [
+    ("echo_for_calcs", "ssr_avg_for_calcs", Character("Zani", "Default"))
+])
+def test_ep_stats(echo_ssr, ssm, char, request):
+    ssm_new={}
+    ssm=request.getfixturevalue(ssm)
+    for stat in ssm: ssm_new[stat]=ssm[stat]
+    ssm_new["ER(%)"]=10
+    ssr_new={}
+    ssr=request.getfixturevalue(echo_ssr)
+    for stat in ssr: ssr_new[stat]=ssr[stat]
+    ssr_new["ER(%)"]=10
+    net=0
+    ex_net=0
+    ex_ep_tot=1+1+1+0.5+0.325
+    assert ep_stats(ssr_new, ssm_new, char, net)==(ex_ep_tot, ex_net)
 
 def test_analysis_at_false(): assert analysis(66.000, False)=="Not Applicable"
 

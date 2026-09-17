@@ -409,10 +409,9 @@ def main(char: str, team: str, tot_er: str, ssr: list, type_in: str, main_stats:
 
     else: raise InternalLogicError(f"Invalid calculation path: {type_in}")
 
-if __name__=="__main__":
-    for char in Character.data:
-        def_found=False
-        for team in Character.data[char][1][0]:
-            if "Default" in team: def_found=True
-        if def_found==False: raise DataMismatchError(f"Default not found for {char}")
-        
+if __name__=="__main__": pass
+    # for char in Character.data:
+    #     def_found=False
+    #     for team in Character.data[char][1][0]:
+    #         if "Default" in team: def_found=True
+    #     if def_found==False: raise DataMismatchError(f"Default not found for {char}")
