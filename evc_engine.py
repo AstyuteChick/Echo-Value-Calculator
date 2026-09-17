@@ -120,9 +120,9 @@ class Character:
     zhezhi_users=["Carlotta", "Jinhsi", "Hiyuki", "Lingyang"]
 
     for char_name in data:
-        if char_name not in zhezhi_users: continue
-        for team_name in data[char_name][1][0]:
-            if "Default" in team_name:
+        if char_name not in ["Carlotta", "Jinhsi", "Hiyuki", "Lingyang"]: continue
+        for team in data[char_name][1][0]:
+            if "Default" in team:
                 try:
                     def_er=data[char_name][1][0][team_name]
                     zhe_er=adjust_req_er(def_er, data[char_name][1][2], 15)
