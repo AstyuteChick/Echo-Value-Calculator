@@ -90,7 +90,7 @@ class Character:
         "Mortefi":                          [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.1, 0.0, 0.5*0.2, 0.5*0.7], [{"Default": 120.0}, 0.9, 125.0], True],
         "Phoebe":                           [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.15, 0.5*0.5, 0.0, 0.5*0.15], [{"Absolution": 0.0, "Confession": 125.0, "Default": 125.0}, 1.0, 125.0], True],
         "Phrolova":                         [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.5, 0.0], [{"Default": 0.0}, 0.0, 0], True],
-        "Qingxiao":                         [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.25, 0.5*0.35, 0.0, 0.5*0.3], [{"Deina + Supp": 110.0, "Lynae + Supp": 120.0, "Ciaccona + ANY character": 105.0}, 0.6, 125.0], True],
+        "Qingxiao":                         [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.25, 0.5*0.35, 0.0, 0.5*0.3], [{"Deina + Supp": 110.0, "Lynae + Supp": 120.0, "Ciaccona + ANY character": 105.0, "Default": 115.0}, 0.6, 125.0], True],
         "Qiuyuan":                          [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.65, 0.0, 0.0], [{"Galbrena + Shorekeeper": 115.0, "Phrolova + Cantarella": 125.0, "Default": 125.0}, 0.9, 125.0], True],
         "Rebecca":                          [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.8, 0.0, 0.0, 0.0], [{"Default": 120.0}, 0.9, 125.0], True],
         "Roccia":                           [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.6, 0.5*0.15, 0.0], [{"Phrolova + Cantarella": 115.0, "Camellya + Shorekeeper": 125.0, "Default": 130.0}, 0.9, 125.0], True],
@@ -117,10 +117,10 @@ class Character:
 
     for char_name in data:
         if char_name not in ["Carlotta", "Jinhsi", "Hiyuki", "Lingyang"]: continue
-        for team in data[char_name][1][0]:
-            if "Default" in team:
+        for team_name in data[char_name][1][0]:
+            if "Default" in team_name:
                 try:
-                    def_er=data[char_name][1][0][team]
+                    def_er=data[char_name][1][0][team_name]
                     zhe_er=adjust_req_er(def_er, data[char_name][1][2], 15)
                     if zhe_er>100: data[char_name][1][0]["Zhezhi Outro"]=round(zhe_er, 1)
                     else: data[char_name][1][0]["Zhezhi Outro"]=0.0
