@@ -3,76 +3,77 @@ from flask import Flask, render_template, request, url_for, redirect, send_file,
 from werkzeug.exceptions import BadRequest
 import math
 from evc_engine import GameData, Character, main
-from evc_errors import InvalidInputError, DataMismatchError
+from evc_errors import InvalidInputError, DataMismatchError, InternalLogicError
 
-evc_app=Flask(__name__, template_folder="templates", static_folder="static", static_url_path="/")
+evc_app = Flask(__name__, template_folder="templates", static_folder="static", static_url_path="/")
 
 def validate_common_data(data): 
     try: 
-        if not isinstance(data["char"], str): raise DataMismatchError("character name must be a string")
-        if not isinstance(data["team"], str): raise DataMismatchError("team name must be a string")
-        if not isinstance(data["totEr"], (int, float)) or isinstance(data["totEr"], bool): raise DataMismatchError("total er must be a number")
-        if not isinstance(data["ssr"], list): raise DataMismatchError("ssr data must be a valid list")
+        if not isinstance(data["char"], str): raise DataMismatchError(f"character name must be a string, type({data["char"]}): {type(data["char"])}")
+        if not isinstance(data["team"], str): raise DataMismatchError(f"team name must be a string, type({data["team"]}): {type(data["team"])}")
+        if not isinstance(data["totEr"], (int, float)) or isinstance(data["totEr"], bool): raise DataMismatchError(f"total er must be a number, type({data["totEr"]}): {type(data["totEr"])}")
+        if not isinstance(data["ssr"], list): raise DataMismatchError(f"ssr data must be a valid list, type({data["ssr"]}): {type(data["ssr"])}")
     except KeyError as msg: raise DataMismatchError(f"key not found: {msg}")
-    if data["char"] not in Character.data: raise DataMismatchError("character name not recognized")
-    if data["team"] not in Character.data[data["char"]][1][0]: raise DataMismatchError("character team not recognized")
-    if data["totEr"]<100 and Character.data[data["char"]][1][0][data["team"]]>100 and Character.data[data["char"]][1][1]!=0: raise InvalidInputError("please enter character's total ER")
-    if not math.isfinite(data["totEr"]): raise InvalidInputError("er amount must be a finite number")
+    if data["char"] not in Character.data: raise DataMismatchError(f"character name not recognized, character: {data["char"]}")
+    if data["team"] not in Character.data[data["char"]][1][0]: raise DataMismatchError(f"character team not recognized, team: {data["team"]}")
+    if data["totEr"] < 100 and Character.data[data["char"]][1][0][data["team"]] > 100 and Character.data[data["char"]][1][1] != 0: raise InvalidInputError(f"invalid total er, er: {data["totEr"]}")
+    if not math.isfinite(data["totEr"]): raise InvalidInputError(f"er amount must be a finite number, er: {data["totEr"]}")
 
 def validate_echo_data(echo):
-    if len(echo)!=13: raise DataMismatchError(f"echo must have 13 fields, not {len(echo)}")
+    if len(echo) != 13: raise DataMismatchError(f"echo must have 13 fields, length: {len(echo)}")
     for i, ssr in enumerate(echo): 
-        if isinstance(ssr, bool): raise DataMismatchError("substat roll cannot be a bool (please stop messing around!)")
+        if isinstance(ssr, bool): raise DataMismatchError(f"substat roll cannot be a bool (please stop messing around!), roll: {ssr}")
         try: ssr_val=float(ssr)
-        except (TypeError, ValueError, OverflowError): raise DataMismatchError(f"couldn't covert substat roll to float: {ssr}")
-        if ssr_val!=0 and ssr_val not in GameData.substat_rolls[GameData.substat_names[i]]: raise DataMismatchError(f"invalid roll value for {GameData.substat_names[i]}: {ssr_val}")
-        echo[i]=ssr_val
-    ssr_counter=0
+        except (TypeError, ValueError, OverflowError) as msg: raise DataMismatchError(f"couldn't covert substat roll to float: {msg}, roll: {ssr}")
+        except Exception as msg: raise InternalLogicError(f"unknown error: {msg}")
+        if ssr_val != 0 and ssr_val not in GameData.substat_rolls[GameData.substat_names[i]]: raise DataMismatchError(f"invalid roll value, stat: {GameData.substat_names[i]}, roll: {ssr_val}")
+        echo[i] = ssr_val
+    ssr_counter = 0
     for ssr in echo: 
-        if ssr!=0: ssr_counter+=1
-    if ssr_counter>5: raise DataMismatchError(f"too many substats: {ssr_counter}")
+        if ssr != 0: ssr_counter += 1
+    if ssr_counter > 5: raise DataMismatchError(f"too many substats, total substats: {ssr_counter}")
 
 def validate_build_data(data): 
     try: 
-        if not isinstance(data["echoCost"], list) or len(data["echoCost"])!=5: raise DataMismatchError("echo cost must be a valid list")
-        if not isinstance(data["echoMainStats"], list) or len(data["echoMainStats"])!=5: raise DataMismatchError("echo mainstats must be a valid list")
-    except KeyError as msg: raise DataMismatchError(f"key not found: {str(msg)}")
-    if len(data["ssr"])!=13: raise DataMismatchError(f"build must have 13 fields, not {len(data["ssr"])}")
+        if not isinstance(data["echoCost"], list) or len(data["echoCost"]) != 5: raise DataMismatchError(f"echo cost must be a valid list, echo cost: {data["echoCost"]}")
+        if not isinstance(data["echoMainStats"], list) or len(data["echoMainStats"]) != 5: raise DataMismatchError(f"echo mainstats must be a valid list, echo mainstats: {data["echoMainStats"]}")
+    except KeyError as msg: raise DataMismatchError(f"key not found: {msg}")
+    if len(data["ssr"]) != 13: raise DataMismatchError(f"build must have 13 fields, length: {len(data["ssr"])}")
     for i, ssr in enumerate(data["ssr"]):
         if isinstance(ssr, bool): raise DataMismatchError("preset values cannot be bools (ha you think you got me)")
-        try: ssr_val=float(ssr)
-        except (TypeError, ValueError, OverflowError): raise DataMismatchError(f"coudln't covert substat roll to float: {ssr}")
-        if not math.isfinite(ssr_val): raise InvalidInputError(f"substat value must be fininte: {i}: {ssr}")
-        data["ssr"][i]=ssr_val
+        try: ssr_val = float(ssr)
+        except (TypeError, ValueError, OverflowError) as msg: raise DataMismatchError(f"coudln't covert substat roll to float: {msg}, roll: {ssr}")
+        if not math.isfinite(ssr_val): raise InvalidInputError(f"substat value must be fininte, {i}: {ssr}")
+        data["ssr"][i] = ssr_val
     for echoCost in data["echoCost"]: 
-        if isinstance(echoCost, bool) or not isinstance(echoCost, int): raise DataMismatchError("echo cost has to be an integer")
-    if data["echoCost"] not in [[4, 3, 3, 1, 1], [4, 4, 1, 1, 1]]: raise DataMismatchError(f"Unoptimal echo setup: {data["echoCost"]}")
+        if isinstance(echoCost, bool) or not isinstance(echoCost, int): raise DataMismatchError(f"echo cost has to be an integer, type({echoCost}): {type(echoCost)}")
+    if data["echoCost"] not in [[4, 3, 3, 1, 1], [4, 4, 1, 1, 1]]: raise DataMismatchError(f"unoptimal echo cost setup, echo costs: {data["echoCost"]}")
     for i, main_stat in enumerate(data["echoMainStats"]):
         if not isinstance(main_stat, str): raise DataMismatchError("main stat is not a string")
-        if main_stat not in GameData.mainstat_vals[data["echoCost"][i]]: raise DataMismatchError(f"Main Stats don't match the cost: {data["echoCost"][i]}: {main_stat}")
+        if main_stat not in GameData.mainstat_vals[data["echoCost"][i]]: raise DataMismatchError(f"main Stats don't match the cost, main stat: {data["echoCost"][i]}, cost: {main_stat}")
 
 def validate_full_data(full_build):
-    if len(full_build)!=5: raise DataMismatchError(f"Build must have 5 Echoes, not {len(full_build)}")
+    if len(full_build) != 5: raise DataMismatchError(f"Build must have 5 Echoes, length: {len(full_build)}")
     for echo in full_build: 
-        if not isinstance(echo, list): raise DataMismatchError("substat rolls must be a valid list")
+        if not isinstance(echo, list): raise DataMismatchError(f"substat rolls must be a valid list, type({echo}): {type({echo})}")
         validate_echo_data(echo)
 
 @evc_app.route("/")
 def home(): return redirect(url_for("echo"))
 
-@evc_app.route("/echo", methods=["GET"])
-def echo(): return render_template("echo.html", active_page="echo", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls,
-                                   canon_ulr="https://www.echovaluecalc.com/echo")
+@evc_app.route("/echo", methods = ["GET"])
+def echo(): return render_template("echo.html", active_page = "echo", char_data = Character.data, prev_char = "Aemeath", echo_data = GameData.substat_names, 
+                                   substat_rolls = GameData.substat_rolls, canon_ulr = "https://www.echovaluecalc.com/echo")
 
-@evc_app.route("/calcEcho", methods=["POST"])
+@evc_app.route("/calcEcho", methods = ["POST"])
 def calc_echo():
     try:
         if not request.is_json: return jsonify({"error": "Request didn't send json", "code": "unsupported_media"}), 415
-        data=request.get_json()
-        if not isinstance(data, dict) or len(data)!=4: raise DataMismatchError("request is not a valid data dictionary")
+        data = request.get_json()
+        if not isinstance(data, dict) or len(data) != 4: raise DataMismatchError(f"request is not a valid data dictionary, type({data}): {type(data)}")
         validate_common_data(data)
         validate_echo_data(data["ssr"])
-        es, et=main(data["char"], data["team"], data["totEr"], data["ssr"], "echo")
+        es, et = main(data["char"], data["team"], data["totEr"], data["ssr"], "echo")
         return jsonify({"score": es, "tier": et}), 200
     except BadRequest as msg: 
         evc_app.logger.warning(str(msg))
@@ -85,19 +86,19 @@ def calc_echo():
         evc_app.logger.exception(str(msg))
         return jsonify({"error": "Something went wrong", "code": "internal_error"}), 500
 
-@evc_app.route("/build", methods=["GET"])
-def build(): return render_template("build.html", active_page="build", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls,
-                                    main_stat_data=GameData.mainstat_vals, canon_ulr="https://www.echovaluecalc.com/build")
+@evc_app.route("/build", methods = ["GET"])
+def build(): return render_template("build.html", active_page = "build", char_data = Character.data, prev_char = "Aemeath", echo_data = GameData.substat_names, 
+                                    substat_rolls = GameData.substat_rolls, main_stat_data = GameData.mainstat_vals, canon_ulr = "https://www.echovaluecalc.com/build")
 
-@evc_app.route("/calcBuild", methods=["POST"])
+@evc_app.route("/calcBuild", methods = ["POST"])
 def calc_build():
     try:
         if not request.is_json: return jsonify({"error": "Request didn't send json", "code": "unsupported_media"}), 415
-        data=request.get_json()
-        if not isinstance(data, dict) or len(data)!=6: raise DataMismatchError("request is not a valid data dictionary")
+        data = request.get_json()
+        if not isinstance(data, dict) or len(data) != 6: raise DataMismatchError(f"request is not a valid data dictionary, type({data}): {type(data)}")
         validate_common_data(data)
         validate_build_data(data)
-        es, et=main(data["char"], data["team"], data["totEr"], data["ssr"], "build", {"echo_cost": data["echoCost"], "echo_mainstat": data["echoMainStats"]})
+        es, et = main(data["char"], data["team"], data["totEr"], data["ssr"], "build", {"echo_cost": data["echoCost"], "echo_mainstat": data["echoMainStats"]})
         return jsonify({"score": es, "tier": et}), 200
     except BadRequest as msg: 
         evc_app.logger.warning(str(msg))
@@ -110,19 +111,19 @@ def calc_build():
         evc_app.logger.exception(str(msg))
         return jsonify({"error": "Something went wrong", "code": "internal_error"}), 500
 
-@evc_app.route("/full", methods=["GET"])
-def full(): return render_template("full.html", active_page="full", char_data=Character.data, prev_char="Aemeath", echo_data=GameData.substat_names, substat_rolls=GameData.substat_rolls,
-                                   canon_ulr="https://www.echovaluecalc.com/full")
+@evc_app.route("/full", methods = ["GET"])
+def full(): return render_template("full.html", active_page = "full", char_data = Character.data, prev_char = "Aemeath", echo_data = GameData.substat_names, 
+                                   substat_rolls=GameData.substat_rolls, canon_ulr="https://www.echovaluecalc.com/full")
 
-@evc_app.route("/calcFull", methods=["POST"])
+@evc_app.route("/calcFull", methods = ["POST"])
 def calc_full():
     try:
         if not request.is_json: return jsonify({"error": "Request didn't send json", "code": "unsupported_media"}), 415
-        data=request.get_json()
-        if not isinstance(data, dict) or len(data)!=4: raise DataMismatchError("request is not a valid data dictionary")
+        data = request.get_json()
+        if not isinstance(data, dict) or len(data) != 4: raise DataMismatchError(f"request is not a valid data dictionary, type({data}): {type(data)}")
         validate_common_data(data)
         validate_full_data(data["ssr"])
-        es, et=main(data["char"], data["team"], data["totEr"], data["ssr"], "full")
+        es, et = main(data["char"], data["team"], data["totEr"], data["ssr"], "full")
         return jsonify({"score": es, "tier": et}), 200
     except BadRequest as msg: 
         evc_app.logger.warning(str(msg))

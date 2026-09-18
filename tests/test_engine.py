@@ -163,22 +163,10 @@ def test_av_stats(echo_ssr, ssm, char, request):
     ex_net=0
     assert av_stats(request.getfixturevalue(echo_ssr), ssm_new, char, net)==(ex_tot, ex_net)
 
-@pytest.mark.parametrize("echo_ssr, ssm, char", [
-    ("echo_for_calcs", "ssr_avg_for_calcs", Character("Zani", "Default"))
+@pytest.mark.parametrize("echo_ssr_er, ssm_er, char, net, ex_net, ex_ep_tot", [
+    (10, 10, Character("Zani", "Default"), 0, 0, 1+1+1+0.5+0.325)
 ])
-def test_ep_stats(echo_ssr, ssm, char, request):
-    ssm_new={}
-    ssm=request.getfixturevalue(ssm)
-    for stat in ssm: ssm_new[stat]=ssm[stat]
-    ssm_new["ER(%)"]=10
-    ssr_new={}
-    ssr=request.getfixturevalue(echo_ssr)
-    for stat in ssr: ssr_new[stat]=ssr[stat]
-    ssr_new["ER(%)"]=10
-    net=0
-    ex_net=0
-    ex_ep_tot=1+1+1+0.5+0.325
-    assert ep_stats(ssr_new, ssm_new, char, net)==(ex_ep_tot, ex_net)
+def test_ep_stats(echo_ssr_er, ssm_er, char, net, ex_net, ex_ep_tot): assert ep_stats(echo_ssr_er, ssm_er, char, net)==(ex_ep_tot, ex_net)
 
 def test_analysis_at_false(): assert analysis(66.000, False)=="Not Applicable"
 
@@ -199,4 +187,4 @@ def test_analysis_at_false(): assert analysis(66.000, False)=="Not Applicable"
 def test_analysis_boundaries(score, expected_tier): assert analysis(score, True)==expected_tier
 
 def test_main_zero_potential():
-    assert main("Suisui", "Default", "260", [0.0] * 13, "echo") == ("0.0", "Not Applicable")
+    assert main("Suisui", "Default", 260, [0.0] * 13, "echo") == ("0.0", "Not Applicable")
