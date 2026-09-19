@@ -113,7 +113,7 @@ def calc_build():
 
 @evc_app.route("/full", methods = ["GET"])
 def full(): return render_template("full.html", active_page = "full", char_data = Character.data, prev_char = "Aemeath", echo_data = GameData.substat_names, 
-                                   substat_rolls=GameData.substat_rolls, canon_ulr="https://www.echovaluecalc.com/full")
+                                   substat_rolls = GameData.substat_rolls, canon_ulr = "https://www.echovaluecalc.com/full")
 
 @evc_app.route("/calcFull", methods = ["POST"])
 def calc_full():
@@ -138,83 +138,83 @@ def calc_full():
 
 @evc_app.route("/instruct")
 def instruct():
-    return render_template("instruct.html", active_page="inst", canon_ulr="https://www.echovaluecalc.com/instruct")
+    return render_template("instruct.html", active_page = "inst", canon_ulr = "https://www.echovaluecalc.com/instruct")
 
 @evc_app.route("/logs")
 def logs():
-    return render_template("logs.html", active_page="logs", canon_ulr="https://www.echovaluecalc.com/logs")
+    return render_template("logs.html", active_page = "logs", canon_ulr = "https://www.echovaluecalc.com/logs")
 
 @evc_app.route("/reports")
 def reports():
-    return render_template("reports.html", active_page="reps", canon_ulr="https://www.echovaluecalc.com/reports")
+    return render_template("reports.html", active_page = "reps", canon_ulr = "https://www.echovaluecalc.com/reports")
 
 @evc_app.route("/about")
 def about():
-    return render_template("about.html", active_page="abt", canon_ulr="https://www.echovaluecalc.com/about")
+    return render_template("about.html", active_page = "abt", canon_ulr = "https://www.echovaluecalc.com/about")
 
 @evc_app.route("/articles")
 def contents():
-    return render_template("contents.html", active_page="arts", canon_ulr="https://www.echovaluecalc.com/articles")
+    return render_template("contents.html", active_page = "arts", canon_ulr = "https://www.echovaluecalc.com/articles")
 
 @evc_app.route("/goals")
 def goals():
-    return render_template("goals.html", active_page="arts", canon_ulr="https://www.echovaluecalc.com/goals")
+    return render_template("goals.html", active_page = "arts", canon_ulr = "https://www.echovaluecalc.com/goals")
 
 @evc_app.route("/assumptions")
 def assumptions():
-    return render_template("assumptions.html", active_page="arts", canon_ulr="https://www.echovaluecalc.com/assumptions")
+    return render_template("assumptions.html", active_page = "arts", canon_ulr = "https://www.echovaluecalc.com/assumptions")
 
 @evc_app.route("/cd")
 def cd():
-    return render_template("cd.html", active_page="arts", char_data=Character.data, canon_ulr="https://www.echovaluecalc.com/cd")
+    return render_template("cd.html", active_page = "arts", char_data = Character.data, canon_ulr = "https://www.echovaluecalc.com/cd")
 
 @evc_app.route("/clg")
 def clg():
-    return render_template("clg.html", active_page="arts", canon_ulr="https://www.echovaluecalc.com/clg")
+    return render_template("clg.html", active_page = "arts", canon_ulr = "https://www.echovaluecalc.com/clg")
 
 @evc_app.route("/co")
 def co():
-    return render_template("co.html", active_page="arts", canon_ulr="https://www.echovaluecalc.com/co")
+    return render_template("co.html", active_page = "arts", canon_ulr = "https://www.echovaluecalc.com/co")
 
 @evc_app.route("/av")
 def av():
-    return render_template("av.html", active_page="arts", canon_ulr="https://www.echovaluecalc.com/av")
+    return render_template("av.html", active_page = "arts", canon_ulr = "https://www.echovaluecalc.com/av")
 
 @evc_app.route("/pv")
 def pv():
-    return render_template("pv.html", active_page="arts", canon_ulr="https://www.echovaluecalc.com/pv")
+    return render_template("pv.html", active_page = "arts", canon_ulr = "https://www.echovaluecalc.com/pv")
 
 @evc_app.route("/esbs")
 def esbs():
-    return render_template("esbs.html", active_page="arts", canon_ulr="https://www.echovaluecalc.com/esbs")
+    return render_template("esbs.html", active_page = "arts", canon_ulr = "https://www.echovaluecalc.com/esbs")
 
 @evc_app.route("/er")
 def er():
-    return render_template("er.html", active_page="arts", canon_ulr="https://www.echovaluecalc.com/er")
+    return render_template("er.html", active_page = "arts", canon_ulr = "https://www.echovaluecalc.com/er")
 
 @evc_app.route("/cre")
 def cre():
-    return render_template("cre.html", active_page="arts", canon_ulr="https://www.echovaluecalc.com/cre")
+    return render_template("cre.html", active_page = "arts", canon_ulr = "https://www.echovaluecalc.com/cre")
 
 @evc_app.route("/rc")
 def rc():
-    return render_template("rc.html", active_page="arts", canon_ulr="https://www.echovaluecalc.com/rc")
+    return render_template("rc.html", active_page = "arts", canon_ulr = "https://www.echovaluecalc.com/rc")
 
 @evc_app.route("/sc")
 def sc():
-    return render_template("sc.html", active_page="arts", canon_ulr="https://www.echovaluecalc.com/sc")
+    return render_template("sc.html", active_page = "arts", canon_ulr = "https://www.echovaluecalc.com/sc")
 
 @evc_app.route("/privacy")
 def privacy():
-    return render_template("privacy.html", active_page="noVal", canon_ulr="https://www.echovaluecalc.com/privacy")
+    return render_template("privacy.html", active_page = "noVal", canon_ulr = "https://www.echovaluecalc.com/privacy")
 
 @evc_app.route("/terms")
 def terms():
-    return render_template("terms.html", active_page="noVal", canon_ulr="https://www.echovaluecalc.com/terms")
+    return render_template("terms.html", active_page = "noVal", canon_ulr = "https://www.echovaluecalc.com/terms")
 
 @evc_app.route("/ads.txt")
 def ads_txt():
-    return redirect("https://srv.adstxtmanager.com/79141/echovaluecalc.com", code=301)
+    return redirect("https://srv.adstxtmanager.com/79141/echovaluecalc.com", code = 301)
 
 @evc_app.route("/sitemap.xml")
 def sitemap():
@@ -222,8 +222,8 @@ def sitemap():
 
 @evc_app.route("/robots.txt")
 def robots(): 
-    static_folder=evc_app.static_folder
+    static_folder = evc_app.static_folder
     assert static_folder is not None
-    return send_from_directory(static_folder, "robots.txt", mimetype="text/plain")
+    return send_from_directory(static_folder, "robots.txt", mimetype = "text/plain")
 
-if __name__ == "__main__": evc_app.run(debug=True)
+if __name__ == "__main__": evc_app.run(debug = True)

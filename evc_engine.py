@@ -393,9 +393,5 @@ def main(char_name: str, team_name: str, tot_er: float, ssr: list, type_in: str,
     elif type_in == "build": return build_calc(char, ssr, ssgd.ssm, er_net, main_stats)
     else: raise InternalLogicError(f"Invalid calculation path: {type_in}")
 
-if __name__ == "__main__": pass
-    # for char in Character.data:
-    #     def_found = False
-    #     for team in Character.data[char][1][0]:
-    #         if "Default" in team: def_found = True
-    #     if def_found == False: raise DataMismatchError(f"Default not found for {char}")
+if __name__ == "__main__": 
+    print(Build(GameData.substat_avg).build_stats)

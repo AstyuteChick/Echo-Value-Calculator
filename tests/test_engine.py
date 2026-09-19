@@ -4,12 +4,10 @@ from evc_engine import *
 from evc_errors import DataMismatchError, InternalLogicError
 
 @pytest.fixture
-def valid_avg_ssr_dict(): return {"Crit Rate(%)": 8.4, "Crit Damage(%)": 16.8, "Atk(%)": 9.0, "Flat Atk": 45.0, "HP(%)": 9.0, "Flat HP": 450.0, 
-                                  "Def(%)": 11.35, "Flat Def": 55.0, "Basic(%)": 9.0, "Heavy(%)": 9.0, "Skill(%)": 9.0, "Liberation(%)": 9.0, "ER(%)": 9.6}
+def valid_avg_ssr_dict(): return Build(GameData.substat_avg).build_stats
 
 @pytest.fixture
-def valid_max_ssr_dict(): return {"Crit Rate(%)": 10.5, "Crit Damage(%)": 21.0, "Atk(%)": 11.6, "Flat Atk": 60.0, "HP(%)": 11.6, "Flat HP": 580.0, 
-                                  "Def(%)": 14.7, "Flat Def": 70.0, "Basic(%)": 11.6, "Heavy(%)": 11.6, "Skill(%)": 11.6, "Liberation(%)": 11.6, "ER(%)": 12.4}
+def valid_max_ssr_dict(): return Build(GameData.substat_max).build_stats
 
 @pytest.fixture
 def valid_echo_ssr(): return [8.1, 16.2, 0.0, 0.0, 9.6, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
@@ -101,6 +99,10 @@ def test_build_invalid_list(invalid_list):
 def test_build_invalid_stats(valid_build_ssr):
     valid_build_ssr[0]="aa"
     with pytest.raises(DataMismatchError): Build(valid_build_ssr)
+
+# ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+
 
 # ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
