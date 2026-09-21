@@ -4,12 +4,6 @@ from evc_engine import *
 from evc_errors import DataMismatchError, InternalLogicError
 
 @pytest.fixture
-def valid_avg_ssr_dict(): return Build(GameData.substat_avg).build_stats
-
-@pytest.fixture
-def valid_max_ssr_dict(): return Build(GameData.substat_max).build_stats
-
-@pytest.fixture
 def valid_echo_ssr(): return [8.1, 16.2, 0.0, 0.0, 9.6, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 @pytest.fixture
@@ -19,7 +13,10 @@ def valid_build_ssr(): return [50, 100, 30, 450, 0, 0, 0, 0, 30, 0, 0, 10, 10]
 def echo_for_calcs(): return Echo([5, 10, 15, 20]+[0]*9).ssr
 
 @pytest.fixture
-def ssr_avg_for_calcs(): return GameData("n").ssm
+def valid_ms_43311(): return {"echo_cost": [4, 3, 3, 1, 1], "echo_mainstat": ["Crit Damage(%)", "Element(%)", "Atk(%)", "Atk(%)", "Atk(%)"]}
+
+@pytest.fixture
+def valid_ms_44111(): return {"echo_cost": [4, 4, 1, 1, 1], "echo_mainstat": ["Crit Damage(%)", "Crit Rate(%)", "HP(%)", "HP(%)", "HP(%)"]}
 
 # ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
@@ -32,13 +29,13 @@ def test_adjust_req_er(er_req, rc, buff_val, expected_result): assert adjust_req
 
 # ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
-@pytest.mark.parametrize("mode, ex_pot_list", [
-    ("o", "valid_avg_ssr_dict"), 
-    ("O", "valid_max_ssr_dict"), 
-    ("a", "valid_avg_ssr_dict"), 
-    ("", "valid_avg_ssr_dict")
+@pytest.mark.parametrize("mode, ex_pot", [
+    ("o", Build(GameData.substat_avg).build_stats), 
+    ("O", Build(GameData.substat_max).build_stats), 
+    ("a", Build(GameData.substat_avg).build_stats), 
+    ("", Build(GameData.substat_avg).build_stats)
 ])
-def test_game_data_substat_pot(mode, ex_pot_list, request): assert GameData(mode).ssm==request.getfixturevalue(ex_pot_list)
+def test_game_data_substat_pot(mode, ex_pot): assert GameData(mode).ssm == ex_pot
 
 @pytest.mark.parametrize("mode", [[], None, True, 0, 1, {}])
 def test_invalid_game_mode(mode): 
@@ -102,7 +99,17 @@ def test_build_invalid_stats(valid_build_ssr):
 
 # ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
-
+@pytest.mark.parametrize("char_name, team_name, er_tot, ex_net", [
+    ("Augusta", "Iuno + Shorekeeper", 124.99, -0.01), 
+    ("Augusta", "Iuno + Shorekeeper", 125, 0), 
+    ("Augusta", "Iuno + Shorekeeper", 128.1, 0), 
+    ("Augusta", "Iuno + Shorekeeper", 128.11, 0.01)
+])
+def test_init_data(char_name, team_name, er_tot, ex_net): 
+    char, er_net, gd = init_data(char_name, team_name, er_tot)
+    assert char == Character(char_name, team_name)
+    assert gd == GameData("n")
+    for val in er_net: assert pytest.approx(er_net[val]) == ex_net
 
 # ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
@@ -150,11 +157,10 @@ def test_ep_er(net, ssr, med, imp, ex_net, ex_pot): assert ep_er(net, ssr, med, 
 # ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 @pytest.mark.parametrize("echo_ssr, ssm, char", [
-    ("echo_for_calcs", "ssr_avg_for_calcs", Character("Phrolova", "Default"))
+    ("echo_for_calcs", Build(GameData.substat_avg).build_stats, Character("Phrolova", "Default"))
 ])
 def test_av_stats(echo_ssr, ssm, char, request): 
     ssm_new={}
-    ssm=request.getfixturevalue(ssm)
     for stat in ssm: ssm_new[stat]=ssm[stat]
     ssm_new["Crit Rate(%)"]=5
     ssm_new["Crit Damage(%)"]=10
@@ -165,10 +171,14 @@ def test_av_stats(echo_ssr, ssm, char, request):
     ex_net=0
     assert av_stats(request.getfixturevalue(echo_ssr), ssm_new, char, net)==(ex_tot, ex_net)
 
+# ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
 @pytest.mark.parametrize("echo_ssr_er, ssm_er, char, net, ex_net, ex_ep_tot", [
     (10, 10, Character("Zani", "Default"), 0, 0, 1+1+1+0.5+0.325)
 ])
 def test_ep_stats(echo_ssr_er, ssm_er, char, net, ex_net, ex_ep_tot): assert ep_stats(echo_ssr_er, ssm_er, char, net)==(ex_ep_tot, ex_net)
+
+# ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 def test_analysis_at_false(): assert analysis(66.000, False)=="Not Applicable"
 
@@ -187,6 +197,60 @@ def test_analysis_at_false(): assert analysis(66.000, False)=="Not Applicable"
     (99.000, "Godly")    
 ])
 def test_analysis_boundaries(score, expected_tier): assert analysis(score, True)==expected_tier
+
+# ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+def test_change_echo_order(): 
+    echoes = [[0.0] * 13, [0.0] * 12 + [10.0], [0.0] * 13, [0.0] * 13, [0.0] * 12 + [10.0]]
+    assert change_echo_order(echoes) == [1, 4, 0, 2, 3]
+
+# ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+@pytest.mark.parametrize("rv, bs, ms, exp_atk, exp_hp", [
+    (Build([0.0] * 2 + [0.01] + [0.0] * 10).build_stats, Build([0.0] * 13).build_stats, "43311", 0, 2280 * 2), 
+    (Build([0.0] * 4 + [0.01] + [0.0] * 8).build_stats, Build([0.0] * 13).build_stats, "43311", 150 + 200, 0), 
+    (Build([0.0] * 2 + [0.01, 0.0, 0.01] + [0.0] * 8).build_stats, Build([0.0] * 13).build_stats, "43311", 0, 0), 
+    (Build([0.0] * 13).build_stats, Build([0.0] * 13).build_stats, "43311", 150 + 200, 2280 * 2), 
+    (Build([0.0] * 2 + [0.01] + [0.0] * 10).build_stats, Build([0.0] * 13).build_stats, "44111", 0, 2280 * 3), 
+    (Build([0.0] * 4 + [0.01] + [0.0] * 8).build_stats, Build([0.0] * 13).build_stats, "44111", 150 * 2, 0), 
+    (Build([0.0] * 2 + [0.01, 0.0, 0.01] + [0.0] * 8).build_stats, Build([0.0] * 13).build_stats, "44111", 0, 0), 
+    (Build([0.0] * 13).build_stats, Build([0.0] * 13).build_stats, "44111", 150 * 2, 2280 * 3)
+])
+def test_init_build(rv, bs, ms, exp_atk, exp_hp, valid_ms_43311, valid_ms_44111): 
+    print(valid_ms_43311, valid_ms_44111)
+    if ms == "43311": ms_dict = valid_ms_43311
+    else: ms_dict = valid_ms_44111
+    init_build(rv, bs, ms_dict)
+    assert bs["Flat Atk"] == exp_atk
+    assert bs["Flat HP"] == exp_hp
+
+# ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+@pytest.mark.parametrize("bs, cost, ms", [
+    (Build([0.0] * 13).build_stats, 4, "Crit Rate(%)"), 
+    (Build([0.0] * 13).build_stats, 4, "Crit Damage(%)"), 
+    (Build([0.0] * 13).build_stats, 4, "Atk(%)"), 
+    (Build([0.0] * 13).build_stats, 4, "HP(%)"), 
+    (Build([0.0] * 13).build_stats, 4, "Def(%)"), 
+    (Build([0.0] * 13).build_stats, 4, "Heal(%)"), 
+    (Build([0.0] * 13).build_stats, 3, "Atk(%)"), 
+    (Build([0.0] * 13).build_stats, 3, "Element(%)"), 
+    (Build([0.0] * 13).build_stats, 3, "HP(%)"), 
+    (Build([0.0] * 13).build_stats, 3, "Def(%)"), 
+    (Build([0.0] * 13).build_stats, 3, "ER(%)"), 
+    (Build([0.0] * 13).build_stats, 1, "Atk(%)"), 
+    (Build([0.0] * 13).build_stats, 1, "HP(%)"), 
+    (Build([0.0] * 13).build_stats, 1, "Def(%)"), 
+])
+def test_remove_main_and_sec_stats(bs, cost, ms): 
+    if ms != "Element(%)" and ms != "Heal(%)": 
+        bs[ms] = GameData.mainstat_vals[cost][ms]
+    sc = GameData.secstat_vals[cost][0]
+    bs[sc] = GameData.secstat_vals[cost][1]
+    remove_main_and_sec_stats(bs, cost, ms)
+    if ms != "Element(%)" and ms != "Heal(%)": assert bs[ms] == 0
+    assert bs[sc] == 0
+
+# ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 def test_main_zero_potential():
     assert main("Suisui", "Default", 260, [0.0] * 13, "echo") == ("0.0", "Not Applicable")

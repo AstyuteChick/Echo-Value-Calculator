@@ -49,6 +49,12 @@ class GameData:
             for i in range(len(GameData.substat_names)): ssm_dict[GameData.substat_names[i]] = GameData.substat_avg[i]
         self._ssm = ssm_dict
 
+    def __eq__(self, other)-> bool: 
+        return (
+            isinstance(other, GameData)
+            and self.ssm == other.ssm
+        )
+
 class Character:
     data: dict[str, list] = {
         #Name:                              [[cr%, cd%, atk%, fatk, hp%, fhp, def%, fdef, ba%, ha%, skill%, liberation%], [{name: req_er}, er_imp, rc], analysis]
@@ -176,6 +182,16 @@ class Character:
         for team in teams: team_list.append(team)
         self._teams = team_list
 
+    def __eq__(self, other)-> bool: 
+        return (
+            isinstance(other, Character)
+            and self.name == other.name
+            and self.rel_val == other.rel_val
+            and self.er == other.er
+            and self.anal == other.anal
+            and self.teams == other.teams
+        )
+
 class Echo:
     def __init__(self, ssr: list)-> None: self.ssr = ssr
 
@@ -194,6 +210,12 @@ class Echo:
         if stat_count > 5: raise DataMismatchError(f"Too many sub stats: {stat_count}")
         self._ssr = ssr_data
 
+    def __eq__(self, other)-> bool: 
+        return (
+            isinstance(other, Echo)
+            and self.ssr == other.ssr
+        )
+
 class Build:
     def __init__(self, build_stats: list)-> None: self.build_stats = build_stats
 
@@ -207,6 +229,12 @@ class Build:
             try: bs_data[stat_name] = float(bs_in[i])
             except (ValueError, TypeError): raise DataMismatchError(f"couldn't convert {type(bs_in[i])} to float")
         self._build_stats = bs_data
+
+    def __eq__(self, other)-> bool: 
+        return (
+            isinstance(other, Build)
+            and self.build_stats == other.build_stats
+        )
 
 def init_data(char_name: str, team_name: str, tot_er: float)-> tuple[Character, dict, GameData]: 
     char = Character(char_name, team_name)
@@ -340,35 +368,32 @@ def full_calc(char: Character, ssr: list[list], ssm: dict, er_net: dict)-> tuple
     bs_tier=analysis(bs_total, char.anal)
     return f"{bs_total}: {es_total}", f"{bs_tier}: {es_tier}"
 
-def init_build(char: Character, build: Build, main_stats: dict)-> None: 
-    if char.rel_val["Atk(%)"] != 0 and char.rel_val["HP(%)"] == 0: 
-        if main_stats["echo_cost"][1] == 4: build.build_stats["Flat HP"] = 2280 * 3
-        else: build.build_stats["Flat HP"] = 2280 * 2
-    elif char.rel_val["HP(%)"] != 0 and char.rel_val["Atk(%)"] == 0: 
-        if main_stats["echo_cost"][1] == 4: build.build_stats["Flat Atk"] = 150 * 2
-        else: build.build_stats["Flat Atk"] = 150 + 200
-    elif char.rel_val["Atk(%)"] == 0 and char.rel_val["HP(%)"] == 0: 
+def init_build(char_rv: dict, build_bs: dict, main_stats: dict)-> None: 
+    if char_rv["Atk(%)"] != 0 and char_rv["HP(%)"] == 0: 
+        if main_stats["echo_cost"][1] == 4: build_bs["Flat HP"] = 2280 * 3
+        else: build_bs["Flat HP"] = 2280 * 2
+    elif char_rv["HP(%)"] != 0 and char_rv["Atk(%)"] == 0: 
+        if main_stats["echo_cost"][1] == 4: build_bs["Flat Atk"] = 150 * 2
+        else: build_bs["Flat Atk"] = 150 + 200
+    elif char_rv["Atk(%)"] == 0 and char_rv["HP(%)"] == 0: 
         if main_stats["echo_cost"][1] == 4: 
-            build.build_stats["Flat HP"]=2280 * 3
-            build.build_stats["Flat Atk"]=150 * 2
+            build_bs["Flat HP"] = 2280 * 3
+            build_bs["Flat Atk"] = 150 * 2
         else: 
-            build.build_stats["Flat HP"]=2280 * 2
-            build.build_stats["Flat Atk"]=150 + 200
+            build_bs["Flat HP"] = 2280 * 2
+            build_bs["Flat Atk"] = 150 + 200
 
-def remove_main_and_sec_stats(build: Build, main_stats: dict)-> None:
-    for echo_no in range(5):
-        cur_echo_cost = main_stats["echo_cost"][echo_no]
-        cur_mainstat = main_stats["echo_mainstat"][echo_no]
-        try: cur_mainstat_val = GameData.mainstat_vals[cur_echo_cost][cur_mainstat]
-        except KeyError: raise DataMismatchError(f"echo cost ({cur_echo_cost}) doesn't have ({cur_mainstat}) as an option")
-        except Exception as msg: raise InternalLogicError(f"unexpected error raised: {msg}")
-        cur_secstat = GameData.secstat_vals[cur_echo_cost][0]
-        cur_secstat_val = GameData.secstat_vals[cur_echo_cost][1]
-        if cur_mainstat != "Element(%)" and cur_mainstat != "Heal(%)":
-            build.build_stats[cur_mainstat] = build.build_stats[cur_mainstat] - cur_mainstat_val
-            if build.build_stats[cur_mainstat] < -0.00000001: raise InvalidInputError("Remember that stats from Echo PRESETS are expected")
-        build.build_stats[cur_secstat] = build.build_stats[cur_secstat] - cur_secstat_val
-        if build.build_stats[cur_secstat] < -0.00000001: raise InvalidInputError("Remember that stats from Echo PRESETS are expected")
+def remove_main_and_sec_stats(build_bs: dict, cur_echo_cost: int, cur_mainstat: str)-> None:
+    try: cur_mainstat_val = GameData.mainstat_vals[cur_echo_cost][cur_mainstat]
+    except KeyError: raise DataMismatchError(f"echo cost ({cur_echo_cost}) doesn't have ({cur_mainstat}) as an option")
+    except Exception as msg: raise InternalLogicError(f"unexpected error raised: {msg}")
+    cur_secstat = GameData.secstat_vals[cur_echo_cost][0]
+    cur_secstat_val = GameData.secstat_vals[cur_echo_cost][1]
+    if cur_mainstat != "Element(%)" and cur_mainstat != "Heal(%)":
+        build_bs[cur_mainstat] = build_bs[cur_mainstat] - cur_mainstat_val
+        if build_bs[cur_mainstat] < -0.00000001: raise InvalidInputError("Remember that stats from Echo PRESETS are expected")
+    build_bs[cur_secstat] = build_bs[cur_secstat] - cur_secstat_val
+    if build_bs[cur_secstat] < -0.00000001: raise InvalidInputError("Remember that stats from Echo PRESETS are expected")
 
 def build_calc(char: Character, ssr: list, ssm: dict, er_net: dict, main_stats: dict|None)-> tuple[str, str]: 
     if main_stats == None: raise InternalLogicError("data not received")
@@ -376,8 +401,8 @@ def build_calc(char: Character, ssr: list, ssm: dict, er_net: dict, main_stats: 
     if char.er["Required ER"] < 100: build.build_stats["ER(%)"] = 0.0
     for substat in char.rel_val: 
         if char.rel_val[substat] == 0: build.build_stats[substat] = 0
-    init_build(char, build, main_stats)
-    remove_main_and_sec_stats(build, main_stats)
+    init_build(char.rel_val, build.build_stats, main_stats)
+    for echo_no in range(5): remove_main_and_sec_stats(build.build_stats, main_stats["echo_cost"][echo_no], main_stats["echo_mainstat"][echo_no])
     av_total, er_net["av"] = av_stats(build.build_stats, ssm, char, er_net["av"])
     ep_total_list = [0.0, 0.0, 0.0, 0.0, 0.0]
     for _ in range(5): ep_total_list[_], er_net["ep"] = ep_stats_build(build.build_stats, ssm, char, er_net["ep"])
