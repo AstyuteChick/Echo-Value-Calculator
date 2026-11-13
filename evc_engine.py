@@ -78,6 +78,8 @@ class Character:
         "Jingran (No Signature Wp.)":       [[1.0, 1.0, 0.46, 0.25, 0.92, 0.28, 0.0, 0.0, 0.0, 0.44, 0.0, 0.0], [{"Default": 115.0, "Mono-Fusion/Rebecca": 120.0}, 1.0, 125.0], True],
         "Jinhsi":                           [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.8, 0.5*0.15], [{"Alternate Rotation Burst": 125.0, "Default": 115.0}, 0.3, 150.0], True],
         "Jiyan":                            [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.85, 0.5*0.1, 0.0], [{"Iuno + Ciaccona": 115.0, "Default": 125.0}, 1.0, 125.0], True],
+        "Lily":                             [[1.0, 1.0, 0.0, 0.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.5*0.5, 0.0, 0.0], [{"Default": 260.0}, 1.0, 175.0], False], 
+        "Lily (Pure Support)":              [[0.0, 0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Default": 260.0}, 1.0, 175.0], False], 
         "Lingyang":                         [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.35, 0.0, 0.5*0.35, 0.5*0.1], [{"Default": 125.0}, 0.9, 125.0], True],
         "Lucy":                             [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.9, 0.0, 0.0], [{"Default": 120.0}, 0.7, 125.0], True],
         "Lucilla (Glacio Chafe)":           [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.75, 0.0, 0.5*0.15, 0.0], [{"Default": 0.0}, 0.0, 0.0], True],
@@ -99,7 +101,7 @@ class Character:
         "Rover (Havoc)":                    [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.35, 0.0, 0.5*0.2, 0.5*0.3], [{"Sub DPS / Phrolova + Cantarella": 140.0, "Main DPS / Lynae + Shorekeeper": 125.0, "Default": 125.0}, 0.6, 125.0], True],
         "Rover (Spectro)":                  [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.1, 0.5*0.35, 0.5*0.4], [{"Default": 125.0}, 1.0, 125.0], True],
         "Sanhua":                           [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.35, 0.5*0.3, 0.5*0.3], [{"Default": 115.0}, 0.9, 100.0], True],
-        "Sigrika":                          [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Qiuyuan + Ciaccona/Phrolova": 110.0, "Qiuyuan + Shorekeeper": 120.0, "Default": 120.0}, 0.8, 100.0], True],
+        "Sigrika":                          [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Default": 150.0}, 0.9, 125.0], True],
         "Suisui":                           [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [{"Default": 260.0}, 1.0, 175.0], False],
         "Suoming (Main DPS)":               [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.85, 0.0, 0.0, 0.5*0.1], [{"Default": 0.0}, 1.0, 125.0], True],
         "Suoming (Unison)":                 [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.7, 0.0, 0.0, 0.5*0.2], [{"Default": 110.0}, 1.0, 125.0], True],
@@ -117,6 +119,8 @@ class Character:
         "Zani":                             [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5*0.65, 0.0, 0.5*0.2], [{"Default": 120.0}, 1.0, 125.0], True],
         "Zhezhi":                           [[1.0, 1.0, 0.5, 0.25, 0.0, 0.0, 0.0, 0.0, 0.5*0.8, 0.0, 0.0, 0.0], [{"Empyrean Anthem": 130.0, "Default": 130.0, "Moonlit Clouds": 115.0}, 0.9, 125.0], True]
     }
+
+    er_cap_chars = ["Brant", "Lily", "Mornye", "Shorekeeper", "Sigrika", "Suisui"]
 
     for char_name in data:
         if char_name not in ["Carlotta", "Jinhsi", "Hiyuki", "Lingyang"]: continue
@@ -315,8 +319,14 @@ def main(char: str, team: str, tot_er: str, ssr: list, type_in: str,
         er_build=float(tot_er)
         er_net=er_build-char_player.er["Required ER"]
     else: er_net=0
-    if er_net>0 and er_net<=3.1: er_net=0
-    if er_net>3.1: er_net-=3.1
+    er_cap_char = False
+    for char_name in Character.er_cap_chars: 
+        if char_name in char_player.name: 
+            er_cap_char = True
+            break
+    if not er_cap_char: 
+        if er_net>0 and er_net<=3.1: er_net=0
+        if er_net>3.1: er_net-=3.1
     er_net_av=er_net
     er_net_ep=er_net
 
